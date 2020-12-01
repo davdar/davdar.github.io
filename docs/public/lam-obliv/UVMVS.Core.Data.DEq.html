@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>UVMVS.Core.Data.DEq</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Keyword">module</a> <a id="8" href="UVMVS.Core.Data.DEq.html" class="Module">UVMVS.Core.Data.DEq</a> <a id="28" class="Keyword">where</a>
+
+<a id="35" class="Keyword">open</a> <a id="40" class="Keyword">import</a> <a id="47" href="UVMVS.Core.Init.html" class="Module">UVMVS.Core.Init</a>
+<a id="63" class="Keyword">open</a> <a id="68" class="Keyword">import</a> <a id="75" href="UVMVS.Core.Classes.html" class="Module">UVMVS.Core.Classes</a>
+
+<a id="_⋚?[≡!]_"></a><a id="95" href="UVMVS.Core.Data.DEq.html#95" class="Function Operator">_⋚?[≡!]_</a> <a id="104" class="Symbol">:</a> <a id="106" href="UVMVS.Core.Classes.DEq.html#179" class="Datatype">≡!</a> <a id="109" class="Symbol">→</a> <a id="111" href="UVMVS.Core.Classes.DEq.html#179" class="Datatype">≡!</a> <a id="114" class="Symbol">→</a> <a id="116" href="UVMVS.Core.Classes.Order.html#154" class="Datatype">⋚!</a>
+<a id="119" href="UVMVS.Core.Classes.DEq.html#194" class="InductiveConstructor">[≢]</a> <a id="123" href="UVMVS.Core.Data.DEq.html#95" class="Function Operator">⋚?[≡!]</a> <a id="130" href="UVMVS.Core.Classes.DEq.html#194" class="InductiveConstructor">[≢]</a> <a id="134" class="Symbol">=</a> <a id="136" href="UVMVS.Core.Classes.Order.html#173" class="InductiveConstructor">[≡]</a>
+<a id="140" href="UVMVS.Core.Classes.DEq.html#194" class="InductiveConstructor">[≢]</a> <a id="144" href="UVMVS.Core.Data.DEq.html#95" class="Function Operator">⋚?[≡!]</a> <a id="151" href="UVMVS.Core.Classes.DEq.html#198" class="InductiveConstructor">[≡]</a> <a id="155" class="Symbol">=</a> <a id="157" href="UVMVS.Core.Classes.Order.html#169" class="InductiveConstructor">[&lt;]</a>
+<a id="161" href="UVMVS.Core.Classes.DEq.html#198" class="InductiveConstructor">[≡]</a> <a id="165" href="UVMVS.Core.Data.DEq.html#95" class="Function Operator">⋚?[≡!]</a> <a id="172" href="UVMVS.Core.Classes.DEq.html#194" class="InductiveConstructor">[≢]</a> <a id="176" class="Symbol">=</a> <a id="178" href="UVMVS.Core.Classes.Order.html#177" class="InductiveConstructor">[&gt;]</a>
+<a id="182" href="UVMVS.Core.Classes.DEq.html#198" class="InductiveConstructor">[≡]</a> <a id="186" href="UVMVS.Core.Data.DEq.html#95" class="Function Operator">⋚?[≡!]</a> <a id="193" href="UVMVS.Core.Classes.DEq.html#198" class="InductiveConstructor">[≡]</a> <a id="197" class="Symbol">=</a> <a id="199" href="UVMVS.Core.Classes.Order.html#173" class="InductiveConstructor">[≡]</a>
+
+<a id="204" class="Keyword">instance</a>
+  <a id="has[⋚?][≡!]"></a><a id="215" href="UVMVS.Core.Data.DEq.html#215" class="Function">has[⋚?][≡!]</a> <a id="227" class="Symbol">:</a> <a id="229" href="UVMVS.Core.Classes.Order.html#1086" class="Record">has[⋚?]</a> <a id="237" href="UVMVS.Core.Classes.DEq.html#179" class="Datatype">≡!</a>
+  <a id="242" href="UVMVS.Core.Data.DEq.html#215" class="Function">has[⋚?][≡!]</a> <a id="254" class="Symbol">=</a> <a id="256" class="Keyword">record</a> <a id="263" class="Symbol">{</a> <a id="265" class="Field Operator">_⋚?_</a> <a id="270" class="Symbol">=</a> <a id="272" href="UVMVS.Core.Data.DEq.html#95" class="Function Operator">_⋚?[≡!]_</a> <a id="281" class="Symbol">}</a>
+</pre></body></html>

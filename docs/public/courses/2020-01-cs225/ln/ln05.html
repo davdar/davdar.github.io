@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.3.css">
+
+  <!-- Title -->
+  <meta name="title" content="!!!TITLE!!!">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+[05 - Trees 3 Ways](#title)
+
+# Trees
+
+Trees typically look like this:
+
+        •          2
+       / \        / \ 
+      •   3      1   3
+     / \        / \ / \
+    1   2       • • • •
+
+The first I would call a “values in the leaves” binary tree, and the second a
+“value in the branches” binary tree. Let's just use the second type for now.
+
+Later on we will look at syntax trees. These trees have information at both
+values and branches, like this syntax tree for the expression 1 + 2.
+
+      +
+     / \
+    1   2
+
+Trees have recursive structure: a tree is either a leaf or a branch, and
+branches have an integer value at the branch, a left sub-tree and a right
+sub-tree.
+
+# Trees in C++
+
+The trees you have seen so far are binary search trees from CS 124, implemented
+in C++. Let's take a look at that implementation:
+
+    // This code is borrowed from Lisa Dion. I will return it to her after this
+    // class so she can use it later this semester in UVM CS 124.
+    class BinarySearchTree {
+    private:
+        struct BinaryNode {
+            Comparable value;
+            BinaryNode* leftChild;
+            BinaryNode* rightChild;
+    
+            // Constructors
+            // ...
+        };
+    
+        void destroy(BinaryNode* &n) { ... }
+        BinaryNode* copyNode(BinaryNode* n) { ... }
+        bool find(const Comparable &c, BinaryNode* n) const { 
+          if (n == nullptr) { return false; }
+          if (c < n->value) { return find(c, n->leftChild); }
+          if (n->value < c) { return find(c, n->rightChild); } return true; 
+        }
+    }
+
+A few things to notice that are different between C++ and Haskell.
+
+1. In C++, you must be explicit about which values are behind pointers (`*`) or
+   not; in Haskell there are pointers in the implementation, but we never need
+   to talk about them in the code (just like in Python and Java).
+2. In C++, `nullptr` is a value of any pointer type you can use to encode
+   information (like if a tree is a leaf or not); in Haskell there is no
+   `nullptr` value that is a value of any pointer type.
+3. In C++, memory management is explicit (e.g., `destroy`) through `new` and
+   `delete` syntax; in Haskell memory management is implicit (just like in
+   Python and Java)
+4. In C++, if you want to change a tree and don't want other pieces of your
+   program to be affected by the changes, you first need to copy the tree and
+   then make the changes. (Java and Python are similar.) In Haskell (and math),
+   it is not possible to “change” values in a tree, you can only take them
+   apart and put them back together. The term for this is that values in
+   Haskell are “immutable”.
+5. In C++, there are two nested case analyses going on in `find`. The first
+   case analysis is whether or note the node is a leaf or a branch. If it's a
+   leaf, we return and do not run the rest of the code. If it's a branch, there
+   are three remaining cases: the branch value is strictly less than, strictly
+   greater than, or equal to the thing we are looking for (`c`). These nested
+   cases are made linear in C++ because of the short-circuiting control flow of
+   C++. In particular, notice that once we test for `n == nullptr` and the test
+   fails, we know that the node object must be a branch, and therefore it is ok
+   to access the `value`, `leftChild` and `rightChild` fields.
+
+# Trees in Math
+
+Before we translate this C++ to Haskell, let's first write down a formal
+definition of trees in pure math.
+
+    when we
+    write ‘t’
+    we always
+    mean an
+    element of
+    a tree
+    |  
+    |   a set       a tree is a branch
+    |   called      with an integer and
+    |   a tree  or  two subtrees inside
+    ↓   ↓↓↓↓     ↓ ↓↓↓↓↓↓↓↓↓↓↓↓↓
+    t ∈ tree ⩴ • | ⟨ i : t , t ⟩
+      ↑        ↑
+    we are     a tree is either
+    defining   a leaf
+    a set
+
+This is very compact mathematical notation for describing a set of elements.
+Each variant `L` and `<i:t,t>` describe patterns for elements in the set, or
+ways of creating elements in the set. To create new trees, we can use either of
+these patterns. To pull information out of a tree, we must first consider that
+any tree could be either of these two patterns, and handle each case
+accordingly.
+
+For example, this tree we had before:
+
+       2
+      / \ 
+     1   3
+    / \ / \
+    • • • •
+
+is written as:
+    
+    ⟨ 2 : ⟨ 1 : • , • ⟩ , ⟨ 3 : • , • ⟩ ⟩ 
+
+Let's define `find` over math trees; note the absence of anything that (1)
+talks about memory, (2) has short-circuiting control flow, or (3) “changes”
+anything.
+
+    find ∈ ℤ × tree → 𝔹
+    find(i, t) ≜
+      false    if t = •
+      …        if t = ⟨ i : t₁ , t₂ ⟩
+
+this notation isn't scaling very well for a nested pattern match; let's change
+to Haskell notation:
+
+    find ∈ ℤ × tree → 𝔹
+    find(i, t) ≜ cases
+      t = • → false
+      t = ⟨ i′ : t₁ , t₂ ⟩ → cases
+        i < i′ → find(i, t₁)
+        i > i′ → find(i, t₂)
+        i = i′ → true
+
+# Trees in Haskell
+
+Now let's translate this math into Haskell. 
+
+Step 1: translate the definition of the set `tree` into the Haskell datatype
+`Tree`:
+
+    data Tree = Leaf
+              | Node Int Tree Tree
+
+Note the similarity to the definition in math, and the relationship to the
+struct definition in C++, as well as the relationship between `Leaf` in Haskell
+with `nullptr` in C++.
+
+Step 2: translate the definition of `find` to a Haskell function:
+
+    find :: Int -> Tree -> Bool
+    ...
+
+First notice that the type for find in Haskell is a little different from the
+set that find lives in in math.
+
+    ℤ × tree → 𝔹
+    vs
+    ℤ → tree → 𝔹
+
+The parentheses in the second type are right-associative, so it's really:
+
+    ℤ × tree → 𝔹
+    vs
+    ℤ → (tree → 𝔹)
+
+The first type is a function which takes a single argument which is a pair, and
+returns a single value. The second type is a function which takes a single
+argument which is an integer, and returns a function which takes a single
+argument as a tree, and returns a boolean. That is, all functions of multiple
+arguments can also be written as functions of single arguments, where when we
+need more arguments, we just return a function which takes one more arguments.
+This is called currying, and the ability to define functions which return
+functions is a unique feature of functional programming languages which we will
+discuss more later.
+
+    find :: Int -> Tree -> Bool
+    find i t = case t of
+      Leaf -> False
+      Node i' t1 t2 ->
+        if i < i' 
+          then find i t1
+          else if i > i'
+            then find i t2
+            else True
+
+Things to note:
+- Haskell is whitespace sensitive: pattern match cases need to be indented and
+  aligned.
+- Haskell syntax for function application is `f x y` and not `f(x, y)`
+- Haskell datatypes are defined with different cases. In each case, the first
+  name is the name of the “constructor”; these are used to construct values, as
+  well as to indicate pattern match cases. The types that are listed after a
+  constructor name are the types of values contained in a value created with
+  that pattern, so in the case of `| Node Int Tree Tree`, “Node” is the
+  name of the constructor (and we could have picked a different name), whereas
+  `Int Tree Tree` indicates that a Node carries with it three values, each of
+  type `Int`, `Tree` and `Tree` respectively.
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.3.js"></script>
+
+<!-- CUSTOM -->
+<script>
+</script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

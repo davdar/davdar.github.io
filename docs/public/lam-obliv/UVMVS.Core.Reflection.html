@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>UVMVS.Core.Reflection</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Keyword">module</a> <a id="8" href="UVMVS.Core.Reflection.html" class="Module">UVMVS.Core.Reflection</a> <a id="30" class="Keyword">where</a>
+
+<a id="37" class="Keyword">open</a> <a id="42" class="Keyword">import</a> <a id="49" href="UVMVS.Core.Init.html" class="Module">UVMVS.Core.Init</a>
+<a id="65" class="Keyword">open</a> <a id="70" class="Keyword">import</a> <a id="77" href="UVMVS.Core.Classes.html" class="Module">UVMVS.Core.Classes</a>
+<a id="96" class="Keyword">open</a> <a id="101" class="Keyword">import</a> <a id="108" href="UVMVS.Core.Data.html" class="Module">UVMVS.Core.Data</a>
+<a id="124" class="Keyword">open</a> <a id="129" class="Keyword">import</a> <a id="136" href="UVMVS.Core.Builtin.html" class="Module">UVMVS.Core.Builtin</a>
+
+<a id="156" class="Keyword">instance</a>
+  <a id="has[≫=][TC]"></a><a id="167" href="UVMVS.Core.Reflection.html#167" class="Function">has[≫=][TC]</a> <a id="179" class="Symbol">:</a> <a id="181" class="Symbol">∀</a> <a id="183" class="Symbol">{</a><a id="184" href="UVMVS.Core.Reflection.html#184" class="Bound">ℓ</a><a id="185" class="Symbol">}</a> <a id="187" class="Symbol">→</a> <a id="189" href="UVMVS.Core.Classes.Algebra.html#8341" class="Record">has[≫=]</a> <a id="197" class="Symbol">(</a><a id="198" href="UVMVS.Core.Builtin.html#7476" class="Postulate">TC</a> <a id="201" class="Symbol">{</a><a id="202" href="UVMVS.Core.Reflection.html#184" class="Bound">ℓ</a><a id="203" class="Symbol">})</a>
+  <a id="208" href="UVMVS.Core.Reflection.html#167" class="Function">has[≫=][TC]</a> <a id="220" class="Symbol">=</a> <a id="222" class="Keyword">record</a> <a id="229" class="Symbol">{</a> <a id="231" class="Field">return</a> <a id="238" class="Symbol">=</a> <a id="240" href="UVMVS.Core.Builtin.html#7516" class="Postulate">returnTC</a> <a id="249" class="Symbol">;</a> <a id="251" class="Field Operator">_≫=_</a> <a id="256" class="Symbol">=</a> <a id="258" href="UVMVS.Core.Builtin.html#7563" class="Postulate">bindTC</a> <a id="265" class="Symbol">}</a>
+
+<a id="_≡?[𝔯name]_"></a><a id="268" href="UVMVS.Core.Reflection.html#268" class="Function Operator">_≡?[𝔯name]_</a> <a id="280" class="Symbol">:</a> <a id="282" href="UVMVS.Core.Builtin.html#1722" class="Postulate">𝔯name</a> <a id="288" class="Symbol">→</a> <a id="290" href="UVMVS.Core.Builtin.html#1722" class="Postulate">𝔯name</a> <a id="296" class="Symbol">→</a> <a id="298" href="UVMVS.Core.Classes.DEq.html#179" class="Datatype">≡!</a>
+<a id="301" href="UVMVS.Core.Reflection.html#301" class="Bound">n₁</a> <a id="304" href="UVMVS.Core.Reflection.html#268" class="Function Operator">≡?[𝔯name]</a> <a id="314" href="UVMVS.Core.Reflection.html#314" class="Bound">n₂</a> <a id="317" class="Keyword">with</a> <a id="322" href="UVMVS.Core.Builtin.html#1775" class="Primitive">primQNameEquality</a> <a id="340" href="UVMVS.Core.Reflection.html#301" class="Bound">n₁</a> <a id="343" href="UVMVS.Core.Reflection.html#314" class="Bound">n₂</a>
+<a id="346" class="Symbol">…</a> <a id="348" class="Symbol">|</a> <a id="350" href="UVMVS.Core.Init.html#3675" class="InductiveConstructor">ɪ</a> <a id="352" class="Symbol">=</a> <a id="354" href="UVMVS.Core.Classes.DEq.html#198" class="InductiveConstructor">[≡]</a>
+<a id="358" class="Symbol">…</a> <a id="360" class="Symbol">|</a> <a id="362" href="UVMVS.Core.Init.html#3667" class="InductiveConstructor">ᴏ</a> <a id="364" class="Symbol">=</a> <a id="366" href="UVMVS.Core.Classes.DEq.html#194" class="InductiveConstructor">[≢]</a>
+
+<a id="_≡?[𝔯visibility]_"></a><a id="371" href="UVMVS.Core.Reflection.html#371" class="Function Operator">_≡?[𝔯visibility]_</a> <a id="389" class="Symbol">:</a> <a id="391" href="UVMVS.Core.Builtin.html#2869" class="Datatype">𝔯visibility</a> <a id="403" class="Symbol">→</a> <a id="405" href="UVMVS.Core.Builtin.html#2869" class="Datatype">𝔯visibility</a> <a id="417" class="Symbol">→</a> <a id="419" href="UVMVS.Core.Classes.DEq.html#179" class="Datatype">≡!</a>
+<a id="422" href="UVMVS.Core.Builtin.html#2895" class="InductiveConstructor">Visible</a>  <a id="431" href="UVMVS.Core.Reflection.html#371" class="Function Operator">≡?[𝔯visibility]</a> <a id="447" href="UVMVS.Core.Builtin.html#2895" class="InductiveConstructor">Visible</a>  <a id="456" class="Symbol">=</a> <a id="458" href="UVMVS.Core.Classes.DEq.html#198" class="InductiveConstructor">[≡]</a>
+<a id="462" href="UVMVS.Core.Builtin.html#2919" class="InductiveConstructor">Hidden</a>   <a id="471" href="UVMVS.Core.Reflection.html#371" class="Function Operator">≡?[𝔯visibility]</a> <a id="487" href="UVMVS.Core.Builtin.html#2919" class="InductiveConstructor">Hidden</a>   <a id="496" class="Symbol">=</a> <a id="498" href="UVMVS.Core.Classes.DEq.html#198" class="InductiveConstructor">[≡]</a>
+<a id="502" href="UVMVS.Core.Builtin.html#2942" class="InductiveConstructor">Instance</a> <a id="511" href="UVMVS.Core.Reflection.html#371" class="Function Operator">≡?[𝔯visibility]</a> <a id="527" href="UVMVS.Core.Builtin.html#2942" class="InductiveConstructor">Instance</a> <a id="536" class="Symbol">=</a> <a id="538" href="UVMVS.Core.Classes.DEq.html#198" class="InductiveConstructor">[≡]</a>
+<a id="542" class="CatchallClause Symbol">_</a><a id="543" class="CatchallClause">        </a><a id="551" href="UVMVS.Core.Reflection.html#371" class="CatchallClause Function Operator">≡?[𝔯visibility]</a><a id="566" class="CatchallClause"> </a><a id="567" class="CatchallClause Symbol">_</a>        <a id="576" class="Symbol">=</a> <a id="578" href="UVMVS.Core.Classes.DEq.html#194" class="InductiveConstructor">[≢]</a>
+
+<a id="_≡?[𝔯relevance]_"></a><a id="583" href="UVMVS.Core.Reflection.html#583" class="Function Operator">_≡?[𝔯relevance]_</a> <a id="600" class="Symbol">:</a> <a id="602" href="UVMVS.Core.Builtin.html#3160" class="Datatype">𝔯relevance</a> <a id="613" class="Symbol">→</a> <a id="615" href="UVMVS.Core.Builtin.html#3160" class="Datatype">𝔯relevance</a> <a id="626" class="Symbol">→</a> <a id="628" href="UVMVS.Core.Classes.DEq.html#179" class="Datatype">≡!</a>
+<a id="631" href="UVMVS.Core.Builtin.html#3185" class="InductiveConstructor">Relevant</a>   <a id="642" href="UVMVS.Core.Reflection.html#583" class="Function Operator">≡?[𝔯relevance]</a> <a id="657" href="UVMVS.Core.Builtin.html#3185" class="InductiveConstructor">Relevant</a>   <a id="668" class="Symbol">=</a> <a id="670" href="UVMVS.Core.Classes.DEq.html#198" class="InductiveConstructor">[≡]</a>
+<a id="674" href="UVMVS.Core.Builtin.html#3209" class="InductiveConstructor">Irrelevant</a> <a id="685" href="UVMVS.Core.Reflection.html#583" class="Function Operator">≡?[𝔯relevance]</a> <a id="700" href="UVMVS.Core.Builtin.html#3209" class="InductiveConstructor">Irrelevant</a> <a id="711" class="Symbol">=</a> <a id="713" href="UVMVS.Core.Classes.DEq.html#198" class="InductiveConstructor">[≡]</a>
+<a id="717" class="CatchallClause Symbol">_</a><a id="718" class="CatchallClause">          </a><a id="728" href="UVMVS.Core.Reflection.html#583" class="CatchallClause Function Operator">≡?[𝔯relevance]</a><a id="742" class="CatchallClause"> </a><a id="743" class="CatchallClause Symbol">_</a>          <a id="754" class="Symbol">=</a> <a id="756" href="UVMVS.Core.Classes.DEq.html#194" class="InductiveConstructor">[≢]</a>
+
+<a id="761" class="Keyword">instance</a>
+  <a id="has[≡?][𝔯name]"></a><a id="772" href="UVMVS.Core.Reflection.html#772" class="Function">has[≡?][𝔯name]</a> <a id="787" class="Symbol">:</a> <a id="789" href="UVMVS.Core.Classes.DEq.html#511" class="Record">has[≡?]</a> <a id="797" href="UVMVS.Core.Builtin.html#1722" class="Postulate">𝔯name</a>
+  <a id="805" href="UVMVS.Core.Reflection.html#772" class="Function">has[≡?][𝔯name]</a> <a id="820" class="Symbol">=</a> <a id="822" class="Keyword">record</a> <a id="829" class="Symbol">{</a> <a id="831" class="Field Operator">_≡?_</a> <a id="836" class="Symbol">=</a> <a id="838" href="UVMVS.Core.Reflection.html#268" class="Function Operator">_≡?[𝔯name]_</a> <a id="850" class="Symbol">}</a>
+
+  <a id="has[≡?][𝔯visibility]"></a><a id="855" href="UVMVS.Core.Reflection.html#855" class="Function">has[≡?][𝔯visibility]</a> <a id="876" class="Symbol">:</a> <a id="878" href="UVMVS.Core.Classes.DEq.html#511" class="Record">has[≡?]</a> <a id="886" href="UVMVS.Core.Builtin.html#2869" class="Datatype">𝔯visibility</a>
+  <a id="900" href="UVMVS.Core.Reflection.html#855" class="Function">has[≡?][𝔯visibility]</a> <a id="921" class="Symbol">=</a> <a id="923" class="Keyword">record</a> <a id="930" class="Symbol">{</a> <a id="932" class="Field Operator">_≡?_</a> <a id="937" class="Symbol">=</a> <a id="939" href="UVMVS.Core.Reflection.html#371" class="Function Operator">_≡?[𝔯visibility]_</a> <a id="957" class="Symbol">}</a>
+
+  <a id="has[≡?][𝔯relevance]"></a><a id="962" href="UVMVS.Core.Reflection.html#962" class="Function">has[≡?][𝔯relevance]</a> <a id="982" class="Symbol">:</a> <a id="984" href="UVMVS.Core.Classes.DEq.html#511" class="Record">has[≡?]</a> <a id="992" href="UVMVS.Core.Builtin.html#3160" class="Datatype">𝔯relevance</a>
+  <a id="1005" href="UVMVS.Core.Reflection.html#962" class="Function">has[≡?][𝔯relevance]</a> <a id="1025" class="Symbol">=</a> <a id="1027" class="Keyword">record</a> <a id="1034" class="Symbol">{</a> <a id="1036" class="Field Operator">_≡?_</a> <a id="1041" class="Symbol">=</a> <a id="1043" href="UVMVS.Core.Reflection.html#583" class="Function Operator">_≡?[𝔯relevance]_</a> <a id="1060" class="Symbol">}</a>
+
+<a id="1063" class="Comment">{- WIP
+mutual
+  _≡?[arg-info]_ : arg-info → arg-info → ≡!
+  ArgInfo v₁ r₁ ≡?[arg-info] ArgInfo v₂ r₂ = (v₁ ≡? v₂) ⩎ (r₁ ≡? r₂)
+
+  _≡?[arg][term]_ : arg term → arg term → ≡!
+  Arg i₁ t₁ ≡?[arg][term] Arg i₂ t₂ = (i₁ ≡?[arg-info] i₂) ⩎ (t₁ ≡?[term] t₂)
+
+  _≡?[args][term]_ : ⟬ arg term ⟭ → ⟬ arg term ⟭ → ≡!
+  []             ≡?[args][term] []             = [≡]
+  (arg₁ ∷ args₁) ≡?[args][term] (arg₂ ∷ args₂) = (arg₁ ≡?[arg][term] arg₂) ⩎ (args₁ ≡?[args][term] args₂)
+  _              ≡?[args][term] _              = [≢]
+
+  _≡?[arg][pat]_ : arg pat → arg pat → ≡!
+  Arg i₁ t₁ ≡?[arg][pat] Arg i₂ t₂ = (i₁ ≡?[arg-info] i₂) ⩎ (t₁ ≡?[pat] t₂)
+
+  _≡?[args][pat]_ : ⟬ arg pat ⟭ → ⟬ arg pat ⟭ → ≡!
+  []             ≡?[args][pat] []             = [≡]
+  (arg₁ ∷ args₁) ≡?[args][pat] (arg₂ ∷ args₂) = (arg₁ ≡?[arg][pat] arg₂) ⩎ (args₁ ≡?[args][pat] args₂)
+  _              ≡?[args][pat] _              = [≢]
+
+  _≡?[pat]_ : pat → pat → ≡!
+  Con c₁ args₁ ≡?[pat] Con c₂ args₂ = (c₁ ≡? c₂) ⩎ (args₁ ≡?[args][pat] args₂) 
+  Dot          ≡?[pat] Dot        = {!!}
+  Var s₁       ≡?[pat] Var s₂     = {!!}
+  Lit l₁       ≡?[pat] Lit l₂     = {!!}
+  Proj f₁      ≡?[pat] Proj f₂    = {!!}
+  Absurd       ≡?[pat] Absurd     = {!!}
+  _            ≡?[pat] _          = {!!}
+
+  _≡?[clause]_ : clause → clause → ≡!
+  Clause ps₁ t₁    ≡?[clause] Clause ps₂ t₂    = {!!}
+  AbsurdClause ps₁ ≡?[clause] AbsurdClause ps₂ = {!!}
+  _                ≡?[clause] _                = {!!}
+
+  _≡?[clauses]_ : ⟬ clause ⟭ → ⟬ clause ⟭ → ≡!
+  []         ≡?[clauses] []         = [≡]
+  (c₁ ∷ cs₁) ≡?[clauses] (c₂ ∷ cs₂) = (c₁ ≡?[clause] c₂) ⩎ (cs₁ ≡?[clauses] cs₂)
+  _          ≡?[clauses] _          = [≢]
+ 
+
+  _≡?[term]_ : term → term → ≡!
+  Var x₁ args₁     ≡?[term] Var x₂ args₂     = (x₁ ≡? x₂) ⩎ (args₁ ≡?[args][term] args₂)
+  Con c₁ args₁     ≡?[term] Con c₂ args₂     = {!!}
+  Def f₁ args₁     ≡?[term] Def f₂ args₂     = {!!}
+  Lam v₁ t₁        ≡?[term] Lam v₂ t₂        = {!!}
+  PatLam cs₁ args₁ ≡?[term] PatLam cs₂ args₂ = {!!}
+  Pi t₁₁ t₁₂       ≡?[term] Pi t₂₁ t₂₂       = {!!}
+  AgdaSort s₁      ≡?[term] AgdaSort s₂      = {!!}
+  Lit l₁           ≡?[term] Lit l₂           = {!!}
+  Meta x₁ ts₁      ≡?[term] Meta x₂ ts₂      = {!!}
+  Unknown          ≡?[term] Unknown          = {!!}
+  _                ≡?[term] _                = [≢]
+  
+-}</a>
+
+<a id="3379" class="Comment">-- arg-π-info : ∀ {A} → arg A → arg-info</a>
+<a id="3420" class="Comment">-- arg-π-info (Arg i x) = i</a>
+<a id="3448" class="Comment">-- </a>
+<a id="3452" class="Comment">-- arg-π : ∀ {A} → arg A → A</a>
+<a id="3481" class="Comment">-- arg-π (Arg i x) = x</a>
+
+<a id="3505" class="Comment">-- mutual</a>
+<a id="3515" class="Comment">--   resolve-arg : arg term → TC 𝟙</a>
+<a id="3550" class="Comment">--   resolve-arg (Arg _ t) = resolve t</a>
+<a id="3589" class="Comment">-- </a>
+<a id="3593" class="Comment">--   resolve-clause : clause → TC 𝟙</a>
+<a id="3629" class="Comment">--   resolve-clause (Clause _ t) = resolve t</a>
+<a id="3674" class="Comment">--   resolve-clause (AbsurdClause ps) = return •</a>
+<a id="3723" class="Comment">-- </a>
+<a id="3727" class="Comment">--   resolve-abs : abs term → TC 𝟙</a>
+<a id="3762" class="Comment">--   resolve-abs (Abs _ t) = resolve t</a>
+<a id="3801" class="Comment">-- </a>
+<a id="3805" class="Comment">--   resolve-sort : sort → TC 𝟙</a>
+<a id="3837" class="Comment">--   resolve-sort (`Set t) = resolve t</a>
+<a id="3876" class="Comment">--   resolve-sort (Lit _) = return •</a>
+<a id="3913" class="Comment">--   resolve-sort Unknown = return •</a>
+<a id="3950" class="Comment">-- </a>
+<a id="3954" class="Comment">--   resolve-args : ⟬ arg term ⟭ → TC 𝟙</a>
+<a id="3994" class="Comment">--   resolve-args [] = return •</a>
+<a id="4026" class="Comment">--   resolve-args (arg ∷ args) = do</a>
+<a id="4062" class="Comment">--     resolve-arg arg</a>
+<a id="4085" class="Comment">--     resolve-args args</a>
+<a id="4110" class="Comment">-- </a>
+<a id="4114" class="Comment">--   resolve-clauses : ⟬ clause ⟭ → TC 𝟙</a>
+<a id="4155" class="Comment">--   resolve-clauses [] = return •</a>
+<a id="4190" class="Comment">--   resolve-clauses (c ∷ cs) = do</a>
+<a id="4225" class="Comment">--     resolve-clause c</a>
+<a id="4249" class="Comment">--     resolve-clauses cs</a>
+<a id="4275" class="Comment">--   </a>
+<a id="4281" class="Comment">--   resolve : term → TC 𝟙</a>
+<a id="4308" class="Comment">--   resolve (Var x args) = resolve-args args</a>
+<a id="4354" class="Comment">--   resolve (Con c args) = resolve-args args</a>
+<a id="4400" class="Comment">--   resolve (Def f args) = resolve-args args</a>
+<a id="4446" class="Comment">--   resolve (Lam v t) = resolve-abs t</a>
+<a id="4485" class="Comment">--   resolve (PatLam cs args) = do</a>
+<a id="4520" class="Comment">--     resolve-clauses cs</a>
+<a id="4546" class="Comment">--     resolve-args args</a>
+<a id="4571" class="Comment">--   resolve (Pi t₁ t₂) = do</a>
+<a id="4600" class="Comment">--     resolve-arg t₁</a>
+<a id="4622" class="Comment">--     resolve-abs t₂</a>
+<a id="4644" class="Comment">--   resolve (AgdaSort s) = resolve-sort s</a>
+<a id="4687" class="Comment">--   resolve (Lit l) = return •</a>
+<a id="4719" class="Comment">--   resolve (Meta x _) = blockOnMeta x</a>
+<a id="4759" class="Comment">--   resolve Unknown = return •</a>
+</pre></body></html>

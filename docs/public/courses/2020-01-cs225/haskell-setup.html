@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.3.css">
+
+  <!-- Title -->
+  <meta name="title" content="!!!TITLE!!!">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+[Haskell Setup](#title)
+
+# Haskell Setup
+
+-   I recommend using either Vim, Emacs, Atom or Visual Studio Code as text
+    editors for writing Haskell. (see more on editor plugins below.)
+
+## Mac/Linux Instructions
+
+-   Install
+    [Stack](https://docs.haskellstack.org/en/stable/README/) by
+    running this shell command on non-Windows machines:
+
+        curl -sSL https://get.haskellstack.org/ | sh
+        echo 'PATH=$HOME/.local/bin:$PATH' >> ~/.profile
+
+-   Install ghcid:
+
+        stack install ghcid
+
+-   (optional IDE support) Install [ghcide](https://github.com/digital-asset/ghcide) 
+    (recommended; it's faster):
+
+        # LINUX ONLY (You  may need to install libtinfo-dev if on Linux)
+        # (See https://github.com/digital-asset/ghcide/issues/220)
+        sudo apt install libtinfo-dev
+
+        # (go to a directory where you want to put ghcide source)
+        git clone --depth 1 https://github.com/digital-asset/ghcide.git
+        cd ghcide
+        stack install --resolver=lts-14.20
+   
+-   (optional IDE support) Install [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine) 
+    (only as an alternative to ghcide; you don't need both; slower; has more
+    features, but we won't use them):
+
+        # (go to a directory where you want to put haskell ide engine)
+        git clone --depth 1 git@github.com:haskell/haskell-ide-engine.git
+        cd haskell-ide-engine
+        stack ./install.hs hie-8.6.5
+
+## Windows Instructions
+
+-   Install the Windows Subsystem for Linux (WSL) by opening PowerShell.exe as
+    administrator and running:
+    
+        Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+
+-   Install Ubuntu inside WSL by downloading and executing this installer:
+
+        https://aka.ms/wsl-ubuntu-1604
+
+-   Install make, git and stack by running Bash.exe and executing:
+
+        sudo apt install make 
+        sudo apt install git
+        curl -sSL https://get.haskellstack.org/ | sh 
+
+-   Install ghcid:
+
+        stack install ghcid
+
+-   (optional IDE support) Install [ghcide](https://github.com/digital-asset/ghcide) 
+    (recommended; it's faster):
+
+        # (You  may need to install libtinfo-dev inside WSL)
+        # (See https://github.com/digital-asset/ghcide/issues/220)
+        sudo apt install libtinfo-dev
+
+        # (go to a directory where you want to put ghcide source)
+        git clone --depth 1 https://github.com/digital-asset/ghcide.git
+        cd ghcide
+        stack install --resolver=lts-14.20
+   
+-   (optional IDE support) Install [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine) 
+    (only as an alternative to ghcide; you don't need both; slower; has more
+    features, but we won't use them):
+
+        # (go to a directory where you want to put haskell ide engine)
+        git clone --depth 1 git@github.com:haskell/haskell-ide-engine.git
+        cd haskell-ide-engine
+        stack ./install.hs hie-8.6.5
+
+## Testing Your Setup
+
+-   Put the following text into a file named "HelloWorld.hs":
+
+        module Main where
+
+        someNumber = 42
+        main = putStrLn "hello world"
+
+    and from the command line run `stack runghc ‹path to HelloWorld.hs›`; you
+    should see `hello world` printed to the console.
+
+-   From the command line run `stack ghci ‹path to HelloWorld.hs›` and you
+    should enter the interactive Haskell prompt. Type `someNumber` and it
+    should evaluate to `42`, as defined in the `HelloWorld.hs` file. To exit,
+    type `:q‹enter›` or `Ctl-D` to quit the prompt.
+
+-   To test ghcid: using the command line, navigate to the directory where
+    `HelloWorld.hs` lives and run `stack exec -- ghcid --test main
+    HelloWorld.hs`. Your command line should say `"hello world"` followed by
+    `...done`; note that ghcid is still running and has control of the window.
+    Now edit the `HelloWorld.hs` file from somewhere else (e.g., using a text
+    editor application or another command line window); change `"hello world"`
+    to something else like `"hello Walter, you are a good boy"`. When you save,
+    the window running ghcid should automatically update with the new message.
+    Next let's break the program; change `someNumber = 42` to 
+    `someNumber = 42 + "Walter"`. When you save, ghcid should report a type
+    error that you can't add a numeric value to a string: `"No instance for
+    (Num [Char]) arising from a use of ‘+’"`.
+
+-   Test that the Makefile works used for the course homework. (replace
+    `‹course homework repository›` with the location of the repository posted
+    on Piazza.)
+
+        # (go to a directory where you want to checkout the homework files)
+        git clone ‹course homework repository›
+        cd cs225-hw-2020-01
+        make hw01
+        make hw01-i
+        make hw01-dev
+
+    The first make command will run the homework. The second make command will
+    run the homework and enter an interactive prompt; type `:q` or `Ctl-D`
+    (contrl-`D`) to quit. The third make command will run a ghcid compile/eval
+    loop; type `Ctl-C` to quit.
+
+-   Please try to install Haskell/stack early and ask for help if you run into
+    any issues. **Especially if you are planning on using Windows for this
+    class, get started ASAP and ask for help early.**
+
+-   Both of the IDE plugins (ghcide and haskell-ide-engine) support most
+    editors, e.g., for vim, via
+    [coc.vim](https://github.com/neoclide/coc.nvim). Feel free to ask on Piazza
+    for help installing any of these plugins for your favorite editor. (I
+    suggest using either Vim, Emacs, Atomn or VS Code text editors; they tend
+    to have best support for language plugins.)
+
+-   **coc.vim:** 
+
+    Here are specific install instructions to get `ghcide` working with `vim`
+    and `coc.vim`. Before doing this, you should get `ghcide` installed per the
+    above instructions.
+
+    +   Make sure you are using Vim version 8 or later. Test this by doing `vim
+        -version`. If you see a version less than 8.0 you need to upgrade. If
+        you see version 8.0 or later, you can skip this part:
+
+        -   *Linux or Windows Subsystem for Linux:*
+
+            Add repository for latest vim version
+
+                sudo add-apt-repository ppa:jonathonf/vim
+
+            Install latest vim:
+
+                sudo apt update
+                sudo apt install vim
+
+        -   *Mac:*
+
+            Install Homebrew:
+
+                /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+            Install latest vim:
+
+                brew update
+                brew install vim
+
+    +   Install node:
+
+            curl -sL install-node.now.sh/lts | sudo bash
+
+    +   Clone the coc.vim project release to your vim plugin path:
+        (See https://github.com/neoclide/coc.nvim/wiki/Install-coc.nvim.)
+
+            mkdir -p ~/.vim/pack/coc/start
+            cd ~/.vim/pack/coc/start
+            curl --fail -L https://github.com/neoclide/coc.nvim/archive/release.tar.gz|tar xzfv -
+
+    +   Open vim with `vim`, type `:CocConfig` and it will take you to an empty
+        configuration file for `coc.vim`. Type `i` to get into insert mode and
+        paste this into the buffer:
+
+            {
+              "languageserver": {
+                "haskell": {
+                  "command": "ghcide",
+                  "args": [
+                    "--lsp"
+                  ],
+                  "rootPatterns": [
+                    ".stack.yaml",
+                    ".hie-bios",
+                    "BUILD.bazel",
+                    "cabal.config",
+                    "package.yaml"
+                  ],
+                  "filetypes": [
+                    "hs",
+                    "lhs",
+                    "haskell"
+                  ]
+                }
+              }
+            }
+
+        Save and quit by pressing `‹Esc›` (escape) and then `:wq`.
+
+    +   You should be all set. To test, go to the homework directory root and
+        type `vim src/HW01.hs`. You should see warnings and errors on the fly
+        as you edit the file.
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.3.js"></script>
+
+<!-- CUSTOM -->
+<script>
+</script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

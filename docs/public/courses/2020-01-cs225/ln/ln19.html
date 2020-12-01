@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.3.css">
+
+  <!-- Title -->
+  <meta name="title" content="!!!TITLE!!!">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+[19 - Program Analysis II](#title)
+
+# Program Analysis II
+
+### Abstracting Elements
+
+Now that we have abstract representations for values (`v̂alue`) and answers
+(`ânswer`), we need to define how to take a particular concrete `value` or
+`answer` and lift it to an abstract `v̂alue` or `ânswer`. We are going to notate
+this lifting with “floor” brackets `⌊_⌋`.
+
+    ⌊_⌋ ∈ ℤ → ℤ̂
+    ⌊i⌋ ≜ [i,i]
+
+    ⌊_⌋ ∈ 𝔹 → 𝔹̂
+    ⌊b⌋ ≜ {b}
+
+    ⌊_⌋ ∈ 𝔹 → v̂alue
+    ⌊b⌋ = ⟨⊥,⌊b⌋⟩
+
+    ⌊_⌋ ∈ ℤ → v̂alue
+    ⌊i⌋ = ⟨⌊i⌋,∅❭
+
+    ⌊_⌋ ∈ value → ânswer
+    ⌊v⌋ = ⟨false,⌊v⌋⟩
+
+    ⌊bad⌋ ∈ ânswer
+    ⌊bad⌋ = ⟨true,⊥⟩
+
+Notice that the notation is very overloaded based on context.
+
+### Abstract Operations
+
+Plus is a little tricky over abstract answers. Consider the following program:
+
+    â ≜ ⟨true,[1,2],∅⟩
+    â + ⌊5⌋
+
+Here, `â` is an abstract answer that represents a computation which either (1)
+could fail (encoded by the first `true` element), or (2) returns an integer
+between `1` and `2` (encoded by the second `[1,2]` element). There are no
+possible boolean values that `â` represents, or the program that is abstracted
+by `â` could return.
+
+The abstract result should be:
+
+    ⟨true,[6,7],∅⟩
+
+indicating that (1) the program could fail, and (2) it may return integers
+within the range `[6,7]`, and (3) there are no booleans it could possibly
+return.
+
+What about:
+
+    â ≜ ⟨false,[1,2],{true}⟩
+    â + 5
+
+the abstract result should be the same as before:
+
+    ⟨true,[6,7],∅⟩
+
+The reason this program could fail is because the left-hand side argument could
+be a boolean `true`, which will cause the plus to fail with a runtime type
+error. The program *cannot* return any booleans, because booleans are never a
+possible output to plus when it succeeds.
+
+Following these intuitions, we design plus for answers as follows:
+
+    _+̂_ ∈ ânswer × ânswer → ânswer
+    ⟨b₁,î₁,b̂₁⟩ +̂ ⟨b₂,î₂,b̂₂⟩ ≜ ⟨b′,î′,b̂′⟩
+      where b′ = b₁ ∨ b₂ ∨ (b̂₁ ≠ ∅) ∨ (b̂₂ ≠ ∅)
+            î′ = î₁ +̂ î₂
+            b̂′ = ∅
+
+The definition for conditionals is as follows:
+
+    ĉond ∈ ânswer × ânswer × ânswer → ânswer
+    ĉond(⟨b₁,î₁,b̂₁⟩,⟨b₂,î₂,b̂₂⟩,⟨b₃,î₃,b̂₁⟩) ≜ ⟨b′,î₁′⊔î₂′,b̂₁′∪b̂₂′⟩
+      where b′ = b₁ ∨ (î₁ ≠ ⊥) ∨ (true ∈ b̂₁ ∧ b₂) ∨ (false ∈ b̂₂ ∧ b₃)
+            î₁′ = î₂   if true ∈ b̂₁
+            î₁′ = ⊥    if true ∉ b̂₁
+            î₂′ = î₃   if false ∈ b̂₁
+            î₂′ = ⊥    if false ∉ b̂₁
+            b̂₁′ = b̂₂   if true ∈ b̂₁
+            b̂₁′ = ∅    if true ∉ b̂₁
+            b̂₂′ = b̂₃   if false ∈ b̂₁
+            b̂₂′ = ∅    if false ∉ b̂₁
+
+A simpler way to write (and implement) this logic is using the join and bottom
+operations for abstract answers:
+
+    ĉond ∈ ânswer × ânswer × ânswer → ânswer
+    ĉond(⟨b₁,î₁,b̂₁⟩,â₂,â₃) ≜ â₁′ ⊔ â₂′ ⊔ â₃′
+      where â₁′ = ⟨ b₁ ∨ (î₁ ≠ ⊥) , ⊥ ⟩
+            â₂′ = â₂  if true ∈ b̂₁
+            â₂′ = ⊥   if true ∉ b̂₁
+            â₃′ = â₃  if false ∈ b̂₁
+            â₃′ = ⊥   if false ∈ b̂₁
+
+## The Analyzer
+
+The analyzer for a core language is just a slightly non-standard interpreter
+with abstract values:
+
+    e ∈ expr ⩴ i | e + e
+             | b | if e then e else e
+             | x | let x = e in e
+    γ̂ ∈ ênv ≜ var ⇀ v̂alue
+
+    ⟦_⟧(_) ∈ expr → ênv → ânswer
+    ⟦i⟧(γ̂) ≜ ⌊i⌋
+    ⟦e₁+e₂⟧(γ̂) ≜ ⟦e₁⟧(γ̂) +̂ ⟦e₂⟧(γ̂)
+    ⟦b⟧(γ̂) ≜ ⌊b⌋
+    ⟦if e₁ then e₂ else e₃⟧(γ̂) ≜ ĉond(⟦e₁⟧(γ̂),⟦e₂⟧(γ̂),⟦e₃⟧(γ̂))
+    ⟦x⟧(γ̂) ≜ lift(γ̂(x))     if x ∈ γ
+    ⟦x⟧(γ̂) ≜ ⌊bad⌋          if x ∉ γ
+    ⟦let x = e₁ in e₂⟧ ≜ ⟨b₁∨b₂,v̂₂⟩
+      where ⟨b₁,v̂₁⟩ = ⟦e₁⟧(γ̂)
+            ⟨b₂,v̂₂⟩ = ⟦e₂⟧(γ̂[x↦v̂₁])
+
+The only new operation here is `lift`, which lifts an abstract value to an
+abstract answer:
+
+    lift ∈ v̂alue → ânswer
+    lift(v̂) ≜ ⟨false,v̂⟩
+
+## Lattices and Partial Orders
+
+Lattices are the general structure that each abstract domain should have, and
+partial orders are the notion of ordering that lattices induce.
+
+A lattice is some set `A` with the two special elements called “top” and
+“bottom”:
+
+    ⊥ ∈ A
+    ⊤ ∈ A
+
+and two special operators called “join” and “meet”, or “least-upper-bound” and
+“greatest-lower-bound”.
+
+    _⊔_ ∈ A × A → A
+    _⊓_ ∈ A × A → A
+
+along with these operators, there is an ordering (a relation) induced by the
+operators:
+
+    _⊑_ ∈ ℘(A × A)
+
+You should use powersets (whose elements are “just sets”) as your grounding
+intuition for lattices. Lattices enjoy most of the nice properties that sets
+have, except for one specific one, distributivity:
+
+    (A ∪ B) ∩ C = (A ∩ C) ∪ (B ∩ C)
+
+This is true in set world, but not (necessarily) true in lattice world. Lattice
+symbols and ordering are intended to suggest analogies with set-based
+operations:
+
+    ⊥ ≈ ∅
+    ⊤ ≈ A        (the whole set)
+    _⊔_ ≈ _∪_
+    _⊓_ ≈ _∩_
+    _⊑_ ≈ _⊆_
+
+The ordering is related to join and meet (and is often *defined* in terms of)
+in the following way:
+
+    x ⊑ y ⬄ x ⊔ y = y
+    x ⊑ y ⬄ x ⊓ y = x
+
+This is also true of sets:
+
+    x ⊆ y ⬄ x ∪ y = y
+    x ⊆ y ⬄ x ∩ y = x
+
+Two elements of a lattice need not be ordered in either direction. This is also
+true of sets: for any sets `X` and `Y`, it need not be the case that `X ⊆ Y` or
+`Y ⊆ X`. E.g., {1,2,3} and {2,3,4}.
+
+General properties of lattices are the following equations (which are also true
+of sets):
+
+    ⊥ ⊔ x = x
+    ⊤ ⊔ x = ⊤
+    x ⊔ y = y ⊔ x
+    (x ⊔ y) ⊔ z = x ⊔ (y ⊔ z)
+    x ⊔ x = x
+
+    ⊤ ⊓ x = x
+    ⊥ ⊓ x = ⊥
+    x ⊓ y = y ⊓ x
+    (x ⊓ y) ⊓ z = x ⊓ (y ⊓ z)
+    x ⊓ x = x
+
+## Fixpoints and Widening
+
+Fixpoint-finding and widening are necessary techniques to achieve tractable,
+computable analyses for non-trivial programs (e.g., even to handle a simple
+while loop).
+
+Consider this example (in an imperative language):
+
+    function f(x) {
+      assert(x⋗0);
+      i ≔ 0;
+      while(i⋖x) { i⧺; }
+      return i;
+    }
+
+This program takes a strictly positive number as input, and returns that same
+number as output. It always terminates. The reason why this terminates is due
+to a loop invariant where `i ≤ x`. When the loop exits, we know that `i ≤ x`
+due to the loop invariant,  and `¬ i⋖x` due to the guard failing, which
+implies `i = x`.
+
+Currently we do not track *relationships* between variables in our abstract,
+just ranges of values. Our abstract interpreter might look at this program and
+start off as “we know `x` is strictly positive and that`i` is `0`”.
+
+    x = [1,∞]
+    i = [0,0]
+    ──────────────────
+    while(i⋖x) { i⧺; }
+
+It will update `i` to account for the fact that `i` could be `0` (before the
+loop) or `1` (after one loop iteration), and then try the loop again:
+
+    x = [1,∞]
+    i = [0,1]
+    ──────────────────
+    while(i⋖x) { i⧺; }
+
+A naive implementation of this analysis will loop forever, *even though our
+concrete program didn't loop forever*. It is therefore especially important
+that we teach our analysis how to stop at some point–not just for looping
+programs, but for non-looping ones too.
+
+Let's try a different version of this program with booleans:
+
+    function f(x) {
+      i ≔ true;
+      while(i) { i = i ∧ x; }
+      return i;
+    }
+
+we accumulate facts about `x` (could be any boolean) and `i` (definitely true):
+
+    x = {true,false}
+    i = {true}
+    ──────────────────
+    while(i) { i = i ∧ x; }
+
+we know the loop gets taken at least once, resulting in:
+
+    x = {true,false}
+    i = {true,false}
+    ──────────────────
+    while(i) { i = i ∧ x; }
+
+now one of two things happens: (1) we take the loop again, and `x` and `i`
+don't change, or (2) we exit the loop. The “`x` and `i` don't change” bit is
+the crucial thing to notice. This means we have reached a “fixed-point” for the
+input loop as a transformation on the (abstracted) state of the program. We
+could run the loop once more or 10 billion times more, the result will stay the
+same. It is therefore safe to stop here, not run the loop any longer, and
+report the current results as an abstraction of *any possible number of runs*
+of the loop.
+
+This technique in general is called Kleene fixpoint iteration and relies on (1)
+a proper lattice, (2) the lattice not having any infinitely ascending chains
+(i.e., is either finite or can be ascended in a finite number of steps), (3)
+the update to analysis being monotonic, and (4) iterating the loop, starting at
+bottom, until it reaches a fixpoint. Kleene's fixpoint theorem tells you this
+will always terminate in a *finite* number of steps, and is a sound
+approximation of any *infinite* number of loop rounds.
+
+In order to make this work for the interval lattice, we can't rely on the fact
+that the lattice is finite (because it isn't), and instead we need to find a
+way to climb the lattice in a finite number of steps. To do this, we notice
+when one side of the interval is growing towards negative or positive infinity,
+and just jump there pre-maturely as a conservative approximation.
+
+As before, we go from here:
+
+    x = [1,∞]
+    i = [0,0]
+    ──────────────────
+    while(i⋖x) { i⧺; }
+
+to here
+
+    x = [1,∞]
+    i = [0,1]
+    ──────────────────
+    while(i⋖x) { i⧺; }
+
+and notice that the upper bound for `i` is marching towards infinity. We could
+do this once more (for good measure):
+
+    x = [1,∞]
+    i = [0,2]
+    ──────────────────
+    while(i⋖x) { i⧺; }
+
+and see that yes, indeed, things are not looking good for that upper bound.
+Let's bump it to infinity pre-emptively, and then run again:
+
+    x = [1,∞]
+    i = [0,+∞]
+    ──────────────────
+    while(i⋖x) { i⧺; }
+
+Here the input bounds on `x` and `i` are not changed by the loop–we have
+reached a fixed-point. We can stop running the loop, and return `i = [0,+∞]` as
+a conservative approximation for the function's behavior. The important thing
+is that we arrived at the answer in a low constant number of loop iterations.
+
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.3.js"></script>
+
+<!-- CUSTOM -->
+<script>
+</script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

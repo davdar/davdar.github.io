@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.3.css">
+
+  <!-- Title -->
+  <meta name="title" content="!!!TITLE!!!">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+[18 - Program Analysis I](#title)
+
+# Program Analysis I
+
+## Context
+
+Until now we've only seen *standard* interpreters: interpreters that map input
+programs to a final value. We are going turn our attention to *program
+analyzers*: programs that map input programs to *some useful information about
+the final value.* This useful information is usually *less* precise than the
+final value reported by the interpreter, and there are good reasons to want
+this. 
+
+The main reason to want a program analyzer that computes less information than
+the standard interpreter is efficiency, also called *tractability*. If a
+particular program takes an hour to run, we may want our analyzer to only take
+a few seconds, or a few minutes, and give us some insight as to what would
+happen if we ran the full “simulation” using the standard interpreter. More
+fundamentally, it's not actually possible to fully simulate all programs. The
+famous Halting Problem says that we can't always determine algorithmically
+whether or not a given program (written in Turing Complete language) will
+terminate or not. Without knowing that a program terminates or not, running it
+in the standard interpreter is somewhat of a gamble. Consider this program:
+
+    let x = f 100 in
+    if x⋖10
+      then [bad stuff happens]
+      else [good stuff happens]
+
+We may want to know if the call to `f 100` will return a number less than 10 or
+not, because then we know if `[bad stuff happens]` or not. Can we just run `f
+100` and see what it returns? What if it hangs for 1 hour? What if for 1 day,
+or 1 year? What if it never returns (it loops forever)? It's going to be hard
+to tell these situations apart using the standard interpreter (in fact it's
+impossible to do so in general!) so we are going to turn the question around.
+Rather than ask “how can we use a standard interpreter to answer questions
+about how a program will behave?” we will ask “given a behavior we are
+interested in, how can we design a program analyzer that will compute an
+*approximation* of the answer to the question we are interested in?”
+
+A basic example of a useful analysis is interval analysis. If I have a program
+that accesses arrays with integer indices, I may want to know if all of the
+array accesses will be in bounds, and I may want to know this before running
+the program in full. I don't necessarily care what the exact value of array
+indices are, I just care if they are in bounds. A common representation to use
+for arithmetic programs is called the “interval abstract domain.” In this
+approach, instead of interpreting using numbers, we instead use a range of
+numbers between some lower bound `a` and some upper bound `b` (inclusive),
+commonly written as `[a,b]` in math. We want to design our analyzers such that
+when they run a program and return something like `[2,10]`, then we know that
+when the program is run, it is guaranteed to produce integer results between
+`2` and `10`.
+
+The idea behind abstract interpretation is that we “interpret” the program
+using symbolic, or approximate representations for values. Do do this, we need
+to define implementation of operations (like plus and if) which take as input
+these approximate results, and return as output another approximate result.
+Each of these operators must consider all possible concrete inputs which the
+approximate inputs *represent* and produce an output which is an upper bound on
+the set of possible outputs. This connection between analysis results and
+“possible concrete results” is made through a formal interpretation of
+approximate values. We notate this interpretation of possible values as `⟦_⟧`.
+Note the syntax is now becoming very overloaded, so `⟦e⟧` as notation can mean
+the interpretation of a program, and `⟦v̂⟧` as notation can mean the
+interpretation of an abstract value. E.g., for ranges, `⟦[a,b]⟧` is the
+interpretation of the range `[a,b]` and is equal to the set of numbers between
+`a` and `b`, so  `⟦[a,b]⟧ ≜ {i : a ≤ i ≤ b}`.
+
+In designing a program analyzer via abstract interpretation, the approach goes
+as follows:
+- define approximate *representations* for concrete values (like integers)
+- define approximate *implementations* for operations (like plus)
+- convert the standard interpreter to work over approximations instead of
+  concrete values
+As we play this game, we place “hats” on things to denote
+“approximate-version-of”, e.g., `î ∈ ℤ̂` means “an approximate integer `î` is in
+the set of approximate integers `ℤ̂`. This is a notational trick to avoid having
+to come up with new names for everything. `X̂` is just an abstract form of `X`,
+and conceptually the interpretation of the abstraction `⟦X̂⟧` represents a set
+of possible `X`s.
+
+## Approximate Booleans
+
+Booleans are easy to approximate because there are a finite number of
+them–there are exactly two.
+
+### Abstract Domain
+
+We represent a set of possible booleans as literally a set of possible
+booleans:
+
+    b̂ ∈ 𝔹̂ ≜ ℘(𝔹)
+
+the interpretation of abstract booleans is not interesting–it is the identity
+mapping:
+
+    ⟦_⟧ ∈ 𝔹̂ → ℘(𝔹)
+    ⟦b̂⟧ ≜ b̂
+
+## Abstract Operations
+
+What operations do we support on booleans? The primary one is the conditional:
+`IF`. Let's consider three types of programs which now appear in our “abstract
+semantics” (aka program analyzer):
+
+    if b̂₁ then b̂₂ else b̂₃
+
+1. when `b̂₁ = ∅`
+2. when `b̂₁ = {true}`
+3. when `b̂₁ = {true,false}`
+
+In (1), we have analyzed the guard `b̂₁` and determined that there are no
+possible values that it could compute (e.g., either due to a runtime error, or
+an infinite loop). The result of analyzing the conditional is then also `∅`,
+indicating that there are no possible results.
+
+In (2), we have analyzed the guard `b̂₁` and determined that there is exactly
+one possible value that it could be: `true`. The result of analyzing the
+conditional is then `b̂₂`, because this is the branch that would be taken in the
+standard interpreter.
+
+In (3), we have analyzed the guard and determined that it could return *either
+true or false*. In this case, the set of possible results is `b̂₂ ∪ b̂₃`—any of
+the booleans that the true branch could return, or any of the booleans that the
+false branch could return.
+
+The implementation of the conditional (when both branches return possible
+booleans) is then:
+
+    ĉond ∈ 𝔹̂ × 𝔹̂ × 𝔹̂ → 𝔹̂
+    ĉond(b̂₁,b̂₂,b̂₃) ≜ 
+      { b̂₂ | true ∈ b̂₁ }
+      ∪
+      { b̂₃ | false ∈ b̂₁ }
+
+## Approximate Integers
+
+Integers are slightly harder to approximate.  First, there are an infinite
+number of integers, so it would be hopeless to try to compute the set of
+possible integers a program could return. E.g., consider this while loop where
+we don't know the value of `x` (although we assume it is non-negative):
+
+    i ≔ 0;
+    while (i ≤ x) { i++; }
+
+This program could return any positive integer, and there is no way to
+represent this as a literal, constructed set of integers.
+
+Second, even if we picked large and small integers as the “maximum” and
+“minimum” possible integer, it would still be highly inefficient to keep around
+the set of all possible integers that a program could compute. E.g., in the
+same while program as before, constructing a huge set of possible integers is
+still undesirable (even if possible).
+
+### Abstract Domain
+
+A solution to this problem is to consider ranges of possible integers,
+represented by a pair of the lower bound and upper bound. We will extend the
+lower-bound with negative infinity, and extend the upper bound with positive
+infinity:
+
+    î ∈ ℤ̂ ≜ ({-∞} ⊎ ℤ) × (ℤ ⊎ {+∞})
+
+which can also be written:
+
+    i ∈ ℤ
+    lb ∈ LB ⩴ -∞ | i
+    ub ∈ UB ⩴ i | +∞
+    î ∈ ℤ̂ ⩴ [lb,ub]
+
+the interpretation of abstract integers is the set of integers within the
+range, with unbounded sets when one of the bounds is infinite:
+
+    ⟦_⟧ ∈ ℤ̂ → ℘(ℤ)
+    ⟦[-∞,+∞]⟧ ≜ ℤ
+    ⟦[-∞,i]⟧ ≜ {j | j ≤ i}
+    ⟦[i,+∞]⟧ ≜ {j | j ≥ i}
+    ⟦[i,k]⟧ ≜ {j | i ≤ j ≤ k}
+
+### Abstract Operators
+
+Next we need to define two types of operators:
+1. how to *compute* (e.g., plus) over abstract integers (intervals)
+2. how to *merge* two abstract integer results (e.g., when merging the results
+   of both branches of an `if`)
+
+Merging abstract results must always be defined for abstract domains because it
+is often the case that you need to represent “either A or B could happen” due
+to the fact that we no longer know exactly what values will flow through the
+program. E.g.:
+
+    b̂ ≜ {true,false}
+    if b̂ then [1,2] else [4,5]
+
+In this program we are analyzing a program fragment where (1) we know that the
+guard could evaluate to either true or false (2) we know the true branch could
+evaluate to either `1` or `2`, and (3) we know that the false branch could
+evaluate to either `4` or `5`. What are the possible results of this program
+fragment? A precise characterization is the set `{1,2,4,5}`, but we are
+choosing to represent these sets as ranges for practical reasons, so an
+“optimal” abstract result for this program would be `[1,5]` because it's the
+tightest interval that includes the actual set of possible results.
+
+*ASIDE: precision and optimality are different notions in program analysis. A
+precise interval would be one that represents the set `{1,2,4,5}`, but we
+cannot achieve with a single interval. An optimal interval is one that
+represents some set larger equal or larger than `{1,2,4,5}`, and for which a
+better representation does not exist. `[1,5]` is technically optimal, because
+there is no better interval, but it is not precise. In this specific sense.
+(The choice of words “precise” and “optimal” is precise, but not necessarily
+optimal.)*
+
+The “merging” operation is pronounced “join” and notated `⊔`. This symbol
+intentionally looks close to the set union symbol `∪`, which is a good
+intuition for how it should behave. Join for intervals looks like this:
+
+    _⊔_ ∈ ℤ̂ × ℤ̂ → ℤ̂
+    [lb₁,ub₁] ⊔ [lb₂,ub₂] ≜ [min(lb₁,lb₂),max(ub₁,ub₂)]
+
+One small technicality is the fact that `lb` and `ub` could be negative or
+positive infinity, but we interpret `min` and `max` on this extended set of
+integers in the obvious way (`-∞` is smaller than everything else, and `+∞` is
+bigger than everything else).
+
+Another small technicality is the fact that one of the ranges could be *empty*,
+e.g., in `[2,1]`. If we assume ranges could be empty, we can do better than the
+above definition. E.g., because `[2,1]` represents the empty set of integers,
+when you “join” this interval with another one, you should just leave the other
+interval untouched. That is, we want `[2,1] ⊔ [100,200]` to be `[100,200]`, not
+`[2,200]`. An “optimal” definition is then:
+
+    _⊔_ ∈ ℤ̂ × ℤ̂ → ℤ̂
+    î₁        ⊔ î₂        ≜ î₂                           if  ⟦î₁⟧ = ∅
+    î₁        ⊔ î₂        ≜ î₁                           if  ⟦î₂⟧ = ∅
+    [lb₁,ub₁] ⊔ [lb₂,ub₂] ≜ [min(lb₁,lb₂),max(ub₁,ub₂)]  if  ⟦[lb₁,ub₁]⟧ ≠ ∅  and  ⟦[lb₂,ub₂]⟧ ≠ ∅
+
+Next we want to define operations over intervals, like plus. First, let's work
+through some examples. What do we expect the abstract results to look like for
+these programs:
+
+    [1,2] +̂ [3,4]
+    [1,4] +̂ [2,3]
+    [1,3] +̂ [2,4]
+    [-1,1] +̂ [-2,2]
+    [2,1] +̂ [100,200]
+
+We expect the results to look like this:
+
+    [1,2] +̂ [3,4] = [4,6]
+    [1,4] +̂ [2,3] = [3,7]
+    [1,3] +̂ [2,4] = [3,7]
+    [-1,1] +̂ [-2,2] = [-3,3]
+    [2,1] +̂ [100,200] = [2,1]
+
+How did we come up with those? The formula is simply to add the lower bounds,
+and add the upper bounds.  In the last case, the idea is that if one of the
+ranges is empty, then there are no numbers that it represents, and likewise
+there are no numbers that could be produced by the plus.
+
+    [lb₁,ub₁] +̂ [lb₂,ub₂] ≜ ∅                  if  ⟦[lb₁,ub₁]⟧ = ∅  or   ⟦[lb₁,ub₁]⟧ = ∅
+    [lb₁,ub₁] +̂ [lb₂,ub₂] ≜ [lb₁+lb₂,ub₁+ub₂]  if  ⟦[lb₁,ub₁]⟧ ≠ ∅  and  ⟦[lb₁,ub₁]⟧ ≠ ∅
+
+The above definitions for join `⊔` and abstract plus `+̂` have revealed an
+unsatisfactory property of our abstract representation: it isn't *canonical*. A
+canonical representation is one where no two different representations have the
+exact same meaning. Because `⟦[2,1]⟧ = ⟦[3,2]⟧ = ⟦[3,1]⟧ = ∅` and so on, we
+don't have a canonical representation. We could pick one of these as the
+*distinguished* empty interval, or we could add a new element to our
+abstraction to represent the empty interval, and disallow empty ranges. Here is
+what that looks like:
+
+    î ∈ ℤ̂ ≃ {⊥} ⊎ {(lb,ub) | lb ∈ {-∞} ⊎ ℤ, ub ∈ ℤ ⊎ {+∞}, lb ≤ ub} 
+
+which can also be written:
+
+    i ∈ ℤ
+    lb ∈ LB ⩴ -∞ | i
+    ub ∈ UB ⩴ i | +∞
+    î ∈ ℤ̂ ⩴ ⊥ | [lb,ub]  where  lb ≤ ub
+
+This says that an abstract integer `î` is either literally the symbol `⊥`, or
+it's an interval `[lb,ub]` (with `lb ∈ LB` and `ub ∈ UB`) with the constraint
+that `lb ≤ ub`. Interpretation is then:
+
+    ⟦_⟧ ∈ ℤ̂ → ℘(ℤ)
+    ⟦⊥⟧ ≜ ∅
+    ⟦[-∞,+∞]⟧ = ℤ
+    ⟦[-∞,i]⟧ = {j | j ≤ i}
+    ⟦[i,+∞]⟧ = {j | j ≥ i}
+    ⟦[i,k]⟧ = {j | i ≤ j ≤ k}
+
+and join is now defined:
+
+    _⊔_ ∈ ℤ̂ × ℤ̂ → ℤ̂
+    ⊥         ⊔ î₂        ≜ î₂
+    î₁        ⊔ ⊥         ≜ î₁
+    [lb₁,ub₁] ⊔ [lb₂,ub₂] ≜ [min(lb₁,lb₂),max(ub₁,ub₂)]
+
+and plus:
+
+    _+̂_ ∈ ℤ̂ × ℤ̂ → ℤ̂
+    ⊥  +̂ î₂ ≜ ⊥
+    i₁ +̂ ⊥  ≜ ⊥
+    [lb₁,ub₁] +̂ [lb₂,ub₂] ≜ [lb₁+lb₂,ub₁+ub₂]
+
+Notice there are no more side-conditions. This will make the definition easier
+to implement. Also notice that, before we introduced the new element `⊥`, it
+may have been tempting to just define plus as:
+
+    _+̂_ ∈ ℤ̂ × ℤ̂ → ℤ̂
+    [lb₁,ub₁] +̂ [lb₂,ub₂] ≜ [lb₁+lb₂,ub₁+ub₂]
+
+But this would have been non-optimal. Having a *canonical* representation often
+helps catch non-optimal definitions like the one above.
+
+## Approximate Values and Answers
+
+Now that we have defined join and plus for abstract integers, we need to decide
+how to represent abstract values and answers (`maybe(value)`), and how to
+perform operations on those representations. We are going to not worry about
+the interpreter environment or store right now, and pretend we are working in a
+simple interpreter setup like:
+
+    ⟦_⟧ ∈ expr → maybe(value)
+
+### Abstract Domain
+
+We start from the intuition that an abstract value should represent a set of
+concrete values. Because concrete values are either integers or booleans, we
+can pretend instead that values come from the set of “integers or booleans”
+which is formed by a disjoint union: `ℤ ⊎ 𝔹`. Abstract values are
+then *conceptually* defined as:
+
+    value ≃ ℤ ⊎ 𝔹
+    v̂alue ≈ ℘(ℤ ⊎ 𝔹)
+
+now we are going to rely on a correspondence between the algebra of numbers and
+the algebra of sets, and a basic fact about numbers. First, the cardinality
+(number of elements, written `|X|`) of set-level connectives is mirrored by
+numeric operations:
+
+    |A ⊎ B| = |A| + |B|
+    |A × B| = |A| * |B|
+    |A → B| = |B|^|A|
+    |℘(A)| = 2^|A|
+
+The formula from powersets is a happy coincidence with powersets `X ∈ A` being
+isomorphic to characteristic functions `φ ∈ A → 𝔹`. So a powerset `℘(A)` is the
+same set as a function into bool `A → 𝔹`, and the cardinality rule for that
+function type gives `|A → 𝔹| = |𝔹|^|A| = 2^|A|`.
+
+A basic property of numbers is that:
+
+    2ᵃ⁺ᵇ = 2ᵃ2ᵇ
+
+and in the land of sets, this establishes an isomorphism between `℘(A⊎B)` and
+`℘(A)×℘(B)`. An example of this isomorphism is that these two English
+statements are equivalent:
+
+> Tell me all of the vegetables you either ate *or* didn't eat over the weekend.
+
+> Tell me all of the vegetables you ate over the weekend, *and* tell me all of the vegetables you didn't eat over the weekend.
+
+We use this isomorphism to split `℘(ℤ ⊎ 𝔹)` into an equivalent set `℘(ℤ) ×
+℘(𝔹)`. We now must choose how to represent sets of integers (we will do this
+using `ℤ̂` defined above), and how to represent sets of booleans (we will do
+this using `𝔹̂` defined above).
+
+An abstract value is then:
+
+    v̂ ∈ v̂alue ≜ ℤ̂ × 𝔹̂ ⩴ ⟨î,b̂⟩
+
+Abstract values have their own definition for “no values” (written `⊥` and
+pronounced “bottom”) and “combine results” (notated `⊔` and pronounced “join”).
+
+    ⊥ ∈ v̂alue
+    ⊥ = ⟨⊥,∅⟩
+
+    _⊔_ ∈ v̂alue × v̂alue → v̂alue
+    ⟨î₁,b̂₁⟩ ⊔ ⟨î₂,b̂₂⟩ ≜ ⟨î₁⊔î₂,b̂₁∪b̂₂⟩
+
+We extend this idea to abstract answers, starting from the definition of concrete answers:
+
+    a ∈ answer ≜ {bad} ⊎ v̂alue = {bad} ⊎ ℤ ⊎ 𝔹
+
+and for its abstraction we arrive at:
+
+    â ∈ ânswer ≜ 𝔹 × v̂alue ⩴ ⟨b,v̂⟩
+
+where the boolean is a flag as to whether or not the program could fail (could
+return `bad`). There is one element in `{bad}`, and there are two elements in
+`℘({bad})`, so we may as well just represent this two element set as a bool.
+
+    |{bad}| = 1
+    |℘({bad})| = 2^1 = 2
+    |𝔹| = 2
+
+For answers:
+
+    ⊥ ∈ ânswer
+    ⊥ = ⟨false,⊥⟩
+
+    _⊔_ ∈ ânswer × ânswer → ânswer
+    ⟨b₁,v̂₁⟩ ⊔ ⟨b₂,v̂₂⟩ = ⟨b₁∨b₂,v̂₁⊔v̂₂⟩
+
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.3.js"></script>
+
+<!-- CUSTOM -->
+<script>
+</script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

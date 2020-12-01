@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">HW09</span><span> </span><span class="hs-keyword">where</span><span>
+</span><a name="line-2"></a><span>
+</span><a name="line-3"></a><span class="hs-comment">{-
+
+Name: 
+
+&lt;put your name here&gt;
+
+Collaboration Statement:
+
+&lt;put your collaboration statement here&gt;
+
+Collaboration on high-level ideas and approach on assignments is
+encouraged. Copying someone else's work is not allowed. Copying solutions
+from an online source is not allowed. Any collaboration or online
+resources, even if used only a small amount, must be declared in your
+assignment when you submit it. For example: &#8220;I discussed high-level
+strategies for solving problem 2 and 5 with Alex; I found this
+stackoverflow post (&lt;link&gt;) helpful while working on problem 3.&#8221; Students
+caught copying work are eligible for immediate failure of the course and
+disciplinary action by the University. All academic integrity misconduct
+will be treated according to UVM's Code of Academic Integrity.
+
+-}</span><span>
+</span><a name="line-25"></a><span>
+</span><a name="line-26"></a><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">Data.Set</span><span> </span><span class="hs-special">(</span><span class="hs-identifier hs-type">Set</span><span class="hs-special">)</span><span>
+</span><a name="line-27"></a><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="hs-identifier">Data.Set</span><span> </span><span class="hs-keyword">as</span><span> </span><span class="hs-identifier">Set</span><span>
+</span><a name="line-28"></a><span>
+</span><a name="line-29"></a><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">Data.Map</span><span> </span><span class="hs-special">(</span><span class="hs-identifier hs-type">Map</span><span class="hs-special">)</span><span>
+</span><a name="line-30"></a><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="hs-identifier">Data.Map</span><span> </span><span class="hs-keyword">as</span><span> </span><span class="hs-identifier">Map</span><span>
+</span><a name="line-31"></a><span>
+</span><a name="line-32"></a><span class="hs-keyword">import</span><span> </span><a href="Util.Testing.html"><span class="hs-identifier">Util.Testing</span></a><span>
+</span><a name="line-33"></a><span>
+</span><a name="line-34"></a><span class="hs-keyword">import</span><span> </span><a href="Util.Lex.html"><span class="hs-identifier">Util.Lex</span></a><span>
+</span><a name="line-35"></a><span>
+</span><a name="line-36"></a><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><a href="Lang.L8.html"><span class="hs-identifier">Lang.L8</span></a><span> </span><span class="hs-keyword">as</span><span> </span><span class="hs-identifier">L8</span><span>
+</span><a name="line-37"></a><span>
+</span><a name="line-38"></a><span class="hs-comment">-- ========== --</span><span>
+</span><a name="line-39"></a><span class="hs-comment">-- SUBMITTING --</span><span>
+</span><a name="line-40"></a><span class="hs-comment">-- ========== --</span><span>
+</span><a name="line-41"></a><span>
+</span><a name="line-42"></a><span class="hs-comment">-- How to submit:</span><span>
+</span><a name="line-43"></a><span class="hs-comment">--</span><span>
+</span><a name="line-44"></a><span class="hs-comment">-- Submit a copy of this file only &#8220;HWXX.hs&#8221; (for XX = 01, 02, etc.) to</span><span>
+</span><a name="line-45"></a><span class="hs-comment">-- gradescope.</span><span>
+</span><a name="line-46"></a><span>
+</span><a name="line-47"></a><span class="hs-comment">-- ========== --</span><span>
+</span><a name="line-48"></a><span class="hs-comment">-- ASSIGNMENT --</span><span>
+</span><a name="line-49"></a><span class="hs-comment">-- ========== --</span><span>
+</span><a name="line-50"></a><span>
+</span><a name="line-51"></a><span class="hs-comment">-- Recall the mathematical definitions of abstract integers, booleans, values</span><span>
+</span><a name="line-52"></a><span class="hs-comment">-- and answers.</span><span>
+</span><a name="line-53"></a><span class="hs-comment">--</span><span>
+</span><a name="line-54"></a><span class="hs-comment">--     lb &#8712; LB &#10868; -&#8734; | i</span><span>
+</span><a name="line-55"></a><span class="hs-comment">--     ub &#8712; UB &#10868; i | +&#8734;</span><span>
+</span><a name="line-56"></a><span class="hs-comment">--     i&#770; &#8712; &#8484;&#770; &#10868; &#8869; | [lb,ub]  where  lb &#8804; ub</span><span>
+</span><a name="line-57"></a><span class="hs-comment">--     b&#770; &#8712; &#120121;&#770; &#8796; &#8472;(&#120121;)</span><span>
+</span><a name="line-58"></a><span class="hs-comment">--     v&#770; &#8712; v&#770;alue &#10868; &#10216;i&#770;,b&#770;&#10217;</span><span>
+</span><a name="line-59"></a><span class="hs-comment">--     a&#770; &#8712; a&#770;nswer &#10868; &#10216;b,v&#770;&#10217;</span><span>
+</span><a name="line-60"></a><span class="hs-comment">--                   &#8593;</span><span>
+</span><a name="line-61"></a><span class="hs-comment">--                   failure bit</span><span>
+</span><a name="line-62"></a><span>
+</span><a name="line-63"></a><span class="hs-comment">--------------------------</span><span>
+</span><a name="line-64"></a><span class="hs-comment">-- [E1]: &#9733;&#9733;&#9734; (integers) --</span><span>
+</span><a name="line-65"></a><span class="hs-comment">--------------------------</span><span>
+</span><a name="line-66"></a><span>
+</span><a name="line-67"></a><span class="hs-comment">-- Implement `joinInteger`, the join operation on abstract integers,</span><span>
+</span><a name="line-68"></a><span class="hs-comment">-- `plusInteger`, the plus operation on abstract integers, and `plusHatAnswer`,</span><span>
+</span><a name="line-69"></a><span class="hs-comment">-- the plus operation on abstract answers. Note that many definitions here are</span><span>
+</span><a name="line-70"></a><span class="hs-comment">-- defined for you; you should familiarize yourself with them.</span><span>
+</span><a name="line-71"></a><span>
+</span><a name="line-72"></a><span class="hs-comment">-- The bottom element for abstract integers.</span><span>
+</span><a name="line-73"></a><span class="hs-comment">--</span><span>
+</span><a name="line-74"></a><span class="hs-comment">--     &#8869; &#8712; &#8484;&#770;</span><span>
+</span><a name="line-75"></a><span class="hs-comment">--     &#8869; &#8796; &#8869;</span><span>
+</span><a name="line-76"></a><span class="hs-comment">--</span><span>
+</span><a name="line-77"></a><span class="hs-identifier">botInteger</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#IntegerHat"><span class="hs-identifier hs-type">L8.IntegerHat</span></a><span>
+</span><a name="line-78"></a><a name="botInteger"><a href="HW09.html#botInteger"><span class="hs-identifier">botInteger</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Lang.L8.Data.html#BotIH"><span class="hs-identifier hs-var">L8.BotIH</span></a><span>
+</span><a name="line-79"></a><span>
+</span><a name="line-80"></a><span class="hs-comment">-- (E1.A)</span><span>
+</span><a name="line-81"></a><span class="hs-comment">-- The join operation for abstract integers.</span><span>
+</span><a name="line-82"></a><span class="hs-comment">--</span><span>
+</span><a name="line-83"></a><span class="hs-comment">--     _&#8852;_ &#8712; &#8484;&#770; &#215; &#8484;&#770; &#8594; &#8484;&#770;</span><span>
+</span><a name="line-84"></a><span class="hs-comment">--     &#8869;         &#8852; i&#770;&#8322;        &#8796; i&#770;&#8322;</span><span>
+</span><a name="line-85"></a><span class="hs-comment">--     i&#770;&#8321;        &#8852; &#8869;         &#8796; i&#770;&#8321;</span><span>
+</span><a name="line-86"></a><span class="hs-comment">--     [lb&#8321;,ub&#8321;] &#8852; [lb&#8322;,ub&#8322;] &#8796; [min(lb&#8321;,lb&#8322;),max(ub&#8321;,ub&#8322;)]</span><span>
+</span><a name="line-87"></a><span class="hs-comment">--</span><span>
+</span><a name="line-88"></a><span class="hs-comment">-- HINTS:</span><span>
+</span><a name="line-89"></a><span class="hs-comment">-- - Do pattern matching on both integer arguments to the function; you should</span><span>
+</span><a name="line-90"></a><span class="hs-comment">--   have 3 cases, just like the math above.</span><span>
+</span><a name="line-91"></a><span class="hs-comment">-- - You can use Haskell functions for min and max:</span><span>
+</span><a name="line-92"></a><span class="hs-comment">--       </span><span>
+</span><a name="line-93"></a><span class="hs-comment">--       min :: Integer -&gt; Integer -&gt; Integer</span><span>
+</span><a name="line-94"></a><span class="hs-comment">--       max :: Integer -&gt; Integer -&gt; Integer</span><span>
+</span><a name="line-95"></a><span class="hs-comment">--</span><span>
+</span><a name="line-96"></a><span class="hs-comment">-- - Note that the math syntax `[lb,ub]` is a range (a pair of two numbers---a</span><span>
+</span><a name="line-97"></a><span class="hs-comment">--   kind of abstract integer), and not a list of two elements.</span><span>
+</span><a name="line-98"></a><span class="hs-identifier">joinInteger</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#IntegerHat"><span class="hs-identifier hs-type">L8.IntegerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#IntegerHat"><span class="hs-identifier hs-type">L8.IntegerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#IntegerHat"><span class="hs-identifier hs-type">L8.IntegerHat</span></a><span>
+</span><a name="line-99"></a><a name="joinInteger"><a href="HW09.html#joinInteger"><span class="hs-identifier">joinInteger</span></a></a><span> </span><a name="local-6989586621679101643"><a href="#local-6989586621679101643"><span class="hs-identifier">i1</span></a></a><span> </span><a name="local-6989586621679101644"><a href="#local-6989586621679101644"><span class="hs-identifier">i2</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier hs-var">error</span><span> </span><span class="hs-string">&quot;TODO&quot;</span><span>
+</span><a name="line-100"></a><span>
+</span><a name="line-101"></a><span class="hs-identifier">testE1A</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Util.Testing.html#Test"><span class="hs-identifier hs-type">Test</span></a><span>
+</span><a name="line-102"></a><a name="testE1A"><a href="HW09.html#testE1A"><span class="hs-identifier">testE1A</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Util.Testing.html#TestDir"><span class="hs-identifier hs-var">TestDir</span></a><span>
+</span><a name="line-103"></a><span>  </span><span class="hs-special">(</span><span> </span><span class="hs-string">&quot;E1.A&quot;</span><span>
+</span><a name="line-104"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-string">&quot;joinInteger&quot;</span><span>
+</span><a name="line-105"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-identifier hs-var">uncurry</span><span> </span><a href="HW09.html#joinInteger"><span class="hs-identifier hs-var">joinInteger</span></a><span>
+</span><a name="line-106"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-string">&quot;tests/hw09/e1a&quot;</span><span>
+</span><a name="line-107"></a><span>  </span><span class="hs-special">,</span><span> </span><a href="Util.Lex.html#parseTest"><span class="hs-identifier hs-var">parseTest</span></a><span> </span><span class="hs-special">(</span><a href="Util.Lex.html#pPair"><span class="hs-identifier hs-var">pPair</span></a><span> </span><a href="Lang.L8.Util.html#pIntHat"><span class="hs-identifier hs-var">L8.pIntHat</span></a><span> </span><a href="Lang.L8.Util.html#pIntHat"><span class="hs-identifier hs-var">L8.pIntHat</span></a><span class="hs-special">)</span><span> </span><a href="Lang.L8.Util.html#pIntHat"><span class="hs-identifier hs-var">L8.pIntHat</span></a><span>
+</span><a name="line-108"></a><span>  </span><span class="hs-special">)</span><span>
+</span><a name="line-109"></a><span>
+</span><a name="line-110"></a><span class="hs-comment">-- The injection operation for abstract integers.</span><span>
+</span><a name="line-111"></a><span class="hs-comment">--</span><span>
+</span><a name="line-112"></a><span class="hs-comment">--     &#8970;_&#8971; &#8712; &#8484; &#8594; &#8484;&#770;</span><span>
+</span><a name="line-113"></a><span class="hs-comment">--     &#8970;i&#8971; &#8796; [i,i]</span><span>
+</span><a name="line-114"></a><span class="hs-comment">--</span><span>
+</span><a name="line-115"></a><span class="hs-identifier">injectInteger</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier hs-type">Integer</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#IntegerHat"><span class="hs-identifier hs-type">L8.IntegerHat</span></a><span>
+</span><a name="line-116"></a><a name="injectInteger"><a href="HW09.html#injectInteger"><span class="hs-identifier">injectInteger</span></a></a><span> </span><a name="local-6989586621679101675"><a href="#local-6989586621679101675"><span class="hs-identifier">i</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Lang.L8.Data.html#RangeIH"><span class="hs-identifier hs-var">L8.RangeIH</span></a><span> </span><a href="#local-6989586621679101675"><span class="hs-identifier hs-var">i</span></a><span> </span><a href="#local-6989586621679101675"><span class="hs-identifier hs-var">i</span></a><span>
+</span><a name="line-117"></a><span>
+</span><a name="line-118"></a><span class="hs-comment">-- (E1.B)</span><span>
+</span><a name="line-119"></a><span class="hs-comment">-- The plus operation for abstract integers.</span><span>
+</span><a name="line-120"></a><span class="hs-comment">--</span><span>
+</span><a name="line-121"></a><span class="hs-comment">--     _+&#770;_ &#8712; &#8484;&#770; &#215; &#8484;&#770; &#8594; &#8484;&#770;</span><span>
+</span><a name="line-122"></a><span class="hs-comment">--     i&#770;&#8321;        +&#770; &#8869;         &#8796; &#8869;</span><span>
+</span><a name="line-123"></a><span class="hs-comment">--     &#8869;         +&#770; i&#770;&#8322;        &#8796; &#8869;</span><span>
+</span><a name="line-124"></a><span class="hs-comment">--     [lb&#8321;,ub&#8321;] +&#770; [lb&#8322;,ub&#8322;] &#8796; [lb&#8321;+lb&#8322;,ub&#8321;+ub&#8322;]</span><span>
+</span><a name="line-125"></a><span class="hs-comment">--</span><span>
+</span><a name="line-126"></a><span class="hs-comment">-- HINTS:</span><span>
+</span><a name="line-127"></a><span class="hs-comment">-- - do pattern matching on both integer arguments to the function; you should</span><span>
+</span><a name="line-128"></a><span class="hs-comment">--   have 3 cases, just like the math above.</span><span>
+</span><a name="line-129"></a><span class="hs-identifier">plusHat</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#IntegerHat"><span class="hs-identifier hs-type">L8.IntegerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#IntegerHat"><span class="hs-identifier hs-type">L8.IntegerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#IntegerHat"><span class="hs-identifier hs-type">L8.IntegerHat</span></a><span>
+</span><a name="line-130"></a><a name="plusHat"><a href="HW09.html#plusHat"><span class="hs-identifier">plusHat</span></a></a><span> </span><a name="local-6989586621679101676"><a href="#local-6989586621679101676"><span class="hs-identifier">i1</span></a></a><span> </span><a name="local-6989586621679101677"><a href="#local-6989586621679101677"><span class="hs-identifier">i2</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier hs-var">error</span><span> </span><span class="hs-string">&quot;TODO&quot;</span><span>
+</span><a name="line-131"></a><span>
+</span><a name="line-132"></a><span class="hs-identifier">testE1B</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Util.Testing.html#Test"><span class="hs-identifier hs-type">Test</span></a><span>
+</span><a name="line-133"></a><a name="testE1B"><a href="HW09.html#testE1B"><span class="hs-identifier">testE1B</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Util.Testing.html#TestDir"><span class="hs-identifier hs-var">TestDir</span></a><span>
+</span><a name="line-134"></a><span>  </span><span class="hs-special">(</span><span> </span><span class="hs-string">&quot;E1.B&quot;</span><span>
+</span><a name="line-135"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-string">&quot;plusHat&quot;</span><span>
+</span><a name="line-136"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-identifier hs-var">uncurry</span><span> </span><a href="HW09.html#plusHat"><span class="hs-identifier hs-var">plusHat</span></a><span>
+</span><a name="line-137"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-string">&quot;tests/hw09/e1b&quot;</span><span>
+</span><a name="line-138"></a><span>  </span><span class="hs-special">,</span><span> </span><a href="Util.Lex.html#parseTest"><span class="hs-identifier hs-var">parseTest</span></a><span> </span><span class="hs-special">(</span><a href="Util.Lex.html#pPair"><span class="hs-identifier hs-var">pPair</span></a><span> </span><a href="Lang.L8.Util.html#pIntHat"><span class="hs-identifier hs-var">L8.pIntHat</span></a><span> </span><a href="Lang.L8.Util.html#pIntHat"><span class="hs-identifier hs-var">L8.pIntHat</span></a><span class="hs-special">)</span><span> </span><a href="Lang.L8.Util.html#pIntHat"><span class="hs-identifier hs-var">L8.pIntHat</span></a><span>
+</span><a name="line-139"></a><span>  </span><span class="hs-special">)</span><span>
+</span><a name="line-140"></a><span>
+</span><a name="line-141"></a><span class="hs-comment">-- (E1.C)</span><span>
+</span><a name="line-142"></a><span class="hs-comment">-- The plus operation for abstract answers.</span><span>
+</span><a name="line-143"></a><span class="hs-comment">--</span><span>
+</span><a name="line-144"></a><span class="hs-comment">--     _+&#770;_ &#8712; a&#770;nswer &#215; a&#770;nswer &#8594; a&#770;nswer</span><span>
+</span><a name="line-145"></a><span class="hs-comment">--     &#10216;b&#8321;,i&#770;&#8321;,b&#770;&#8321;&#10217; +&#770; &#10216;b&#8322;,i&#770;&#8322;,b&#770;&#8322;&#10217; &#8796; &#10216;b&#8242;,i&#770;&#8242;,b&#770;&#8242;&#10217;</span><span>
+</span><a name="line-146"></a><span class="hs-comment">--       where b&#8242; = b&#8321; &#8744; b&#8322; &#8744; (b&#770;&#8321; &#8800; &#8709;) &#8744; (b&#770;&#8322; &#8800; &#8709;)</span><span>
+</span><a name="line-147"></a><span class="hs-comment">--             i&#770;&#8242; = i&#770;&#8321; +&#770; i&#770;&#8322;</span><span>
+</span><a name="line-148"></a><span class="hs-comment">--             b&#770;&#8242; = &#8709;</span><span>
+</span><a name="line-149"></a><span class="hs-comment">--</span><span>
+</span><a name="line-150"></a><span class="hs-comment">-- HINTS:</span><span>
+</span><a name="line-151"></a><span class="hs-comment">-- - Note the Haskell syntax for multiple let-bindings:</span><span>
+</span><a name="line-152"></a><span class="hs-comment">--   </span><span>
+</span><a name="line-153"></a><span class="hs-comment">--       let x = stuff</span><span>
+</span><a name="line-154"></a><span class="hs-comment">--           y = more stuff</span><span>
+</span><a name="line-155"></a><span class="hs-comment">--           z = even more stuff</span><span>
+</span><a name="line-156"></a><span class="hs-comment">--       in</span><span>
+</span><a name="line-157"></a><span class="hs-comment">--       final value</span><span>
+</span><a name="line-158"></a><span class="hs-comment">-- - You can use the Haskell operator for logical disjunction:</span><span>
+</span><a name="line-159"></a><span class="hs-comment">--</span><span>
+</span><a name="line-160"></a><span class="hs-comment">--       (||) :: Bool -&gt; Bool -&gt; Bool</span><span>
+</span><a name="line-161"></a><span class="hs-comment">--</span><span>
+</span><a name="line-162"></a><span class="hs-identifier">plusHatAnswer</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span>
+</span><a name="line-163"></a><a name="plusHatAnswer"><a href="HW09.html#plusHatAnswer"><span class="hs-identifier">plusHatAnswer</span></a></a><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-var">L8.AnswerHat</span></a><span> </span><a name="local-6989586621679101678"><a href="#local-6989586621679101678"><span class="hs-identifier">d1</span></a></a><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><a name="local-6989586621679101679"><a href="#local-6989586621679101679"><span class="hs-identifier">i1</span></a></a><span> </span><a name="local-6989586621679101680"><a href="#local-6989586621679101680"><span class="hs-identifier">b1</span></a></a><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-var">L8.AnswerHat</span></a><span> </span><a name="local-6989586621679101681"><a href="#local-6989586621679101681"><span class="hs-identifier">d2</span></a></a><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><a name="local-6989586621679101682"><a href="#local-6989586621679101682"><span class="hs-identifier">i2</span></a></a><span> </span><a name="local-6989586621679101683"><a href="#local-6989586621679101683"><span class="hs-identifier">b2</span></a></a><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier hs-var">error</span><span> </span><span class="hs-string">&quot;TODO&quot;</span><span>
+</span><a name="line-164"></a><span>
+</span><a name="line-165"></a><span class="hs-identifier">testE1C</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Util.Testing.html#Test"><span class="hs-identifier hs-type">Test</span></a><span>
+</span><a name="line-166"></a><a name="testE1C"><a href="HW09.html#testE1C"><span class="hs-identifier">testE1C</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Util.Testing.html#TestDir"><span class="hs-identifier hs-var">TestDir</span></a><span>
+</span><a name="line-167"></a><span>  </span><span class="hs-special">(</span><span> </span><span class="hs-string">&quot;E1.C&quot;</span><span>
+</span><a name="line-168"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-string">&quot;plusHatAnswer&quot;</span><span>
+</span><a name="line-169"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-identifier hs-var">uncurry</span><span> </span><a href="HW09.html#plusHatAnswer"><span class="hs-identifier hs-var">plusHatAnswer</span></a><span>
+</span><a name="line-170"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-string">&quot;tests/hw09/e1c&quot;</span><span>
+</span><a name="line-171"></a><span>  </span><span class="hs-special">,</span><span> </span><a href="Util.Lex.html#parseTest"><span class="hs-identifier hs-var">parseTest</span></a><span> </span><span class="hs-special">(</span><a href="Util.Lex.html#pPair"><span class="hs-identifier hs-var">pPair</span></a><span> </span><a href="Lang.L8.Util.html#pAnswerHat"><span class="hs-identifier hs-var">L8.pAnswerHat</span></a><span> </span><a href="Lang.L8.Util.html#pAnswerHat"><span class="hs-identifier hs-var">L8.pAnswerHat</span></a><span class="hs-special">)</span><span> </span><a href="Lang.L8.Util.html#pAnswerHat"><span class="hs-identifier hs-var">L8.pAnswerHat</span></a><span>
+</span><a name="line-172"></a><span>  </span><span class="hs-special">)</span><span>
+</span><a name="line-173"></a><span>
+</span><a name="line-174"></a><span class="hs-comment">--------------------------</span><span>
+</span><a name="line-175"></a><span class="hs-comment">-- [E2]: &#9733;&#9733;&#9734; (booleans) --</span><span>
+</span><a name="line-176"></a><span class="hs-comment">--------------------------</span><span>
+</span><a name="line-177"></a><span>
+</span><a name="line-178"></a><span class="hs-comment">-- Implement `condHatAnswer`, the conditional operation on abstract answers.</span><span>
+</span><a name="line-179"></a><span>
+</span><a name="line-180"></a><span class="hs-comment">-- The bottomm element for abstract booleans.</span><span>
+</span><a name="line-181"></a><span class="hs-comment">--</span><span>
+</span><a name="line-182"></a><span class="hs-comment">--     &#8869; &#8712; &#120121;&#770;</span><span>
+</span><a name="line-183"></a><span class="hs-comment">--     &#8869; &#8796; &#8709;</span><span>
+</span><a name="line-184"></a><span class="hs-comment">--</span><span>
+</span><a name="line-185"></a><span class="hs-identifier">botBool</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#BoolHat"><span class="hs-identifier hs-type">L8.BoolHat</span></a><span>
+</span><a name="line-186"></a><a name="botBool"><a href="HW09.html#botBool"><span class="hs-identifier">botBool</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier hs-var">Set.empty</span><span>
+</span><a name="line-187"></a><span>
+</span><a name="line-188"></a><span class="hs-comment">-- The join operation for abstract booleans.</span><span>
+</span><a name="line-189"></a><span class="hs-comment">--</span><span>
+</span><a name="line-190"></a><span class="hs-comment">--     _&#8852;_ &#8712; &#120121;&#770; &#215; &#120121;&#770; &#8594; &#120121;&#770;</span><span>
+</span><a name="line-191"></a><span class="hs-comment">--     b&#770;&#8321; &#8852; b&#770;&#8322; &#8796; b&#770;&#8321; &#8746; b&#770;&#8322;</span><span>
+</span><a name="line-192"></a><span class="hs-comment">--</span><span>
+</span><a name="line-193"></a><span class="hs-identifier">joinBool</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#BoolHat"><span class="hs-identifier hs-type">L8.BoolHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#BoolHat"><span class="hs-identifier hs-type">L8.BoolHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#BoolHat"><span class="hs-identifier hs-type">L8.BoolHat</span></a><span>
+</span><a name="line-194"></a><a name="joinBool"><a href="HW09.html#joinBool"><span class="hs-identifier">joinBool</span></a></a><span> </span><a name="local-6989586621679101684"><a href="#local-6989586621679101684"><span class="hs-identifier">b1</span></a></a><span> </span><a name="local-6989586621679101685"><a href="#local-6989586621679101685"><span class="hs-identifier">b2</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier hs-var">Set.union</span><span> </span><a href="#local-6989586621679101684"><span class="hs-identifier hs-var">b1</span></a><span> </span><a href="#local-6989586621679101685"><span class="hs-identifier hs-var">b2</span></a><span>
+</span><a name="line-195"></a><span>
+</span><a name="line-196"></a><span class="hs-comment">-- The injection operation for abstract booleans.</span><span>
+</span><a name="line-197"></a><span class="hs-comment">--</span><span>
+</span><a name="line-198"></a><span class="hs-comment">--     &#8970;_&#8971; &#8712; &#120121; &#8594; &#120121;&#770;</span><span>
+</span><a name="line-199"></a><span class="hs-comment">--     &#8970;b&#8971; &#8796; {b}</span><span>
+</span><a name="line-200"></a><span class="hs-comment">--</span><span>
+</span><a name="line-201"></a><span class="hs-identifier">injectBool</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier hs-type">Bool</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#BoolHat"><span class="hs-identifier hs-type">L8.BoolHat</span></a><span>
+</span><a name="line-202"></a><a name="injectBool"><a href="HW09.html#injectBool"><span class="hs-identifier">injectBool</span></a></a><span> </span><a name="local-6989586621679101686"><a href="#local-6989586621679101686"><span class="hs-identifier">b</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier hs-var">Set.singleton</span><span> </span><a href="#local-6989586621679101686"><span class="hs-identifier hs-var">b</span></a><span>
+</span><a name="line-203"></a><span>
+</span><a name="line-204"></a><span class="hs-comment">-- (E2)</span><span>
+</span><a name="line-205"></a><span class="hs-comment">-- The conditional operation for abstract answers.</span><span>
+</span><a name="line-206"></a><span class="hs-comment">--</span><span>
+</span><a name="line-207"></a><span class="hs-comment">--</span><span>
+</span><a name="line-208"></a><span class="hs-comment">--     c&#770;ond &#8712; a&#770;nswer &#215; a&#770;nswer &#215; a&#770;nswer &#8594; a&#770;nswer</span><span>
+</span><a name="line-209"></a><span class="hs-comment">--     c&#770;ond(&#10216;b&#8321;,i&#770;&#8321;,b&#770;&#8321;&#10217;,a&#770;&#8322;,a&#770;&#8323;) &#8796; a&#770;&#8321;&#8242; &#8852; a&#770;&#8322;&#8242; &#8852; a&#770;&#8323;&#8242;</span><span>
+</span><a name="line-210"></a><span class="hs-comment">--       where a&#770;&#8321;&#8242; = &#10216; b&#8321; &#8744; (i&#770;&#8321; &#8800; &#8869;) , &#8869; &#10217;</span><span>
+</span><a name="line-211"></a><span class="hs-comment">--             a&#770;&#8322;&#8242; = a&#770;&#8322;  if true &#8712; b&#770;&#8321;</span><span>
+</span><a name="line-212"></a><span class="hs-comment">--             a&#770;&#8322;&#8242; = &#8869;   if true &#8713; b&#770;&#8321;</span><span>
+</span><a name="line-213"></a><span class="hs-comment">--             a&#770;&#8323;&#8242; = a&#770;&#8323;  if false &#8712; b&#770;&#8321;</span><span>
+</span><a name="line-214"></a><span class="hs-comment">--             a&#770;&#8323;&#8242; = &#8869;   if false &#8712; b&#770;&#8321;</span><span>
+</span><a name="line-215"></a><span class="hs-comment">--</span><span>
+</span><a name="line-216"></a><span class="hs-comment">-- HINTS:</span><span>
+</span><a name="line-217"></a><span class="hs-comment">-- - You may want to use `joinAnswers`, which takes a list of answers, and</span><span>
+</span><a name="line-218"></a><span class="hs-comment">--   joins them all together using `joinAnswer`. E.g., you can call joinAnswers</span><span>
+</span><a name="line-219"></a><span class="hs-comment">--   on a Haskell list of three elements `[a, b, c]` to join three abstract</span><span>
+</span><a name="line-220"></a><span class="hs-comment">--   answers together.</span><span>
+</span><a name="line-221"></a><span class="hs-comment">-- - You can use the Haskell operator `||` for logical disjunction, and the</span><span>
+</span><a name="line-222"></a><span class="hs-comment">--   function `not` for negation:</span><span>
+</span><a name="line-223"></a><span class="hs-comment">--</span><span>
+</span><a name="line-224"></a><span class="hs-comment">--       (||) :: Bool -&gt; Bool -&gt; Bool</span><span>
+</span><a name="line-225"></a><span class="hs-comment">--       not :: Bool -&gt; Bool</span><span>
+</span><a name="line-226"></a><span class="hs-comment">--</span><span>
+</span><a name="line-227"></a><span class="hs-comment">-- - You can use `Set.member` to test if an element is in a set:</span><span>
+</span><a name="line-228"></a><span class="hs-comment">--</span><span>
+</span><a name="line-229"></a><span class="hs-comment">--       Set.member :: a -&gt; Set a -&gt; Bool</span><span>
+</span><a name="line-230"></a><span class="hs-comment">--</span><span>
+</span><a name="line-231"></a><span class="hs-identifier">condHatAnswer</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span>
+</span><a name="line-232"></a><a name="condHatAnswer"><a href="HW09.html#condHatAnswer"><span class="hs-identifier">condHatAnswer</span></a></a><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-var">L8.AnswerHat</span></a><span> </span><a name="local-6989586621679101687"><a href="#local-6989586621679101687"><span class="hs-identifier">d1</span></a></a><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><a name="local-6989586621679101688"><a href="#local-6989586621679101688"><span class="hs-identifier">i1</span></a></a><span> </span><a name="local-6989586621679101689"><a href="#local-6989586621679101689"><span class="hs-identifier">b1</span></a></a><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><a name="local-6989586621679101690"><a href="#local-6989586621679101690"><span class="hs-identifier">a2</span></a></a><span> </span><a name="local-6989586621679101691"><a href="#local-6989586621679101691"><span class="hs-identifier">a3</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier hs-var">error</span><span> </span><span class="hs-string">&quot;TODO&quot;</span><span>
+</span><a name="line-233"></a><span>
+</span><a name="line-234"></a><span class="hs-identifier">testE2</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Util.Testing.html#Test"><span class="hs-identifier hs-type">Test</span></a><span>
+</span><a name="line-235"></a><a name="testE2"><a href="HW09.html#testE2"><span class="hs-identifier">testE2</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Util.Testing.html#TestDir"><span class="hs-identifier hs-var">TestDir</span></a><span>
+</span><a name="line-236"></a><span>  </span><span class="hs-special">(</span><span> </span><span class="hs-string">&quot;E2&quot;</span><span>
+</span><a name="line-237"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-string">&quot;condHatAnswer&quot;</span><span>
+</span><a name="line-238"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-identifier hs-var">uncurry</span><span> </span><span class="hs-special">(</span><span class="hs-identifier hs-var">uncurry</span><span> </span><a href="HW09.html#condHatAnswer"><span class="hs-identifier hs-var">condHatAnswer</span></a><span class="hs-special">)</span><span>
+</span><a name="line-239"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-string">&quot;tests/hw09/e2&quot;</span><span>
+</span><a name="line-240"></a><span>  </span><span class="hs-special">,</span><span> </span><a href="Util.Lex.html#parseTest"><span class="hs-identifier hs-var">parseTest</span></a><span> </span><span class="hs-special">(</span><a href="Util.Lex.html#pPair"><span class="hs-identifier hs-var">pPair</span></a><span> </span><span class="hs-special">(</span><a href="Util.Lex.html#pPair"><span class="hs-identifier hs-var">pPair</span></a><span> </span><a href="Lang.L8.Util.html#pAnswerHat"><span class="hs-identifier hs-var">L8.pAnswerHat</span></a><span> </span><a href="Lang.L8.Util.html#pAnswerHat"><span class="hs-identifier hs-var">L8.pAnswerHat</span></a><span class="hs-special">)</span><span> </span><a href="Lang.L8.Util.html#pAnswerHat"><span class="hs-identifier hs-var">L8.pAnswerHat</span></a><span class="hs-special">)</span><span> </span><a href="Lang.L8.Util.html#pAnswerHat"><span class="hs-identifier hs-var">L8.pAnswerHat</span></a><span>
+</span><a name="line-241"></a><span>  </span><span class="hs-special">)</span><span>
+</span><a name="line-242"></a><span>
+</span><a name="line-243"></a><span class="hs-comment">------------</span><span>
+</span><a name="line-244"></a><span class="hs-comment">-- VALUES --</span><span>
+</span><a name="line-245"></a><span class="hs-comment">------------</span><span>
+</span><a name="line-246"></a><span>
+</span><a name="line-247"></a><span class="hs-comment">-- The bottom element for abstract values.</span><span>
+</span><a name="line-248"></a><span class="hs-comment">--</span><span>
+</span><a name="line-249"></a><span class="hs-comment">--     &#8869; &#8712; v&#770;alue</span><span>
+</span><a name="line-250"></a><span class="hs-comment">--     &#8869; &#8796; &#10216;&#8869;,&#8869;&#10217;</span><span>
+</span><a name="line-251"></a><span class="hs-comment">--</span><span>
+</span><a name="line-252"></a><span class="hs-identifier">botValue</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-type">L8.ValueHat</span></a><span>
+</span><a name="line-253"></a><a name="botValue"><a href="HW09.html#botValue"><span class="hs-identifier">botValue</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><a href="HW09.html#botInteger"><span class="hs-identifier hs-var">botInteger</span></a><span> </span><a href="HW09.html#botBool"><span class="hs-identifier hs-var">botBool</span></a><span>
+</span><a name="line-254"></a><span>
+</span><a name="line-255"></a><span class="hs-comment">-- The join operation for abstract values.</span><span>
+</span><a name="line-256"></a><span class="hs-comment">--</span><span>
+</span><a name="line-257"></a><span class="hs-comment">--     _&#8852;_ &#8712; v&#770;alue &#215; v&#770;alue &#8594; v&#770;alue</span><span>
+</span><a name="line-258"></a><span class="hs-comment">--     &#10216;i&#770;&#8321;,b&#770;&#8321;&#10217; &#8852; &#10216;i&#770;&#8322;,b&#770;&#8322;&#10217; &#8796; &#10216;i&#770;&#8321;&#8852;i&#770;&#8322;,b&#770;&#8321;&#8852;b&#770;&#8322;&#10217;</span><span>
+</span><a name="line-259"></a><span class="hs-comment">--</span><span>
+</span><a name="line-260"></a><span class="hs-identifier">joinValue</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-type">L8.ValueHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-type">L8.ValueHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-type">L8.ValueHat</span></a><span>
+</span><a name="line-261"></a><a name="joinValue"><a href="HW09.html#joinValue"><span class="hs-identifier">joinValue</span></a></a><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><a name="local-6989586621679101692"><a href="#local-6989586621679101692"><span class="hs-identifier">i1</span></a></a><span> </span><a name="local-6989586621679101693"><a href="#local-6989586621679101693"><span class="hs-identifier">b1</span></a></a><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><a name="local-6989586621679101694"><a href="#local-6989586621679101694"><span class="hs-identifier">i2</span></a></a><span> </span><a name="local-6989586621679101695"><a href="#local-6989586621679101695"><span class="hs-identifier">b2</span></a></a><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><span class="hs-special">(</span><a href="HW09.html#joinInteger"><span class="hs-identifier hs-var">joinInteger</span></a><span> </span><a href="#local-6989586621679101692"><span class="hs-identifier hs-var">i1</span></a><span> </span><a href="#local-6989586621679101694"><span class="hs-identifier hs-var">i2</span></a><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><a href="HW09.html#joinBool"><span class="hs-identifier hs-var">joinBool</span></a><span> </span><a href="#local-6989586621679101693"><span class="hs-identifier hs-var">b1</span></a><span> </span><a href="#local-6989586621679101695"><span class="hs-identifier hs-var">b2</span></a><span class="hs-special">)</span><span>
+</span><a name="line-262"></a><span>
+</span><a name="line-263"></a><span class="hs-comment">-- The injection operation for abstract values</span><span>
+</span><a name="line-264"></a><span class="hs-comment">--</span><span>
+</span><a name="line-265"></a><span class="hs-comment">--     &#8970;_&#8971; &#8712; value &#8594; v&#770;alue</span><span>
+</span><a name="line-266"></a><span class="hs-comment">--     &#8970;i&#8971; &#8796; &#10216;&#8970;i&#8971;,&#8869;&#10217;</span><span>
+</span><a name="line-267"></a><span class="hs-comment">--     &#8970;b&#8971; &#8796; &#10216;&#8869;,&#8970;b&#8971;&#10217;</span><span>
+</span><a name="line-268"></a><span class="hs-comment">--</span><span>
+</span><a name="line-269"></a><span class="hs-identifier">injectValue</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#Value"><span class="hs-identifier hs-type">L8.Value</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-type">L8.ValueHat</span></a><span>
+</span><a name="line-270"></a><a name="injectValue"><a href="HW09.html#injectValue"><span class="hs-identifier">injectValue</span></a></a><span> </span><a name="local-6989586621679101696"><a href="#local-6989586621679101696"><span class="hs-identifier">v</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><a href="#local-6989586621679101696"><span class="hs-identifier hs-var">v</span></a><span> </span><span class="hs-keyword">of</span><span>
+</span><a name="line-271"></a><span>  </span><a href="Lang.L8.Data.html#IntV"><span class="hs-identifier hs-var">L8.IntV</span></a><span> </span><a name="local-6989586621679101697"><a href="#local-6989586621679101697"><span class="hs-identifier">i</span></a></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><span class="hs-special">(</span><a href="HW09.html#injectInteger"><span class="hs-identifier hs-var">injectInteger</span></a><span> </span><a href="#local-6989586621679101697"><span class="hs-identifier hs-var">i</span></a><span class="hs-special">)</span><span> </span><a href="HW09.html#botBool"><span class="hs-identifier hs-var">botBool</span></a><span>
+</span><a name="line-272"></a><span>  </span><a href="Lang.L8.Data.html#BoolV"><span class="hs-identifier hs-var">L8.BoolV</span></a><span> </span><a name="local-6989586621679101698"><a href="#local-6989586621679101698"><span class="hs-identifier">b</span></a></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><a href="HW09.html#botInteger"><span class="hs-identifier hs-var">botInteger</span></a><span> </span><span class="hs-special">(</span><a href="HW09.html#injectBool"><span class="hs-identifier hs-var">injectBool</span></a><span> </span><a href="#local-6989586621679101698"><span class="hs-identifier hs-var">b</span></a><span class="hs-special">)</span><span>
+</span><a name="line-273"></a><span>
+</span><a name="line-274"></a><span class="hs-comment">-------------</span><span>
+</span><a name="line-275"></a><span class="hs-comment">-- ANSWERS --</span><span>
+</span><a name="line-276"></a><span class="hs-comment">-------------</span><span>
+</span><a name="line-277"></a><span>
+</span><a name="line-278"></a><span class="hs-comment">-- The bottom element for abstract answers.</span><span>
+</span><a name="line-279"></a><span class="hs-comment">--</span><span>
+</span><a name="line-280"></a><span class="hs-comment">--     &#8869; &#8712; a&#770;nswer</span><span>
+</span><a name="line-281"></a><span class="hs-comment">--     &#8869; &#8796; &#10216;false,&#8869;&#10217;</span><span>
+</span><a name="line-282"></a><span class="hs-comment">--</span><span>
+</span><a name="line-283"></a><span class="hs-identifier">botAnswer</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span>
+</span><a name="line-284"></a><a name="botAnswer"><a href="HW09.html#botAnswer"><span class="hs-identifier">botAnswer</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-var">L8.AnswerHat</span></a><span> </span><span class="hs-identifier hs-var">False</span><span> </span><a href="HW09.html#botValue"><span class="hs-identifier hs-var">botValue</span></a><span>
+</span><a name="line-285"></a><span>
+</span><a name="line-286"></a><span class="hs-comment">-- The join operation for abstract answers.</span><span>
+</span><a name="line-287"></a><span class="hs-comment">--</span><span>
+</span><a name="line-288"></a><span class="hs-comment">--     _&#8852;_ &#8712; a&#770;nswer &#215; a&#770;nswer &#8594; a&#770;nswer</span><span>
+</span><a name="line-289"></a><span class="hs-comment">--     &#10216;b&#8321;,v&#770;&#8321;&#10217; &#8852; &#10216;b&#8322;,v&#770;&#8322;&#10217; = &#10216;b&#8321;&#8744;b&#8322;,v&#770;&#8321;&#8852;v&#770;&#8322;&#10217;</span><span>
+</span><a name="line-290"></a><span class="hs-comment">--</span><span>
+</span><a name="line-291"></a><span class="hs-identifier">joinAnswer</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span>
+</span><a name="line-292"></a><a name="joinAnswer"><a href="HW09.html#joinAnswer"><span class="hs-identifier">joinAnswer</span></a></a><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-var">L8.AnswerHat</span></a><span> </span><a name="local-6989586621679101699"><a href="#local-6989586621679101699"><span class="hs-identifier">d1</span></a></a><span> </span><a name="local-6989586621679101700"><a href="#local-6989586621679101700"><span class="hs-identifier">v1</span></a></a><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-var">L8.AnswerHat</span></a><span> </span><a name="local-6989586621679101701"><a href="#local-6989586621679101701"><span class="hs-identifier">d2</span></a></a><span> </span><a name="local-6989586621679101702"><a href="#local-6989586621679101702"><span class="hs-identifier">v2</span></a></a><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-var">L8.AnswerHat</span></a><span> </span><span class="hs-special">(</span><a href="#local-6989586621679101699"><span class="hs-identifier hs-var">d1</span></a><span> </span><span class="hs-operator hs-var">||</span><span> </span><a href="#local-6989586621679101701"><span class="hs-identifier hs-var">d2</span></a><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><a href="HW09.html#joinValue"><span class="hs-identifier hs-var">joinValue</span></a><span> </span><a href="#local-6989586621679101700"><span class="hs-identifier hs-var">v1</span></a><span> </span><a href="#local-6989586621679101702"><span class="hs-identifier hs-var">v2</span></a><span class="hs-special">)</span><span>
+</span><a name="line-293"></a><span>
+</span><a name="line-294"></a><span class="hs-comment">-- Combine a list of answers using join, with the neutral element as bottom.</span><span>
+</span><a name="line-295"></a><span class="hs-comment">--</span><span>
+</span><a name="line-296"></a><span class="hs-comment">--     joins &#8712; list(a&#770;nswer) &#8594; a&#770;nswer</span><span>
+</span><a name="line-297"></a><span class="hs-comment">--     joins(a&#770;&#8321;,&#8230;,a&#770;&#8345;) &#8796; a&#770;&#8321; &#8852; &#8943; &#8852; a&#770;&#8345;</span><span>
+</span><a name="line-298"></a><span class="hs-identifier">joinAnswers</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span class="hs-special">]</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span>
+</span><a name="line-299"></a><a name="joinAnswers"><a href="HW09.html#joinAnswers"><span class="hs-identifier">joinAnswers</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier hs-var">foldl</span><span> </span><a href="HW09.html#joinAnswer"><span class="hs-identifier hs-var">joinAnswer</span></a><span> </span><a href="HW09.html#botAnswer"><span class="hs-identifier hs-var">botAnswer</span></a><span>
+</span><a name="line-300"></a><span>
+</span><a name="line-301"></a><span class="hs-comment">-- Lift an abstract value to an abstract answer.</span><span>
+</span><a name="line-302"></a><span class="hs-comment">--</span><span>
+</span><a name="line-303"></a><span class="hs-comment">--     lift &#8712; v&#770;alue &#8594; a&#770;nswer</span><span>
+</span><a name="line-304"></a><span class="hs-comment">--     lift(v&#770;) &#8796; &#10216;false,v&#770;&#10217;</span><span>
+</span><a name="line-305"></a><span class="hs-comment">--</span><span>
+</span><a name="line-306"></a><span class="hs-identifier">liftValueAnswer</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-type">L8.ValueHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span>
+</span><a name="line-307"></a><a name="liftValueAnswer"><a href="HW09.html#liftValueAnswer"><span class="hs-identifier">liftValueAnswer</span></a></a><span> </span><a name="local-6989586621679101703"><a href="#local-6989586621679101703"><span class="hs-identifier">v</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-var">L8.AnswerHat</span></a><span> </span><span class="hs-identifier hs-var">False</span><span> </span><a href="#local-6989586621679101703"><span class="hs-identifier hs-var">v</span></a><span>
+</span><a name="line-308"></a><span>
+</span><a name="line-309"></a><span class="hs-comment">-- The injection operation for abstract answers.</span><span>
+</span><a name="line-310"></a><span class="hs-comment">--</span><span>
+</span><a name="line-311"></a><span class="hs-comment">--     &#8970;_&#8971; &#8712; answer &#8594; a&#770;nswer</span><span>
+</span><a name="line-312"></a><span class="hs-comment">--     &#8970;v&#8971; &#8796; lift(&#8970;v&#8971;)</span><span>
+</span><a name="line-313"></a><span class="hs-comment">--     &#8970;bad&#8971; &#8796; lift-fail(true)</span><span>
+</span><a name="line-314"></a><span class="hs-comment">--</span><span>
+</span><a name="line-315"></a><span class="hs-identifier">injectAnswer</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#Answer"><span class="hs-identifier hs-type">L8.Answer</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span>
+</span><a name="line-316"></a><a name="injectAnswer"><a href="HW09.html#injectAnswer"><span class="hs-identifier">injectAnswer</span></a></a><span> </span><a name="local-6989586621679101704"><a href="#local-6989586621679101704"><span class="hs-identifier">a</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><a href="#local-6989586621679101704"><span class="hs-identifier hs-var">a</span></a><span> </span><span class="hs-keyword">of</span><span>
+</span><a name="line-317"></a><span>  </span><span class="hs-identifier hs-var">Just</span><span> </span><a name="local-6989586621679101705"><a href="#local-6989586621679101705"><span class="hs-identifier">v</span></a></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="HW09.html#liftValueAnswer"><span class="hs-identifier hs-var">liftValueAnswer</span></a><span> </span><span class="hs-special">(</span><a href="HW09.html#injectValue"><span class="hs-identifier hs-var">injectValue</span></a><span> </span><a href="#local-6989586621679101705"><span class="hs-identifier hs-var">v</span></a><span class="hs-special">)</span><span>
+</span><a name="line-318"></a><span>  </span><span class="hs-identifier hs-var">Nothing</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-var">L8.AnswerHat</span></a><span> </span><span class="hs-identifier hs-var">True</span><span> </span><a href="HW09.html#botValue"><span class="hs-identifier hs-var">botValue</span></a><span>
+</span><a name="line-319"></a><span>
+</span><a name="line-320"></a><span class="hs-comment">-----------------</span><span>
+</span><a name="line-321"></a><span class="hs-comment">-- INTERPRETER --</span><span>
+</span><a name="line-322"></a><span class="hs-comment">-----------------</span><span>
+</span><a name="line-323"></a><span>
+</span><a name="line-324"></a><span class="hs-comment">---------------</span><span>
+</span><a name="line-325"></a><span class="hs-comment">-- [E3]: &#9733;&#9733;&#9734; --</span><span>
+</span><a name="line-326"></a><span class="hs-comment">---------------</span><span>
+</span><a name="line-327"></a><span>
+</span><a name="line-328"></a><span class="hs-comment">-- Implement the abstract interpreter, `interpHat`, using functions defined</span><span>
+</span><a name="line-329"></a><span class="hs-comment">-- above.</span><span>
+</span><a name="line-330"></a><span class="hs-comment">--</span><span>
+</span><a name="line-331"></a><span class="hs-comment">--     &#10214;_&#10215;(_) &#8712; expr &#8594; e&#770;nv &#8594; a&#770;nswer</span><span>
+</span><a name="line-332"></a><span class="hs-comment">--     &#10214;i&#10215;(&#947;&#770;) &#8796; &#8970;i&#8971;</span><span>
+</span><a name="line-333"></a><span class="hs-comment">--     &#10214;e&#8321;+e&#8322;&#10215;(&#947;&#770;) &#8796; &#10214;e&#8321;&#10215;(&#947;&#770;) +&#770; &#10214;e&#8322;&#10215;(&#947;&#770;)</span><span>
+</span><a name="line-334"></a><span class="hs-comment">--     &#10214;b&#10215;(&#947;&#770;) &#8796; &#8970;b&#8971;</span><span>
+</span><a name="line-335"></a><span class="hs-comment">--     &#10214;if e&#8321; then e&#8322; else e&#8323;&#10215;(&#947;&#770;) &#8796; c&#770;ond(&#10214;e&#8321;&#10215;(&#947;&#770;),&#10214;e&#8322;&#10215;(&#947;&#770;),&#10214;e&#8323;&#10215;(&#947;&#770;))</span><span>
+</span><a name="line-336"></a><span class="hs-comment">--     &#10214;x&#10215;(&#947;&#770;) &#8796; lift(&#947;&#770;(x))     if x &#8712; &#947;</span><span>
+</span><a name="line-337"></a><span class="hs-comment">--     &#10214;x&#10215;(&#947;&#770;) &#8796; &#8970;bad&#8971;          if x &#8713; &#947;</span><span>
+</span><a name="line-338"></a><span class="hs-comment">--     &#10214;let x = e&#8321; in e&#8322;&#10215; &#8796; &#10216;b&#8321;&#8744;b&#8322;,v&#770;&#8322;&#10217;</span><span>
+</span><a name="line-339"></a><span class="hs-comment">--       where &#10216;b&#8321;,v&#770;&#8321;&#10217; = &#10214;e&#8321;&#10215;(&#947;&#770;)</span><span>
+</span><a name="line-340"></a><span class="hs-comment">--             &#10216;b&#8322;,v&#770;&#8322;&#10217; = &#10214;e&#8322;&#10215;(&#947;&#770;[x&#8614;v&#770;&#8321;])</span><span>
+</span><a name="line-341"></a><span class="hs-comment">--</span><span>
+</span><a name="line-342"></a><span class="hs-comment">-- HINTS:</span><span>
+</span><a name="line-343"></a><span class="hs-comment">-- - Define the interpreter by recursion over the input expression, starting</span><span>
+</span><a name="line-344"></a><span class="hs-comment">--   with a pattern match. In prior assignments I give this pattern match to</span><span>
+</span><a name="line-345"></a><span class="hs-comment">--   you, for this this one you need to figure it out on your own. Look at the</span><span>
+</span><a name="line-346"></a><span class="hs-comment">--   `src/Lang/L8/Data.hs` file to see what patterns are possible for the</span><span>
+</span><a name="line-347"></a><span class="hs-comment">--   `L8.Expr` datatype.</span><span>
+</span><a name="line-348"></a><span class="hs-comment">-- - Much of the math syntax is overloaded, such as `&#8970;_&#8971;`. Convince yourself</span><span>
+</span><a name="line-349"></a><span class="hs-comment">--   which helper function is the appropriate one to call, and make sure it</span><span>
+</span><a name="line-350"></a><span class="hs-comment">--   typechecks before moving on.</span><span>
+</span><a name="line-351"></a><span class="hs-identifier">interpHat</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Lang.L8.Data.html#Expr"><span class="hs-identifier hs-type">L8.Expr</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#EnvHat"><span class="hs-identifier hs-type">L8.EnvHat</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="Lang.L8.Data.html#AnswerHat"><span class="hs-identifier hs-type">L8.AnswerHat</span></a><span>
+</span><a name="line-352"></a><a name="interpHat"><a href="HW09.html#interpHat"><span class="hs-identifier">interpHat</span></a></a><span> </span><a name="local-6989586621679101706"><a href="#local-6989586621679101706"><span class="hs-identifier">e</span></a></a><span> </span><a name="local-6989586621679101707"><a href="#local-6989586621679101707"><span class="hs-identifier">env</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier hs-var">error</span><span> </span><span class="hs-string">&quot;TODO&quot;</span><span>
+</span><a name="line-353"></a><span>
+</span><a name="line-354"></a><span class="hs-identifier">testE3</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="Util.Testing.html#Test"><span class="hs-identifier hs-type">Test</span></a><span>
+</span><a name="line-355"></a><a name="testE3"><a href="HW09.html#testE3"><span class="hs-identifier">testE3</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Util.Testing.html#TestDir"><span class="hs-identifier hs-var">TestDir</span></a><span>
+</span><a name="line-356"></a><span>  </span><span class="hs-special">(</span><span> </span><span class="hs-string">&quot;E3&quot;</span><span>
+</span><a name="line-357"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-string">&quot;interpHat&quot;</span><span>
+</span><a name="line-358"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-glyph">\</span><span> </span><a name="local-6989586621679101708"><a href="#local-6989586621679101708"><span class="hs-identifier">e</span></a></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="HW09.html#interpHat"><span class="hs-identifier hs-var">interpHat</span></a><span> </span><a href="#local-6989586621679101708"><span class="hs-identifier hs-var">e</span></a><span> </span><span class="hs-operator hs-var">$</span><span> </span><span class="hs-identifier hs-var">Map.fromList</span><span>
+</span><a name="line-359"></a><span>      </span><span class="hs-special">[</span><span> </span><span class="hs-special">(</span><span class="hs-string">&quot;true-or-false&quot;</span><span> </span><span class="hs-special">,</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><a href="HW09.html#botInteger"><span class="hs-identifier hs-var">botInteger</span></a><span> </span><span class="hs-special">(</span><span class="hs-identifier hs-var">Set.fromList</span><span> </span><span class="hs-special">[</span><span class="hs-identifier hs-var">True</span><span class="hs-special">,</span><span class="hs-identifier hs-var">False</span><span class="hs-special">]</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a name="line-360"></a><span>      </span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="hs-string">&quot;one-or-two&quot;</span><span> </span><span class="hs-special">,</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#RangeIH"><span class="hs-identifier hs-var">L8.RangeIH</span></a><span> </span><span class="hs-number">1</span><span> </span><span class="hs-number">2</span><span class="hs-special">)</span><span> </span><span class="hs-identifier hs-var">Set.empty</span><span class="hs-special">)</span><span>
+</span><a name="line-361"></a><span>      </span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="hs-string">&quot;zero-to-ten&quot;</span><span> </span><span class="hs-special">,</span><span> </span><a href="Lang.L8.Data.html#ValueHat"><span class="hs-identifier hs-var">L8.ValueHat</span></a><span> </span><span class="hs-special">(</span><a href="Lang.L8.Data.html#RangeIH"><span class="hs-identifier hs-var">L8.RangeIH</span></a><span> </span><span class="hs-number">0</span><span> </span><span class="hs-number">10</span><span class="hs-special">)</span><span> </span><span class="hs-identifier hs-var">Set.empty</span><span class="hs-special">)</span><span>
+</span><a name="line-362"></a><span>      </span><span class="hs-special">]</span><span>
+</span><a name="line-363"></a><span>  </span><span class="hs-special">,</span><span> </span><span class="hs-string">&quot;tests/hw09/e3&quot;</span><span>
+</span><a name="line-364"></a><span>  </span><span class="hs-special">,</span><span> </span><a href="Util.Lex.html#parseTest"><span class="hs-identifier hs-var">parseTest</span></a><span> </span><a href="Lang.L8.Util.html#pExpr"><span class="hs-identifier hs-var">L8.pExpr</span></a><span> </span><a href="Lang.L8.Util.html#pAnswerHat"><span class="hs-identifier hs-var">L8.pAnswerHat</span></a><span>
+</span><a name="line-365"></a><span>  </span><span class="hs-special">)</span><span>
+</span><a name="line-366"></a><span>
+</span><a name="line-367"></a><span class="hs-comment">-- ===== --</span><span>
+</span><a name="line-368"></a><span class="hs-comment">-- TESTS --</span><span>
+</span><a name="line-369"></a><span class="hs-comment">-- ===== --</span><span>
+</span><a name="line-370"></a><span>
+</span><a name="line-371"></a><span class="hs-identifier">main</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier hs-type">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-372"></a><a name="main"><a href="HW09.html#main"><span class="hs-identifier">main</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><a href="Util.Testing.html#runTests"><span class="hs-identifier hs-var">runTests</span></a><span>
+</span><a name="line-373"></a><span>  </span><span class="hs-special">[</span><span> </span><a href="HW09.html#testE1A"><span class="hs-identifier hs-var">testE1A</span></a><span>
+</span><a name="line-374"></a><span>  </span><span class="hs-special">,</span><span> </span><a href="HW09.html#testE1B"><span class="hs-identifier hs-var">testE1B</span></a><span>
+</span><a name="line-375"></a><span>  </span><span class="hs-special">,</span><span> </span><a href="HW09.html#testE1C"><span class="hs-identifier hs-var">testE1C</span></a><span>
+</span><a name="line-376"></a><span>  </span><span class="hs-special">,</span><span> </span><a href="HW09.html#testE2"><span class="hs-identifier hs-var">testE2</span></a><span>
+</span><a name="line-377"></a><span>  </span><span class="hs-special">,</span><span> </span><a href="HW09.html#testE3"><span class="hs-identifier hs-var">testE3</span></a><span>
+</span><a name="line-378"></a><span>  </span><span class="hs-special">]</span><span>
+</span><a name="line-379"></a><span>
+</span><a name="line-380"></a></pre></body></html>

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- ⌄⌄⌄ Darais Lib ⌄⌄⌄ -->
+  <script>
+    function it() { 
+      var elems = document.getElementsByTagName("script");
+      return elems[elems.length - 1].previousSibling;
+    };
+    function X(num) {
+      var elems;
+      if (num === undefined) {
+        elems = document.getElementsByClassName("X");
+      } else {
+        elems = document.getElementsByClassName("X"+num);
+      }
+      return elems[elems.length - 1];
+    };
+  </script>
+
+  <style>
+    ul {
+      list-style-type: square;
+      margin-left: 0em;
+      padding-left: 1.5em;
+    }
+    ul ul {
+      list-style-type: circle;
+    }
+    pre {
+      margin-left: 2em;
+      color: #e83e8c;
+    }
+    li pre {
+      margin-bottom: 0;
+    }
+    blockquote {
+      border-left: 5px solid #eee;
+      padding-left: 1em;
+      margin-left: 1em;
+      margin-right: 1em;
+    }
+  </style>
+  <!-- ^^^ Darais Lib ^^^ -->
+
+  <title>Call for GRA ⌁ Duet Project ⌁ Spring 2019</title>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      Call for GRA ⌁ Duet Project ⌁ Spring 2019
+    </a>
+  </div>
+</nav>
+
+<main class="container text-justify">
+
+<pre class=markdown>
+
+The UVM Programming LAnguages, Information-security and Data-privacy (PLAID)
+Lab is seeking one MS or PhD student to work on the Duet project—advised by
+[Joe Near][] and [David Darais][]—for the spring 2019 semseter. The position is
+a fully funded Graduate Research Assistantship (GRA), with an option to
+continue through the summer and fall 2019 semesters.
+
+[Joe Near]: http://www.uvm.edu/~jnear/
+[David Darais]: http://david.darais.com
+
+Duet is a programming language for data privacy applications developed by Joe
+Near and David Darais along with collaborators at UVM, UC Berkeley and Cornell.
+Duet approaches data privacy by bounding the information that is learned about
+private data during some data analysis, such as querying a database or training
+a machine learning model. Duet uses *differential privacy* to ensure that
+analysis results do not violate an individual's privacy, and employs a novel
+*type system* to statically guarantee that this quantity is negligibly small
+when performed on private data. The design of Duet, its applications, and an
+evaluation of its effectiveness is currently in submission for publication.
+[[Duet Paper][]]
+
+[Duet Paper]: /assets/papers/duet/duet.pdf
+
+We are seeking applicants who have some background in at least one of the
+following topics: differential privacy, databases, machine learning,
+programming language semantics, compilers, type systems, program analysis or
+software verification.
+
+To apply for the position send email addressed to both [Joe Near and David
+Darais](mailto:jnear@uvm.edu,david.darais@uvm.edu) indicating your interest,
+along with your resume and a short paragraph (2–3 sentences) describing your
+background in any of the above topics. Please respond by Thursday, Dec 13.
+
+</pre>
+
+<p class="text-right text-secondary">
+<em>Last updated Dec 5, 2018</em>
+</p>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+  
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+<script>
+  var sdown = new showdown.Converter();
+  sdown.setOption('tables', true);
+  $("pre.markdown").each(function () {
+    var e = $("<div class=markdown></div>");
+    e.html(sdown.makeHtml($(this).text()));
+    $.each(this.attributes,function(i,a) {
+      e.attr(a.name,a.value);
+    });
+    $(this).replaceWith(e);
+  });
+</script>
+
+<!-- Tables -->
+<script>
+  $("table").each(function () {
+    $(this).addClass("table table-striped table-borderless table-sm");
+  });
+  $("thead").each(function () {
+    $(this).addClass("thead-dark");
+  });
+</script>
+
+<!-- Lists -->
+<script>
+  $("li p").contents().unwrap();
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>
+

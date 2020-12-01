@@ -1,0 +1,12 @@
+Program analyzers have proven effective in detecting undesired behavior in
+programs such as crashes, bugs, and security vulnerabilities. Some settings
+require high assurance in the results of program analysis, such as software
+embedded in automobiles or airplanes. To achieve high assurance in the
+correctness or security of a piece of software, formal methods are used to
+automatically construct or check proofs of these properties using computers.
+Achieving high assurance for a piece of software is a monumental task, and is
+widely considered by experts to be out of reach for mainstream use using
+current methods. As a result, verification is only attempted for the most
+critical software components. In this thesis, I describe how to bring high
+assurance software closer to a reality by improving the methods used to develop
+implementations and proofs for program analyzers.

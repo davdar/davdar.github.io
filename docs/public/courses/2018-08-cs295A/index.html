@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- ⌄⌄⌄ Darais Lib ⌄⌄⌄ -->
+  <script>
+    function it() { 
+      var elems = document.getElementsByTagName("script");
+      return elems[elems.length - 1].previousSibling;
+    };
+    function X(num) {
+      var elems;
+      if (num === undefined) {
+        elems = document.getElementsByClassName("X");
+      } else {
+        elems = document.getElementsByClassName("X"+num);
+      }
+      return elems[elems.length - 1];
+    };
+  </script>
+
+  <style>
+    ul {
+      list-style-type: square;
+      margin-left: 0em;
+      padding-left: 1.5em;
+    }
+    ul ul {
+      list-style-type: circle;
+    }
+    pre {
+      margin-left: 2em;
+      color: #e83e8c;
+    }
+    li pre {
+      margin-bottom: 0;
+    }
+    blockquote {
+      border-left: 5px solid #eee;
+      padding-left: 1em;
+      margin-left: 1em;
+      margin-right: 1em;
+    }
+  </style>
+  <!-- ^^^ Darais Lib ^^^ -->
+
+  <title>UVM CS 295A: Software Verification / Fall 2018</title>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      UVM CS 295A: Software Verification / Fall 2018
+    </a>
+  </div>
+</nav>
+
+<main class="container text-justify">
+
+<pre class=markdown>
+
+### Course Description
+
+Software correctness is typically established through exhaustive testing. A
+Python program which has never been executed on examples is likely full of
+bugs, even if it was translated from a correct on-paper algorithm. Software
+verification is the process of eliminating large classes of bugs from software
+such that testing is no longer necessary to gain confidence in its quality.
+
+Software verification is particularly attractive for situations where the
+software is difficult to test (e.g., parallel and quantum algorithms), or where
+absolute correctness is critical (e.g., control code for airplanes). However,
+verification only rules out bugs *for the property which has been verified*.
+Because of this, there will always be situations where testing techniques are
+preferred-to (or complimentary-to) verification techniques. In particular,
+testing techniques are essential for properties which are challenging or
+impossible to specify formally. (E.g., what is the specification for a website
+to be “user-friendly” or for a game to be “fun”?)
+
+In this course we will study advanced methods for software verification.
+Software verification can mean many things—from “lightweight” verification,
+such as verifying the absence of simple type errors, to “middleweight”
+verification, such as verifying the absence of buffer overflows or runtime
+exceptions, to “heavyweight” verification, such as verifying the full
+functional correctness of a C compiler. We will study this entire spectrum of
+verification, with a sharper focus on the following topics: (1) specification
+design, both deep and shallow; (2) automation and semi-automation techniques in
+verification; and (3) correct-by-construction software design. 
+
+We will explore verification topics through a tool called a *proof assistant*.
+Proof assistants allow the embedding of programs within the tool, as well as
+constructing proofs of correctness about the embedded programs. The default
+mode of verification for the tool is manual and interactive, however full
+automation of correctness proofs can also be achieved. After constructing the
+proof of correctness for a piece of software, one then “extracts” an
+executable, certified program from the tool environment. It is also possible to
+mix computation and logical fragments of the tool, which can lead to a more
+correct-by-construction process for certified software design.
+
+The course will consist primarily of programming assignments using a proof
+assistant. There will be a final project at the end of the course where
+students will verify a medium-sized program of their choice. Students taking
+this course for graduate credit will be expected to complete a more substantial
+final project.
+
+Here is an excerpt from the introduction to the Software Foundations series
+which will be used in the latter part of the course:
+
+> Building reliable software is really hard. The scale and complexity of modern
+> systems, the number of people involved, and the range of demands placed on
+> them make it extremely difficult to build software that is even more-or-less
+> correct, much less 100% correct. At the same time, the increasing degree to
+> which information processing is woven into every aspect of society greatly
+> amplifies the cost of bugs and insecurities.
+>
+> Computer scientists and software engineers have responded to these challenges
+> by developing a whole host of techniques for improving software reliability,
+> ranging from recommendations about managing software projects teams (e.g.,
+> extreme programming) to design philosophies for libraries (e.g.,
+> model-view-controller, publish-subscribe, etc.) and programming languages
+> (e.g., object-oriented programming, aspect-oriented programming, functional
+> programming, ...) to mathematical techniques for specifying and reasoning
+> about properties of software and tools for helping validate these properties.
+> The Software Foundations series is focused on this last set of techniques.
+>
+> The text is constructed around three conceptual threads: (1) basic tools from
+> logic for making and justifying precise claims about programs; (2) the use of
+> proof assistants to construct rigorous logical arguments; (3) functional
+> programming, both as a method of programming that simplifies reasoning about
+> programs and as a bridge between programming and logic.
+
+**Prerequisites:** CS 124 (Data Structures and Algorithms) and CS 125
+(Computability and Complexity)
+
+**Recommended (but not required):** CS 225 (Programming Languages)
+
+### Administration
+
+**Lecture:** Tuesdays and Thursdays, 10:05–11:20am, Morrill Hall 010   
+**Instructor:** [David Darais](http://david.darais.com)   
+**Office Hours:** Wednesdays, 1:30–3:30pm, Votey 319
+
+**TAs:** Walter (my dog)   
+![Walter](images/walter.jpg)
+
+**Course Piazza:** [CS 295A: Software Verification](https://piazza.com/class#spring2018/cs295A)   
+*Course announcements and discussion will take place on Piazza exclusively.*
+
+### Textbook
+
+We will use [Kokke and Wadler's Programming Language Foundations in Agda][PLFA]
+and [Pierce et al's Software Foundations Series][SF]. All books are freely
+available online. We will follow Kokke and Wadler's book closely for the first
+half of the class, and the Software Verification volume of Pierce et al's
+series (written by Appel) loosely for the last half of the class. Some homework
+problems will be drawn directly from these textbooks.
+
+[PLFA]: https://plfa.github.io
+[SF]: https://softwarefoundations.cis.upenn.edu
+
+### Software Tools
+
+Throughout the course we will use the [Agda][Agda] programming language and proof
+assistant. For the first assignment you will be required to successfully set up
+and configure Agda on your personal machine. We will use Agda v2.5.4.1. A
+virtual appliance which has Agda installed and configured will also be
+provided.
+
+[Agda]: https://agda.readthedocs.io
+
+You will know your grade for each assignment before submitting. This is because
+Agda is capable of not just running your code, but also checking your work for
+correctness. If your assignment passes Agda's checker, you are guaranteed a
+100% on the assignment.
+
+- [Agda setup](agda-setup.html)
+- [Agda documentation](https://agda.readthedocs.io)
+- [Agda-mode commands and unicode input](https://agda.readthedocs.io/en/v2.5.4.1/tools/emacs-mode.html)
+- [All Agda-mode Unicode](https://github.com/agda/agda/blob/master/src/data/emacs-mode/agda-input.el)
+- ⦗[Basics-v1-A][]⦘ ⦗[Basics-v1-H][]⦘
+- ⦗[Basics-v2-A][]⦘ ⦗[Basics-v2-H][]⦘
+- ⦗[Basics-v3-A][]⦘ ⦗[Basics-v3-H][]⦘
+- ⦗[Basics-v4-A][]⦘ ⦗[Basics-v4-H][]⦘
+- ⦗[Basics-v5-A][]⦘ ⦗[Basics-v5-H][]⦘
+- ⦗[Basics-v6-A][]⦘ ⦗[Basics-v6-H][]⦘
+- ⦗[Basics-v7-A][]⦘ ⦗[Basics-v7-H][]⦘
+- ⦗[Basics-v8-A][]⦘ ⦗[Basics-v8-H][]⦘
+
+[Basics-v1-A]: basics/Basics-v1.agda
+[Basics-v1-H]: basics/html/Basics-v1.html
+[Basics-v2-A]: basics/Basics-v2.agda
+[Basics-v2-H]: basics/html/Basics-v2.html
+[Basics-v3-A]: basics/Basics-v3.agda
+[Basics-v3-H]: basics/html/Basics-v3.html
+[Basics-v4-A]: basics/Basics-v4.agda
+[Basics-v4-H]: basics/html/Basics-v4.html
+[Basics-v5-A]: basics/Basics-v5.agda
+[Basics-v5-H]: basics/html/Basics-v5.html
+[Basics-v6-A]: basics/Basics-v6.agda
+[Basics-v6-H]: basics/html/Basics-v6.html
+[Basics-v7-A]: basics/Basics-v7.agda
+[Basics-v7-H]: basics/html/Basics-v7.html
+[Basics-v8-A]: basics/Basics-v8.agda
+[Basics-v8-H]: basics/html/Basics-v8.html
+
+### Policies
+
+**Grades:** Your grade for the course will be calculated as follows: 80%
+Assignments (10 assignments at 8% each assignment), and 20% Final Project. 
+You are guaranteed a 100% on your assignment if it passes the Agda type
+checker.
+
+**Late Work:** Each assignment will be released after class on a Thursday and
+due before class one week later. Late work will not be accepted.
+
+**Collaboration:** Collaboration on the high-level ideas and approach on
+assignments is encouraged. Copying someone else's work is not allowed. Any
+collaboration, even at a high level, must be declared when you submit your
+assignment. Every assignment must include a collaboration statement. E.g., “I
+discussed high-level strategies for solving problem 2 and 5 with Alex.”
+Students caught copying work are eligible for immediate failure of the course
+and disciplinary action by the University. All academic integrity misconduct
+will be treated according to [UVM's Code of Academic Integrity][UVM-CAI].
+
+[UVM-CAI]: https://www.uvm.edu/policies/student/acadintegrity.pdf
+
+**Small Group Assignments:** For homeworks 6–10 you will be allowed to work in
+groups of size 1–2 (independently or in pairs). You may submit a single
+solution to the assignment for 2-person groups. There will be more detailed
+instructions about how to submit groupwork in the assignment writeup.
+
+**Final Group Project:** For the final project, you will be allowed to work in
+groups of size 1–4, however I will expect a larger amount of work to be
+completed as group size increases.
+
+### Schedule
+
+Date        | Topic                                                                              | Homework                       
+------------|------------------------------------------------------------------------------------|-------------------------------------
+Tue, Aug 28 | Welcome ⅋ Overview ⦗[LH1][]⦘                                                       |                                
+Thu, Aug 30 | Intro to Verification ⦗[LH2][]⦘                                                    |                                
+Tue, Sep 04 | PLFA: Naturals  ⦗[IC3-A][]⦘ ⦗[IC3-H][]⦘ ⦗[LA3-A][]⦘ ⦗[LA3-H][]⦘                    |                                
+Thu, Sep 06 | PLFA: Induction ⦗[IC4-A][]⦘ ⦗[IC4-H][]⦘ ⦗[LA4-A][]⦘ ⦗[LA4-H][]⦘                    | HW1 ⦗[HW1-A][]⦘ ⦗[HW1-H][]⦘ ⦗[SL1-H][]⦘
+Tue, Sep 11 | PLFA: Relations 1 ⦗[IC5-A][]⦘ ⦗[IC5-H][]⦘ ⦗[LA5-A][]⦘ ⦗[LA5-H][]⦘                  |                                
+Thu, Sep 13 | PLFA: Relations 2 ⦗[IC6-A][]⦘ ⦗[IC6-H][]⦘ ⦗[LA6-A][]⦘ ⦗[LA6-H][]⦘                  | HW1 Due ⌁ HW2 Release ⦗[HW2-A][]⦘ ⦗[HW2-H][]⦘ ⦗[SL2-H][]⦘
+Tue, Sep 18 | PLFA: Connectives ⦗[IC7-A][]⦘ ⦗[IC7-H][]⦘ ⦗[LA7-A][]⦘ ⦗[LA7-H][]⦘                  |                                
+Thu, Sep 20 | PLFA: Negation ⅋ Quantification ⦗[IC8-A][]⦘ ⦗[IC8-H][]⦘ ⦗[LA8-A][]⦘ ⦗[LA8-H][]⦘    | HW2 Due ⌁ HW3 Release ⦗[HW3-A][]⦘ ⦗[HW3-H][]⦘ ⦗[SL3-H][]⦘
+Tue, Sep 25 | *No Class*                                                                         |                                
+Thu, Sep 27 | *No Class*                                                                         | HW3 Due ⌁ HW4 Release ⦗[HW4-A][]⦘ ⦗[HW4-H][]⦘ ⦗[SL4-H][]⦘
+Tue, Oct 02 | PLFA: Decidable ⦗[IC9-A][]⦘ ⦗[IC9-H][]⦘  ⦗[LA9-A][]⦘ ⦗[LA9-H][]⦘                   |                                
+Thu, Oct 04 | PLFA: Lists ⦗[IC10-A][]⦘ ⦗[IC10-H][]⦘ ⦗[LA10-A][]⦘ ⦗[LA10-H][]⦘                    | HW4 Due ⌁ HW5 Release ⦗[HW5-A][]⦘ ⦗[HW5-H][]⦘ ⦗[SL5-H][]⦘
+Tue, Oct 09 | Type Classes ⅋ Insertion Sort ⦗[IC11-A][]⦘ ⦗[IC11-H][]⦘ ⦗[LA11-A][]⦘ ⦗[LA11-H][]⦘  |                                
+Thu, Oct 11 | Selection Sort ⦗[IC12-A][]⦘ ⦗[IC12-H][]⦘ ⦗[LA12-A][]⦘ ⦗[LA12-H][]⦘                 | HW5 Due ⌁ HW6 Release ⦗[HW6-A][]⦘ ⦗[HW6-H][]⦘ ⦗[SL6-H][]⦘
+Tue, Oct 16 | Termination and Merge Sort ⦗[IC13-A][]⦘ ⦗[IC13-H][]⦘ ⦗[LA13-A][]⦘ ⦗[LA13-H][]⦘     |                                
+Thu, Oct 18 | Well Founded Induction ⦗[IC14-A][]⦘ ⦗[IC14-H][]⦘  ⦗[LA14-A][]⦘ ⦗[LA14-H][]⦘        | HW6 Due ⌁ HW7 Release ⦗[HW7-A][]⦘ ⦗[HW7-H][]⦘ ⦗[SL7-H][]⦘
+Tue, Oct 23 | Permutation and Ordering ⦗[IC15-A][]⦘ ⦗[IC15-H][]⦘ ⦗[LA15-A][]⦘ ⦗[LA15-H][]⦘       |                                
+Thu, Oct 25 | Intro Red Black Trees ⦗[IC16-A][]⦘ ⦗[IC16-H][]⦘ ⦗[LA16-A][]⦘ ⦗[LA16-H][]⦘          | HW7 Due ⌁ HW8 Release ⦗[HW8-A][]⦘ ⦗[HW8-H][]⦘ ⦗[SL8-H][]⦘
+Tue, Oct 30 | 2-3 Trees  ⦗[IC17-A][]⦘ ⦗[IC17-H][]⦘ ⦗[LA17-A][]⦘ ⦗[LA17-H][]⦘                     |                                
+Thu, Nov 01 | 2-3 Trees Insertion ⦗[IC18-A][]⦘ ⦗[IC18-H][]⦘ ⦗[LA18-A][]⦘ ⦗[LA18-H][]⦘            | HW8 Due ⌁ HW9 Release ⦗[HW9-A][]⦘ ⦗[HW9-H][]⦘ ⦗[SL9-H][]⦘
+Tue, Nov 06 | Vectors, Matrices and Graph ⦗[IC19-A][]⦘ ⦗[IC19-H][]⦘ ⦗[LA19-A][]⦘ ⦗[LA19-H][]⦘    |                                
+Thu, Nov 08 | Depth First Search ⦗[IC19-A][]⦘ ⦗[IC19-H][]⦘ ⦗[LA19-A][]⦘ ⦗[LA19-H][]⦘             | HW9 Due ⌁ HW10 Release ⦗[HW10-A][]⦘ ⦗[HW10-H][]⦘ ⦗[SL10-H][]⦘
+Tue, Nov 13 | Final Project Topic Review                                                         |                                
+Thu, Nov 15 | Final Projects                                                                     | HW10 Due                       
+Thu, Nov 20 | *Thanksgiving Recess*                                                              |                                
+Thu, Nov 22 | *Thanksgiving Recess*                                                              |                                
+Tue, Nov 27 | Reflective Solvers ⦗[IC20-A][]⦘ ⦗[IC20-H][]⦘  ⦗[LA20-A][]⦘ ⦗[LA20-H][]⦘            |                                
+Thu, Nov 29 | Variables, Scope and Binding                                                       |                                
+Tue, Dec 04 | ??                                                                                 |                                
+Thu, Dec 06 | Final Project Presentations                                                        | Final Project Due              
+
+[LH1]: lh/lh1.html
+[LH2]: lh/lh2.html
+
+[IC3-A]: ic/ic3.agda
+[IC4-A]: ic/ic4.agda
+[IC5-A]: ic/ic5.agda
+[IC6-A]: ic/ic6.agda
+[IC7-A]: ic/ic7.agda
+[IC8-A]: ic/ic8.agda
+[IC9-A]: ic/ic9.agda
+[IC10-A]: ic/ic10.agda
+[IC11-A]: ic/ic11.agda
+[IC12-A]: ic/ic12.agda
+[IC13-A]: ic/ic13.agda
+[IC14-A]: ic/ic14.agda
+[IC15-A]: ic/ic15.agda
+[IC16-A]: ic/ic16.agda
+[IC17-A]: ic/ic17.agda
+[IC18-A]: ic/ic18.agda
+[IC19-A]: ic/ic19.agda
+[IC20-A]: ic/ic20.agda
+
+[IC3-H]: ic/html/ic3.html
+[IC4-H]: ic/html/ic4.html
+[IC5-H]: ic/html/ic5.html
+[IC6-H]: ic/html/ic6.html
+[IC7-H]: ic/html/ic7.html
+[IC8-H]: ic/html/ic8.html
+[IC9-H]: ic/html/ic9.html
+[IC10-H]: ic/html/ic10.html
+[IC11-H]: ic/html/ic11.html
+[IC12-H]: ic/html/ic12.html
+[IC13-H]: ic/html/ic13.html
+[IC14-H]: ic/html/ic14.html
+[IC15-H]: ic/html/ic15.html
+[IC16-H]: ic/html/ic16.html
+[IC17-H]: ic/html/ic17.html
+[IC18-H]: ic/html/ic18.html
+[IC19-H]: ic/html/ic19.html
+[IC20-H]: ic/html/ic20.html
+
+[LA3-A]: la/la3.agda
+[LA4-A]: la/la4.agda
+[LA5-A]: la/la5.agda
+[LA6-A]: la/la6.agda
+[LA7-A]: la/la7.agda
+[LA8-A]: la/la8.agda
+[LA9-A]: la/la9.agda
+[LA10-A]: la/la10.agda
+[LA11-A]: la/la11.agda
+[LA12-A]: la/la12.agda
+[LA13-A]: la/la13.agda
+[LA14-A]: la/la14.agda
+[LA15-A]: la/la15.agda
+[LA16-A]: la/la16.agda
+[LA17-A]: la/la17.agda
+[LA18-A]: la/la18.agda
+[LA19-A]: la/la19.agda
+[LA20-A]: la/la20.agda
+
+[LA3-H]: la/html/la3.html
+[LA4-H]: la/html/la4.html
+[LA5-H]: la/html/la5.html
+[LA6-H]: la/html/la6.html
+[LA7-H]: la/html/la7.html
+[LA8-H]: la/html/la8.html
+[LA9-H]: la/html/la9.html
+[LA10-H]: la/html/la10.html
+[LA11-H]: la/html/la11.html
+[LA12-H]: la/html/la12.html
+[LA13-H]: la/html/la13.html
+[LA14-H]: la/html/la14.html
+[LA15-H]: la/html/la15.html
+[LA16-H]: la/html/la16.html
+[LA17-H]: la/html/la17.html
+[LA18-H]: la/html/la18.html
+[LA19-H]: la/html/la19.html
+[LA20-H]: la/html/la20.html
+
+[HW1-A]: hw/hw1.agda
+[HW2-A]: hw/hw2.agda
+[HW3-A]: hw/hw3.agda
+[HW4-A]: hw/hw4.agda
+[HW5-A]: hw/hw5.agda
+[HW6-A]: hw/hw6.agda
+[HW7-A]: hw/hw7.agda
+[HW8-A]: hw/hw8.agda
+[HW9-A]: hw/hw9.agda
+[HW10-A]: hw/hw10.agda
+
+[HW1-H]: hw/html/hw1.html
+[HW2-H]: hw/html/hw2.html
+[HW3-H]: hw/html/hw3.html
+[HW4-H]: hw/html/hw4.html
+[HW5-H]: hw/html/hw5.html
+[HW6-H]: hw/html/hw6.html
+[HW7-H]: hw/html/hw7.html
+[HW8-H]: hw/html/hw8.html
+[HW9-H]: hw/html/hw9.html
+[HW10-H]: hw/html/hw10.html
+
+[SL1-A]: sl/sl1.agda
+[SL2-A]: sl/sl2.agda
+[SL3-A]: sl/sl3.agda
+[SL4-A]: sl/sl4.agda
+[SL5-A]: sl/sl5.agda
+[SL6-A]: sl/sl6.agda
+[SL7-A]: sl/sl7.agda
+[SL8-A]: sl/sl8.agda
+[SL9-A]: sl/sl9.agda
+[SL10-A]: sl/sl10.agda
+
+[SL1-H]: sl/html/sl1.html
+[SL2-H]: sl/html/sl2.html
+[SL3-H]: sl/html/sl3.html
+[SL4-H]: sl/html/sl4.html
+[SL5-H]: sl/html/sl5.html
+[SL6-H]: sl/html/sl6.html
+[SL7-H]: sl/html/sl7.html
+[SL8-H]: sl/html/sl8.html
+[SL9-H]: sl/html/sl9.html
+[SL10-H]: sl/html/sl10.html
+
+</pre>
+
+<p class="text-right text-secondary">
+<em>Last updated Oct 4 30, 2018</em>
+</p>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+  
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+<script>
+  var sdown = new showdown.Converter();
+  sdown.setOption('tables', true);
+  $("pre.markdown").each(function () {
+    var e = $("<div class=markdown></div>");
+    e.html(sdown.makeHtml($(this).text()));
+    $.each(this.attributes,function(i,a) {
+      e.attr(a.name,a.value);
+    });
+    $(this).replaceWith(e);
+  });
+</script>
+
+<!-- Tables -->
+<script>
+  $("table").each(function () {
+    $(this).addClass("table table-striped table-borderless table-sm");
+  });
+  $("thead").each(function () {
+    $(this).addClass("thead-dark");
+  });
+</script>
+
+<!-- Lists -->
+<script>
+  $("li p").contents().unwrap();
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- ⌄⌄⌄ Darais Lib ⌄⌄⌄ -->
+  <script>
+    function it() { 
+      var elems = document.getElementsByTagName("script");
+      return elems[elems.length - 1].previousSibling;
+    };
+    function X(num) {
+      var elems;
+      if (num === undefined) {
+        elems = document.getElementsByClassName("X");
+      } else {
+        elems = document.getElementsByClassName("X"+num);
+      }
+      return elems[elems.length - 1];
+    };
+  </script>
+
+  <style>
+    ul {
+      list-style-type: square;
+      margin-left: 0em;
+      padding-left: 1.5em;
+    }
+    ul ul {
+      list-style-type: circle;
+    }
+    pre {
+      margin-left: 2em;
+      color: #e83e8c;
+    }
+    li pre {
+      margin-bottom: 0;
+    }
+    blockquote {
+      border-left: 5px solid #eee;
+      padding-left: 1em;
+      margin-left: 1em;
+      margin-right: 1em;
+    }
+  </style>
+  <!-- ^^^ Darais Lib ^^^ -->
+
+  <title>UVM CS 295A: Software Verification / Fall 2018</title>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="../index.html">
+      UVM CS 295A: Software Verification / Fall 2018
+    </a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">
+          Intro to Verification
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main class="container text-justify">
+
+<pre class=markdown>
+### Intro to Verification
+
+#### Specification
+- verification = algorithm + specification + proof
+    + algorithm = Java/Python/pseudocode/math
+    + specification = annotations/math
+    + proof = automatic-tool/math
+- in this class (and in Agda) we will unify each of these settings (it's all
+  math)
+- running theme: definitions matter
+
+#### Algorithm ᴠ Specification
+- You are probably used to thinking of these as separate entities. E.g.,
+  algorithms are written in a programming language and math is written on
+  paper. This is a good starting intuition, but we will start to blur these
+  lines.
+- Notation for today:
+  + `p : A → B` is an algorithm `p` that computes a `B` given input `A`
+  + `p ∈ A → B` is a mathematical function `p` that *specifies* a mapping
+    from `A` things to `B` things (but not necessarily how to *compute*
+    something)
+  + we will write `⟦p⟧ ∈ A → B` as the injection of programs `p : A → B` into
+    “math world”
+  + in addition to sets and functions in math world, we also have
+    propositions and logical formulas, like implication `P ⟹ Q` and
+    quantification `∀ x∈X. P(x)` (for propositions `P` and `Q` and sets `X`).
+
+E.g., consider the famous halting problem for Turing machines. The theorem
+says:
+
+> There does not exist an algorithm which, when given an arbitrary turing
+> machine as input, outputs true if and only if the turing machine halts.
+
+In notation we would write this as a theorem `hp`:
+
+    hp ≜ ¬∃p:(𝑇𝑀 → 𝔹) 𝑠𝑡 ∀ m ∈ 𝑇𝑀. ⟦p⟧(m) = true ⟺ halts(m)
+
+
+However, there *does* exist a (non-algorithmic) function which maps turing
+machines to their halting behavior:
+
+    p ∈ 𝑇𝑀 → 𝔹
+    p(m) ≜ true  if halts(m)
+    p(m) ≜ false if ¬halts(m)
+
+The theorem `hp` says that no *algorithm* `p : 𝑇𝑀 → 𝔹` exists, but the
+mapping is perfectly valid as a mathematical function.
+
+#### Specifications for Sorting
+Let's try to write a specification for sorting:
+-   `fancy-sort : list → list`
+-   `fancy-sort : vec → vec`
+-   `fancy-sort : list(int) → list(int)`
+-   `fancy-sort : ∀ X. ordered(X) ⟹ list(int) → list(int)`
+-   `fancy-sort : list(int) → { xs ∈ vec(int) | sorted(xs) }`   
+    (is this the full spec? no.)
+-   `fancy-sort : { xs ∈ vec(int) } → { ys ∈ list(int) | sorted(xs) ∧ (∀ x. x ∈ xs ⟺ x ∈ ys)}`   
+    (is this the full spec? oops wrote xs instead of ys.)
+-   `fancy-sort : { xs ∈ vec(int) } → { ys ∈ list(int) | sorted(ys) ∧ (∀ x. x ∈ xs ⟺ x ∈ ys)}`   
+    (is this the full spec? no. allowed to drop/add elements.)
+-   `fancy-sort : { xs ∈ vec(int) } → { ys ∈ list(int) | sorted(ys) ∧ perm(xs,ys)}`   
+-   what's wrong with a spec like this?   
+    `fancy-sort : { xs ∈ vec(int) } → { ys ∈ list(int) | ys = sort(xs) }`   
+    nothing! In particular:
+    +   `sort` here need not be an algorithm
+    +   `sort` need not be efficient or clever
+    +   E.g., `sort(xs) = selection-sort(xs)` and `fancy-sort(xs) =
+        quick-sort(xs)`, i.e., verifying that quick-sort is equal to selection-sort
+        is a valid way to verify quick-sort.
+-   what else could go wrong? we aren't saying anything about `fancy-sort` not
+    being a stupid slow algorithm. E.g.   
+
+        fancy-sort(xs) ≜ 
+          let ys = random-list()
+          if is-sorted(ys) ∧ is-permutation(xs,ys)
+            return ys
+          else
+            fancy-sort(xs)
+
+    this algorithm terminates with probability one, but is incredibly
+    inefficient. How would you specify that it is efficient? (E.g., O(N) running
+    time?)
+
+        cost(fancy-sort,xs) = length(xs)
+        cost(fancy-sort,xs) ≤ length(xs)
+        cost(fancy-sort,xs) ≤ c*length(xs)
+        cost(fancy-sort,xs) ≤ c*length(xs) + d
+        [✗] ∀ xs. ∃ c,d 𝑠𝑡 cost(fancy-sort,xs) ≤ c*length(xs) + d
+        [✓] ∃ c,d 𝑠𝑡 ∀ xs. cost(fancy-sort,xs) ≤ c*length(xs) + d
+
+    notice that we can't use `⟦_⟧`, we need an explicit `cost` function. In Agda
+    we will get `⟦_⟧` for free, but not `cost`, which makes the verification of
+    running times a lot harder.
+
+How would you define `sorted`?   
+
+    sorted ∈ list → prop
+    sorted(xs) ≜ ?
+
+This begs the question… how is `list` defined? I can think of two ways. First,
+defined as a function—this is the “extensional” definition, and how a
+mathematician might define it:
+
+    e ∈ elem
+    xs ∈ list ≜ { f ∈ ℕ ⇀ elem | ∀ i &lt; j. f(j) defined ⟹ f(i) defined 
+                               ∧ ∃i. f(i) not defined }
+
+Second, the “intensional” definition, and how a computer scientist might define
+it:
+
+    e ∈ elem
+    xs ∈ list ⩴ ∅ | e⋅xs
+
+and where the indexing function is defined inductively:
+
+    e[_] ∈ ℕ ⇀ elem
+    ∅[n] not defined
+    (e⋅xs)[0] ≜ e
+    (e⋅xs)[n+1] ≜ (e⋅xs)[n]
+
+Both are equivalent. Some specs are easier to state for one of the other, and
+some proofs are easier to write for one or the other.
+
+Back to sorted… I can think of two ways to define sorted. First, using the
+extensional definition:
+
+    sorted(xs) ≜ ∀i ≤ j. xs(i) ≤ xs(j)
+
+sorted-ness is the same as the extensional behavior of the indexing function
+(`f ∈ ℕ ⇀ elem` above) being monotonic. Cool!
+
+Second, using the intensional definition:
+
+    sorted(∅) ≜ true
+    sorted(e⋅xs) ≜ sorted(xs) ∧ e ≤ head(xs)
+
+where
+    
+    head ∈ list → 𝔹⊎❴∞❵
+    head(∅) = ∞
+    head(e⋅xs) = e
+
+What about defining permutation? As we saw before, this definition doesn't cut
+it:
+
+    perm(xs,ys) ≜ ∀x. x ∈ xs ⟺ x ∈ ys
+
+however a counting function could be used instead of pure membership:
+
+    perm(xs,ys) ≜ ∀ x. count(x,xs) = count(x,ys)
+
+we could also define permutation inductively:
+
+    perm(∅,ys) ≜ ys = ∅
+    perm(e⋅xs,ys) ≜ e ∈ ys ∧ perm(xs,remove(e,ys))
+
+or purely extensionally (as a mathematician would) as the existence of a
+permutation function:
+
+    perm(xs,ys) ≜ ∃ π ∈ (dom(xs)∩dom(ys)) → (dom(xs)∩dom(ys)) 𝑠𝑡 π is 1-to-1 ∧ ∀ i. xs(i) = ys(π(i))
+
+### Homework
+
+Install Agda for next time (see course webpage for instructions)
+
+### Final Project Ideas
+- cost/complexity
+- termination
+- probabilistic behavior (e.g., termination)
+
+</pre>
+
+<p class="text-right text-secondary">
+<em>Last updated Aug 31, 2018</em>
+</p>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+<script>
+  var sdown = new showdown.Converter();
+  sdown.setOption('tables', true);
+  $("pre.markdown").each(function () {
+    var e = $("<div class=markdown></div>");
+    e.html(sdown.makeHtml($(this).text()));
+    $.each(this.attributes,function(i,a) {
+      e.attr(a.name,a.value);
+    });
+    $(this).replaceWith(e);
+  });
+</script>
+
+<!-- Tables -->
+<script>
+  $("table").each(function () {
+    $(this).addClass("table table-striped table-borderless table-sm");
+  });
+  $("thead").each(function () {
+    $(this).addClass("thead-dark");
+  });
+</script>
+
+<!-- Lists -->
+<script>
+  $("li p").contents().unwrap();
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>
+
+
+

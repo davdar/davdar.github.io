@@ -1,0 +1,15 @@
+Program analyzers are useful for a spectrum of software development tasks,
+ranging from bug-finding to verification. Many program analysis tools exist and
+are usable by non-experts, however each tool is tailored to a narrow range of
+(1) supported analysis tasks, and (2) supported programming languages. If a new
+type of analysis or supported programming language is desired, the developer is
+often faced with designing their own analyzer from scratch. In this talk I will
+present a simple and extensible approach to designing new program analyzers.
+The technique is based on a high-level interpreters, and supports both (1)
+arbitrary analysis tasks, and (2) reuse of analysis machinery across
+programming languages. By using this framework, many components of a
+from-scratch analyzer are obtained for free: large pieces of the soundness
+proof, execution and termination of the analysis, and variations between path
+and flow sensitivity. Using this technique, it is possible to build
+from-scratch analyzers for new analysis property and programming languages with
+little effort compared to previous approaches. 

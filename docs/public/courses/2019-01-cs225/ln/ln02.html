@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.1.css">
+
+  <!-- Title -->
+  <meta name="title" content="Lecture Notes: 02">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+
+# Course Technical Introduction
+
+## Context w.r.t. Models of Computation
+
+- First(ish) model of computation: Turing Machines (TM) (Turing, 1936)
+  - First model for what an algorithm (1) *is*, (2) *is capable of* and (3) *is
+    not capable of*.
+  - Low level, intuitive abstraction for a “machine”
+  - “Transition rules” as (not great) abstraction for code
+  - “Infinite tape” as (good) abstraction for memory
+  - “Rule application” as (mixed) abstraction for program execution
+  - Not a programming language
+
+E.g.:
+
+    ⟨Q,Γ,b,Σ,δ,q₀,F⟩
+    Q ≜ {1,2,3}
+    F ≜ {'a','b',' '}
+    b ≜ ' '
+    Σ ≜ {'a','b'}
+    q₀ ≜ 1
+    F ≜ {2,3}
+    δ(1,'a',R) ≜ (2,' ')
+    δ(1,'b',R) ≜ (3,' ')
+
+- Second(ish) model of computation: Lambda Calculus (LC) (Church, 1936)
+  - Church and Turing were buds
+  - Simpler than TMs
+  - Direct connections with formal logic
+  - “Symbolic expression” as (good) abstraction for code
+  - “Size of symbolic expression” as (not great) abstraction for memory
+  - “Substitution” as (mixed) abstraction for program execution
+  - Basis for understanding all programming language
+  - Basis for design of functional programming languages
+
+E.g.:
+
+    λx.x      -- conditional
+    λx.λy.x   -- true
+    λx.λy.y   -- false
+
+*Early programming languages looked more like Turing Machines, modern
+programming languages look more like lambda calculus.* They were invented
+around the same time...
+
+*Running theme in this course: Everything “new” in programming language
+modeling and design that hits mainstream is actually very very old.*
+
+TM and LC were developed to study what computer programs are capable of. For
+example, there is Turing's famous halting problem which states:
+
+> There does not exist a turing machine M that takes as input another turing
+> machine N, and eventually halts with one output bit which is true iff N
+> halts, and false iff N does not halt.
+
+I.e., the “halting problem” is undecidable.
+
+## Programming Language Semantics
+
+For now we are less interested in “how” computation happens, and more
+interested in “what” a computation means. For this reason we will not use
+either TM or LC as a framework for studying the meaning of programs. For now we
+will use intermediate discrete math.
+
+What does this program mean? (APL, 1966)
+
+    ↑+.×/N/⊂2 2⍴1 1 1 0
+
+*Obviously* this is the Fibonacci sequence. How do we *show* this is the case?
+We need a semantics for APL, and a description of the Fibonacci sequence in
+that semantic domain. Here's what this looks like abstractly.
+
+(examples taken from: http://microapl.com/APL/getting_started_chapter1.html)
+
+    APL-term ∈ set
+
+    e.g., 
+      1 ∈ APL-term             -- evaluates to 1
+      1+1 ∈ APL-term           -- evaluates to 2
+      1+1 2 3 ∈ APL-term       -- evaluates to 2 3 4
+      1 2+3 4 5 ∈? APL-term    -- error (syntax error or evaluation error?)
+      3×3-1 ∈ APL-term         -- evaluates to 6
+      2 3 1+8÷2 2 2 ∈ APL-term -- evaluates to 6 7 5
+
+Now that we have a (mathematical) set of APL-terms, let's define a
+(mathematical) set for results of APL expressions:
+
+    ℝ ∈ set
+    ℝ* ∈ set
+
+    APL-result ∈ set
+    APL-result ≜ ℝ*
+
+What does `ℝ*` mean?
+
+    ℝ¹ ≜ ℝ
+    ℝ² ≜ ℝ × ℝ 
+       = {⟨x,y⟩ | x ∈ ℝ, y ∈ ℝ❵
+    ℝ³ ≜ ℝ × ℝ × ℝ
+    ℝ* ≜ ∃n∈ℕ. ℝⁿ
+
+The notation is precise (good) but more intimidating than necessary. `ℝ*` is
+just a list of real numbers. In java, you might use the type
+`ArrayList<Double>`.
+
+Programming languages are given meaning through an *interpretation* function,
+written with funny brackets called “Oxford brackets”:
+
+    ⟦_⟧ ∈ APL-term ⇀ APL-result
+
+*Aside:* We often standardize on metavariables to implicitly always live in a
+particular set. We will use the following implicit metavariables:
+
+    r ∈ ℝ
+    e ∈ APL-term
+
+The set `APL-term` is defined as an inductively defined set:
+
+    r₁ … rₙ ∈ APL-term      -- r₁ ‥ rₙ IS AN APL-term
+
+    e₁ ∈ APL-term           -- IF e₁ IS AN APL-term
+    e₂ ∈ APL-term           -- AND e₂ IS AN APL-term
+    ----------------------  --
+    e₁ + e₂ ∈ APL-term      -- THEN e₁ + e₂ IS AN APL-term
+
+    e ∈ APL-term            -- IF e IS AN APL-term
+    ----------------        --
+    r × e ∈ APL-term        -- THEN r × e IS AN APL-term
+
+which is often abbreviated as:
+
+    e ∈ APL-term ⩴ r … r | e + e | r × e
+
+The interpretation function is defined by induction on the syntax.
+
+    ⟦r₁ … rₙ⟧ ≜ ⟨r₁,…,rₙ⟩ ∈ ℝⁿ ⊆ ℝ*
+    ⟦e₁ + e₂⟧ ≜ ⟨r₁+s₁,…,rₙ+sₙ⟩ ∈ ℝⁿ ⊆ ℝ*
+      where
+        ⟨r₁,…,rₙ⟩ = ⟦e₁⟧ ∈ ℝⁿ
+        ⟨s₁,…,sₙ⟩ = ⟦e₂⟧ ∈ ℝⁿ
+    ⟦r × e⟧ ≜ ⟨r×s₁,…,r×sₙ⟩ ∈ ℝⁿ ⊆ ℝ*
+      where
+        ⟨s₁,…,sₙ⟩ = ⟦e⟧ ∈ ℝⁿ
+
+Note that this definition is partial because `⟦e₁ + e₂⟧` requires the meaning
+of both `e₁` and `e₂` to have the same dimension. This is why the set that
+`⟦_⟧` lives in was written with a `⇀` and not `→`—to indicate this
+“partiality”.
+
+Moving to a slightly more abstract description:
+
+*A “language” `ℒ` is some inductively defined set of symbols with finite
+length.*
+
+*A “denotation” `𝒟` is some well-defined mathematical set.*
+
+*A “denotational semantics” is a function `⟦_⟧ ∈ ℒ → 𝒟` which gives mathematical
+meaning to language terms.*
+
+*Aside:* What happened to the partiality of `⟦_⟧`, i.e., the partial arrow
+“`⇀`”? Partiality is easy to disguise as totality by extending a set with a
+distinguished element `⊥`. Formally, this equivalence is written `A ⇀ B = A → B
+⊎ {⊥}`. The operator `⊎` is pronounced “disjoint union” and `{⊥}` is a
+singleton set. `B ⊎ {⊥}` means “a set that is just like B, but contains exactly
+one new element `⊥`, which is guaranteed to be different than all elements of
+`B`.”
+
+Why are we doing this? Consider these two APL programs:
+
+    e₁ ≜ 3 4+3 4
+
+    e₂ ≜ 2×3 4
+
+These are *different programs*, that is, `e₁ ≠ e₂`, however, they are
+*equivalent programs*, i.e., they have the same meaning, which is shown by
+`⟦e₁⟧ = ⟦e₂⟧`.
+
+The value of this approach is we can extend our notion of equivalence to
+programs with variables:
+
+    e₁ ≜ a b+a b
+    e₂ ≜ 2×a b
+  
+These *programs fragments* are also equivalent, even thought they are not
+“complete programs” (i.e., they have “free variables”).
+
+*Aside:* what's a compiler? A compiler is (1) another language `𝒞` which is
+typically a much lower level of abstraction, and suitable for execution on
+hardware (e.g., assembly code), (2) a semantics for `𝒞` as `⟦_⟧ ∈ 𝒞 → 𝒟`, and
+(3) a function `compile ∈ ℒ → 𝒞` which preserves the meaning of programs, that
+is, `⟦compile(e)⟧ = ⟦e⟧`.
+
+## Course Structure
+
+The first 1/2 of the course will follow a pattern:
+
+1. Start with the smallest language we can think of: `ℒ`
+2. Design a domain `𝒟` in which we will give meaning to the language
+3. Implement and interpreter for this language in Haskell (`⟦_⟧ ∈ ℒ → 𝒟`)
+4. Extend the language with one new programming language feature
+5. GOTO 2
+
+Along the way we will discuss how these features appear in mainstream
+languages, which languages got the feature right, and which languages got the
+feature wrong.
+
+## Haskell Setup
+
+See [Haskell Setup].
+
+[Haskell Setup]: ../haskell-setup.html
+
+## Haskell Tutorial
+
+Let's play with `stack ghci`:
+
+    Prelude> 1
+    1
+    Prelude> :t 1
+    1 :: Num p => p
+    Prelude> :t 1.1
+    1.1 :: Fractional p => p
+    Prelude> 1 :: Int
+    1
+    Prelude> 1 :: Double
+    1.0
+    Prelude> 1.1 :: Int
+    
+    <interactive>:6:1: error:
+        • No instance for (Fractional Int) arising from the literal ‘1.1’
+        • In the expression: 1.1 :: Int
+          In an equation for ‘it’: it = 1.1 :: Int
+    Prelude> 1.1 :: Double
+    1.1
+    Prelude> 1 + 1.1
+    2.1
+    Prelude> :t 1 : 1.1
+    1 : 1.1 :: (Fractional [a], Num a) => [a]
+    Prelude> :t 1 + 1.1
+    1 + 1.1 :: Fractional a => a
+    Prelude> 1 / 2
+    0.5
+    Prelude> 1 `div` 2
+    0
+    Prelude> :t 1 / 1
+    1 / 1 :: Fractional a => a
+    Prelude> :t 1 / 2
+    1 / 2 :: Fractional a => a
+    Prelude> [1,2]
+    [1,2]
+    Prelude> (1,2)
+    (1,2)
+    Prelude> :t [1,2]
+    [1,2] :: Num a => [a]
+    Prelude> :t [1::Int,2]
+    [1::Int,2] :: [Int]
+    Prelude> :t (1::Int,2)
+    (1::Int,2) :: Num b => (Int, b)
+    Prelude> :t (1::Int,2::Int)
+    (1::Int,2::Int) :: (Int, Int)
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<script>
+</script>
+  
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.2.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="favicon.ico">
+
+  <title>David Darais</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/starter-template.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">David Darais</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container"><div class="starter-template">
+
+<h3>Abstract Interpretation</h3>
+
+Papers about abstract interpretation. Subtopics are sorted descending by
+publication date.
+
+<h4>Classics</h4>
+<ul>
+  <li>
+    Patrick Cousot and Radhia Cousot.
+    <a href="http://www.di.ens.fr/~cousot/publications.www/CousotCousot-POPL-77-ACM-p238--252-1977.pdf">
+      Abstract Interpretation: A Unified Lattice Model for Static Analysis of Programs by Construction of Approximation Fixpoints</a>.
+    Principles of Programming Languages (POPL) '77. ACM 1977.
+  </li>
+</ul>
+
+<h4>Widening</h4>
+<ul>
+  <li>
+  Agostino Cortesi.
+  <a href="http://www.dsi.unive.it/~cortesi/paperi/sefm08.pdf">Widening Operators for Abstract Interpretation</a>.
+  Software Engineering and Formal Methods (SEFM) '08. IEEE 2008.
+  </li>
+  <li>
+  Patrick Cousot and Radhia Cousot.
+  <a href="http://www.di.ens.fr/~cousot/publications.www/CousotCousot-PLILP-92-LNCS-n631-p269--295-1992.pdf">
+    Comparing the Galois Connection and Widening/Narrowing Approaches to Abstract Interpretation</a>.
+  Programming Language Implementation and Logic Programming (PLILP) '05. Springer 2005.
+  </li>
+</ul>
+
+
+<h4>Formal Verification</h4>
+<ul>
+  <li>
+  Jacques-Henri Jourdan, Vincent Laporte, Sandrine Blazy, Xavier Leroy and David Pichardie.
+  <a href="http://gallium.inria.fr/~xleroy/publi/verasco-popl2015.pdf">
+    A Formally-verified C Static Analyzer</a>.
+  Principles of Programming Languages (POPL) '15. ACM 2015.
+  </li>
+  <li>
+  David Monniaux. 
+  <a href="http://www-verimag.imag.fr/PUBLIS/uploads/knwto5897.pdf">
+    A Minimalistic Look at Widening Operators</a>.
+  Higher Order and Symbolic Computation (HOSC) '09. Springer 2009.
+  </li>
+  <li>
+  Frédéric Besson, David Cachera, Thomas Jensen and David Pichardie.
+  <a href="https://www.irisa.fr/celtique/pichardie/papers/fosad09.pdf">
+    Certified Static Analysis by Abstract Interpretation</a>.
+  Foundations of Security Analysis and Design (FOSAD) '09. Springer 2009.
+  </li>
+  <li>
+  David Pichardie.
+  <a href="https://www.irisa.fr/celtique/pichardie/papers/fics08.pdf">
+    Building Certified Static Analysers by Modular Construction of Well-founded
+    Lattices</a>.
+  Electronic Notes in Theoretical Computer Science (ENTCS) '08. ACM 2008.
+  </li>
+  <li>
+    David Pichardie. 
+    <a href="http://www.irisa.fr/celtique/pichardie/papers/these-pichardie.pdf">
+      Interprétation abstraite en logique intuitionniste : extraction
+      d'analyseurs Java certifiés</a>. 
+    PhD thesis, Université Rennes 1, 2005. In French.
+  </li>
+  <li>
+  David Cachera, Thomas Jensen, David Pichardie, Vlad Rusu.
+  <a href="http://www.irisa.fr/vertecs/Publis/Ps/2005-TCS.pdf">
+    Extracting a Data Flow Analyser in Constructive Logic</a>.
+  Programming Languages and Systems (PLAS) '04. Springer 2004.
+  </li>
+  <li>
+    David Monniaux.
+    <a href="http://www-verimag.imag.fr/~monniaux/biblio/David_Monniaux_3.pdf">
+      Réalisation mécanisée d'interpréteurs abstraits</a>.
+    Master’s thesis, Université Paris VII, 1998. In French.
+  </li>
+</ul>
+
+<h3>Notes</h3>
+
+<h4>Understanding Widening</h4>
+<p>
+<a href="http://www.di.ens.fr/~cousot/publications.www/CousotCousot-PLILP-92-LNCS-n631-p269--295-1992.pdf">
+  Comparing the Galois Connection and Widening/Narrowing Approaches to Abstract Interpretation</a> (Cousot and Cousot; 2005) 
+gives a great description of widening and how it relates to the Galois
+connection approach. In particular, it shows how the two approaches (might)
+coincide when the domain is already finite, i.e., has no infinitely ascending
+chains. 
+</p>
+
+<p>
+The paper also addresses the question: if the widened domain
+needs to by finite, why can't you just start with a finite domain in the
+first place? The paper argues that no single finite domain is sufficient in
+power to a widening operator parameterized over an arbitrary program. There
+is intuition given about how a widening operator dynamically selects some
+finite domain, using information from the partially constructed results of
+abstract interpretation.
+</p>
+
+<p>
+The paper also shows how the iterations strategies for widening resembles that of the
+standard approach.
+</p>
+
+<p>
+The paper also argues that widening operators should be designed with a Galois
+connection in mind, and that it should be respectful of it. The paper gives a
+great example of how the standard widening for intervals example does not
+respect the Galois connection for the finite domain of signs.
+</p>
+
+<h4>Mechanizing fixpoints</h4>
+<p>
+  <a href="https://www.irisa.fr/celtique/pichardie/papers/fics08.pdf">
+    Building Certified Static Analysers by Modular Construction of Well-founded Lattices</a> (Pichardie; 2008)
+  gives a great description of mechanizing both Kleene fixpoint iteration and
+  fixpoint iteration with widening. The approach uses the idea of a
+  well-founded relation, which is a useful technique in general for performing
+  non-structural induction in a proof assistant. The paper also describes how
+  to design a suitable well-founded relation from a widening operator.
+</p>
+
+<p>
+  <a href="http://www-verimag.imag.fr/PUBLIS/uploads/knwto5897.pdf">
+    A Minimalistic Look at Widening Operators</a> (Monniaux; 2009)
+  describes the more general fixpoint iteration technique with widening that
+  is used in Astrée.
+</p>
+
+</div></div><!-- .starter-template .container -->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>
+

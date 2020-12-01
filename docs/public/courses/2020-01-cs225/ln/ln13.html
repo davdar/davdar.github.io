@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.3.css">
+
+  <!-- Title -->
+  <meta name="title" content="!!!TITLE!!!">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+[13 - First Class Functions II](#title)
+
+# First Class Functions
+
+Let's dig into more of the details around first class functions. The language
+we are currently working with has integers, plus, times, booleans, if,
+variables, let, function creation and function application.
+
+    i ∈ ℤ
+    v ∈ var
+    e ∈ expr ⩴ i | e + e | e * e
+             | b | if e then e else e
+             | x | let x = e in e
+             | fun x ⇒ e | e e
+
+*Aside: Recall that `e₁ e₂` is the syntax for function application where `e₁`
+is the function being applied, and `e₁` is the argument being supplied to the
+function. Haskell uses the same syntax for function application, and it differs
+from syntax for function application in non-functional languages `e₁(e₂)`. In
+those languages, multiple arguments are supplied using the syntax `e₁(e₂,…,eₙ)`
+whereas in our core language (and in Haskell) the syntax is just `e₁ e₂ … eₙ`.
+Technically, this multiple-argument function application is a chain of single
+argument applications `( (((e₁ e₂) e₃) e₄) … ) eₙ`.*
+
+The language we studied just before this had functions, with function
+application as an expression, but function definitions had to be top-level:
+
+    x ∈ var
+    f ∈ fvar
+    e ∈ expr ⩴ … | f(e,…,e)
+    c ∈ command ⩴ def f(x,…,x) = e
+    p ∈ program ⩴ c … c do e
+
+This design introduced new syntactic categories for (top-level) commands, and
+(whole) programs.
+
+In the old language, programs looked like this:
+
+
+    def f(x) = x + 40
+    do f(2)
+
+and the above program now looks like this in our new language:
+
+    let f = fun x ⇒ x + 40 in
+    f 2
+
+Basically, (1) we are allowing function definitions *inside* subexpressions,
+(2) function definitions (as subexpressions) now evaluate to a value, which is
+stored in the normal value environment (not a top-level function environment),
+and (3).
+
+This raises a few questions in terms of our language semantics:
+
+- What is the *scope structure*, for our language with first-class functions?
+  For example, it's possible to have a function inside of a let-binding, or a
+  let-binding inside of a function; how do the scopes interact?
+
+- What is the *substitution-based semantics* for our language with first-class
+  functions? Note that the substitution operation `[v/x]e` replaces all *free*
+  occurrences of `x` in `e` with the value `v`, so the answer to the previous
+  point about scoping semantics will determine how substitution behaves.
+
+- What is the *environment-based semantics* for our language with first-class
+  functions? This semantics will be more efficient than the substitution
+  semantics, but should agree with the substitution semantics on the meaning of
+  any given program.
+
+# Scope Structure for First Class Functions
+
+There are two new syntactic forms in our language: function creation `fun x ⇒
+e` and function application `e e`. What is the scoping structure for each one?
+For function creation, let's look at some examples:
+ 
+            variable
+            references
+            ↓   ↓
+    fun x ⇒ x + x
+        ↑   ↑↑↑↑↑↑
+        |   scope of x
+        |
+        variable
+        binder
+
+This is the doubling function, and should make good sense as a program (it
+shouldn't crash). Here, the `x` in the body is bound to the `x` that appears
+after the keyword `fun`. The body of the function, `x + x`, has the same
+scoping structures as the body of the let, as in `let x = … in x + x`.
+
+    (fun x ⇒ 1) + x
+
+Here the `x` variable reference (outside the parens) is out of scope, because
+it is not in the body of the function. This program will crash.
+
+    fun 1 ⇒ 2
+
+This is a syntactically ill-formed program: the symbol after the `fun` keyword
+must always be a single variable binder.
+
+For function application `e₁ e₂`, there are no binders in the syntax, and no
+scope for any binders, so it behaves just like any other binary operation (like
+`e₁ + e₂`) w.r.t. scope structure.
+
+Scoping for our new language is defined as follows:
+
+    FV ∈ expr → ℘(var)
+    FV(i) ≜ ∅
+    FV(e₁ + e₂) ≜ FV(e₁) ∪ FV(e₂)
+    FV(e₁ * e₂) ≜ FV(e₁) ∪ FV(e₂)
+    FV(b) ≜ ∅
+    FV(if e₁ then e₂ else e₃) ≜ FV(e₁) ∪ FV(e₂) ∪ FV(e₃)
+    FV(x) ≜ {x}
+    FV(let x = e₁ in e₂) ≜ FV(e₁) ∪ (FV(e₂) ∖ {x})
+    FV(fun x ⇒ e) ≜ FV(e) ∖  {x}
+    FV(e₁ e₂) ≜ FV(e₁) ∪ FV(e₂)
+
+(See the Haskell code for this definition as example X2 in HW06.)
+
+# Substitution-based Semantics for First Class Functions
+
+The usual structure we have had for values, answers and interpreters looks like
+this:
+
+    v ∈ value ⩴ i | b
+    a ∈ answer ⩴ v | bad
+
+    ⟦_⟧ ∈ expr → answer
+
+This structure stayed the same when we studied substitution-based interpreters
+for the language with variables and let.
+
+For environment-based semantics of variables and let, the environment and
+interpreter looked like this:
+
+    γ ∈ env ≜ var ⇀ value
+
+    ⟦_⟧ ∈ expr → env → answer
+
+(Things got more complicated with top-level functions, but we won't revisit
+that now.)
+
+We are starting with a substitution-based semantics, so we will ignore the
+environment-based design for now.
+
+To design a substitution-based semantics for higher-order functions, we need to
+decide a few things:
+
+- What is the value that a function creation expression evaluates to?
+- What is the meaning of function application?
+
+Function creation is often called an “introduction form” because it introduces
+a value, and function application is often called an “elimination form” because
+it “eliminates” the function value that was created to perform some
+computation. Function application is going to be defined using substitution,
+and substitution must agree with the scoping structure we just explored above.
+
+## Substitution
+
+So let's define substitution for our language:
+
+    [_/_]_ ∈ value × var × expr → expr
+    [v/x]i ≜ i
+    [v/x](e₁ + e₂) ≜ [v/x]e₁ + [v/x]e₂
+    [v/x](e₁ * e₂) ≜ [v/x]e₁ * [v/x]e₂
+    [v/x]b ≜ b
+    [v/x](if e₁ then e₂ else e₃) ≜ if [v/x]e₁ then [v/x]e₂ else [v/x]e₃
+    [v/x]y ≜ v    when x = y
+    [v/x]y ≜ y    when x ≠ y
+    [v/x](let y = e₁ in e₂) ≜ let y = [v/x]e₁ in e₂         when x = y
+    [v/x](let y = e₁ in e₂) ≜ let y = [v/x]e₁ in [v/x]e₂    when x ≠ y
+    [v/x](fun y ⇒ e) ≜ fun y ⇒ e         when x = y
+    [v/x](fun y ⇒ e) ≜ fun y ⇒ [v/x]e    when x ≠ y
+    [v/x](e₁ e₂) ≜ [v/x]e₁ [v/x]e₂
+
+(You will implement this in Haskell as E1 in HW06.)
+
+The definitions for language constructs other than function creation and
+application are the exact same as we've seen before. To substitute inside a
+function creation expression, we have two cases in case the variable we are
+looking for is equal to the function binder (`x` and `y` respectively in the
+above definition). If the variables are the same `x = y` then any free
+occurence of `x` in `e` is actually *not* free outside of `fun y ⇒ e`, because
+the `y` binder binds it. So in this case we do not recurse into the body of the
+function looking for occurrences of `x`, so the resulting function body is just
+`e`. If the variables are different, then free occurrences of `x` in the body
+of the function `e` will be free outside of `fun y ⇒ e`, and we should
+recursively substitute, resulting in a function body `[v/x]e`.
+
+For function application, we just substitute into the left and the right, and
+re-connect as a function application. Note the definition body for this case is
+written `[v/x]e₁ [v/x]e₂`, and the space in the middle is the space used to
+notate a function application in our programming language syntax.
+
+## Substitution-based Function Values
+
+Remember when we defined top-level functions, a top-level function definition
+just recorded the binders and body of the function in a top-level environment,
+and only when the function was called later was the body of the function
+evaluated. We will follow this intuition and define function values to be `fun
+x ⇒ e`, that is, a copy of the function creation syntax.
+
+    v ∈ value ⩴ i | b | fun x ⇒ e
+                        ↑↑↑↑↑↑↑↑↑
+                        new
+
+Answers stay the same, as do environments.
+
+## Substitution-based Semantics
+
+In the substitution-based semantics, function creation expressions evaluate
+immediately to identical function values, and function application is
+interpreted as a simple substitution. The full interpreter is as follows:
+
+    ⟦_⟧ ∈ expr → answer
+    ⟦i⟧ ≜ i
+    ⟦e₁ + e₂⟧ ≜ i₁ + i₂
+      where i₁ = ⟦e₁⟧
+            i₂ = ⟦e₂⟧
+    ⟦e₁ * e₂⟧ ≜ i₁ * i₂
+      where i₁ = ⟦e₁⟧
+            i₂ = ⟦e₂⟧
+    ⟦b⟧ ≜ b
+    ⟦if e₁ then e₂ else e₃⟧ ≜ ⟦e₂⟧    if ⟦e₁⟧ = true
+    ⟦if e₁ then e₂ else e₃⟧ ≜ ⟦e₃⟧    if ⟦e₁⟧ = false
+    ⟦let x = e₁ in e₂⟧ ≜ ⟦[v/x]e₂⟧
+      where v = ⟦e₁⟧
+    ⟦fun x ⇒ e⟧ ≜ fun x ⇒ e    if FV(e) ⊆ {x}
+    ⟦e₁ e₂⟧ ≜ ⟦[v/x]e′⟧
+      where fun x ⇒ e′ = ⟦e₁⟧
+            v          = ⟦e₂⟧
+
+(You will implement this in Haskell as E2 in HW06.)
+
+Let's start with the last case: function application. The first expression `e₁`
+is evaluated and must return a function value. The binder for the function
+value is `x` and the body of the function value is `e′`. The second expression
+`e₂` is evaluated and should return a value (it shouldn't fail and return
+`bad`). Then, the interpretation of the application is to substituted into the
+body of the function replacing references to its parameters `x` with the value
+`v` returned by evaluating `e₂`: this is written `⟦[v/x]e′⟧` in the definition.
+
+Finally, the function creation case interprets a function creation expression
+`⟦fun x ⇒ e⟧` to be just the function definition as a value: `fun x ⇒ e`.
+However, there is a strange side-condition: `FV(e) ⊆ {x}`. This side condition
+is the same as requiring `fun x ⇒ e` to be a closed expression. (It is closed
+if the free variables of `e` are either empty, or exactly `x`, which is the
+same as `FV(e) ⊆ {x}`.) This side-condition is necessary to rule out the
+following program:
+
+    let f = fun x ⇒ x + y in
+    let y = 1 in
+    f 2
+
+Without this side-condition, this would evaluate via substitution as:
+
+    let f = fun x ⇒ x + y in
+    let y = 1 in
+    f 2
+    ==
+    let y = 1 in
+    (fun x ⇒ x + y) 1
+    ==
+    (fun x ⇒ x + 1) 2
+    ==
+    2 + 1
+    ==
+    3
+
+We want this program to instead evaluate to `bad` because `y` is actually not
+in scope in the initial definition of `f` and function creation `fun x ⇒ x +
+y`, and badly scoped programs should always fail.
+
+This is an instance of *variable capture*, and the offending definition is
+actually *substitution*, not necessarily the substitution-based interpreter.
+The definition we have of substitution is only correct if we assume the value
+`v` has no free variables in it—a new notion now that values can contain
+expressions, and expressions can contain variables—and we need to avoid calling
+substitution with any such offending values. We maintain this invariant by
+making sure we only return values in our interpreter that are closed, hence the
+check for `FV(e) ⊆ {x}` in our definition of interpretation for function
+creation.
+
+## Environment-based Semantics
+
+In the environment-based semantics we need to change the representation for
+function values. This is because in the substitution semantics, a substitution
+may change a function before it becomes a value, like so:
+
+    let x = 1 in
+    let f = fun y ⇒ x + y in
+    f 1
+    ==
+    let f = fun y ⇒ 1 + y in
+    f 1
+
+In this example, when the function becomes a value, it looks like `fun y ⇒ 1 +
+y` and not `fun y ⇒ x + y`.
+
+However, in the environment-based semantics, let-bindings are interpreted as an
+update to the environment. If we just capture the function creation expression
+as-is in an environment semantics, it will look like `fun y ⇒ x + y`, and
+either `x` will be free, or `x` might reference value defined after the
+creation of the function, which would not agree with the substitution
+semantics.
+
+The solution is to *capture* the environment in which the function was created,
+along with the function binder and body as the function value:
+
+    v ∈ value ⩴ i | b | ⟨fun x ⇒ e, γ⟩
+                        ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+                        new
+
+These function values are now called *closures* because they *close* over the
+environment when they are created. Then, when a function is called, its
+*closure environment* is reinstated, along with a new addition for the function
+parameter. The full substitution semantics is as follows:
+
+    ⟦_⟧ ∈ expr → env → answer
+    ⟦i⟧(γ) ≜ i
+    ⟦e₁ + e₂⟧(γ) ≜ i₁ + i₂
+      where i₁ = ⟦e₁⟧(γ)
+            i₂ = ⟦e₂⟧(γ)
+    ⟦e₁ * e₂⟧(γ) ≜ i₁ * i₂
+      where i₁ = ⟦e₁⟧(γ)
+            i₂ = ⟦e₂⟧(γ)
+    ⟦b⟧(γ) ≜ b
+    ⟦if e₁ then e₂ else e₃⟧(γ) ≜ ⟦e₂⟧(γ)    if ⟦e₁⟧(γ) = true
+    ⟦if e₁ then e₂ else e₃⟧(γ) ≜ ⟦e₃⟧(γ)    if ⟦e₁⟧(γ) = false
+    ⟦let x = e₁ in e₂⟧(γ) ≜ ⟦e₂⟧(γ[x↦v])
+      where v = ⟦e₁⟧(γ)
+    ⟦fun y ⇒ e⟧(γ) ≜ ⟨fun y ⇒ e, γ⟩
+    ⟦e₁ e₂⟧(γ) ≜ ⟦e′⟧(γ′[x↦v])
+      where ⟨fun x ⇒ e′, γ′⟩ = ⟦e₁⟧(γ)
+            v                = ⟦e₂⟧(γ)
+
+(You will implement this in Haskell as E3 in HW06.)
+
+Notice the interpretation of the function creation expression which captures
+the current environment and pairs it with the function in the closure value. In
+function application, the first expression `e₁` is evaluated to a closure value
+(the value representation for functions), and this closure value `⟨fun x ⇒ e′,
+γ′⟩` includes the environment `γ′` which is the environment that was around
+*when the closure was created*. The function argument `e₂` is evaluated to a
+value `v`, and the body of the function is interpreted *using its closure
+environment `γ′`*, and extending it with a mapping from the function's formal
+parameter `x` to the argument value `v`.
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.3.js"></script>
+
+<!-- CUSTOM -->
+<script>
+</script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+Widely-used pretty printing libraries are built on assumptions from a previous
+age of computing that are no longer universally true, such as monospace fonts
+and batch-mode compilers. Furthermore, they are not extensible, which has led
+to a plethora of similar libraries. We demonstrate an approach to pretty
+printing that is independently extensible and supports proportional fonts and
+interactive interfaces.

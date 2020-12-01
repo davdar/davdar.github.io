@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.1.css">
+
+  <!-- Title -->
+  <meta name="title" content="UVM CS 295A: Software Verification / Fall 2019">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+
+### Catalogue Description
+
+Principles and practice of software specification and verification. Design of
+algorithms which are verified correct using interactive or automated
+software-based tools. Emphasis on the design space for software specification,
+and the spectrum of verification goals ranging from shallow to deep
+verification. Includes a course project.
+
+**Learning Outcomes:** Students will learn to (1) craft specifications for
+software correctness, (2) design software which can be proven correct w.r.t.
+a formal specification, (3) construct machine-checkable proofs of software
+correctness using a proof assistant, and (4) work in a collaborative,
+group-based project setting where software is specified and verified in small
+components and then later assembled in a modular fashion.
+
+### Course Description
+
+Software correctness is typically established through exhaustive testing. A
+Python program which has never been executed on examples is likely full of
+bugs, even if it was translated from a correct on-paper algorithm. Software
+verification is the process of eliminating large classes of bugs from software
+such that testing is no longer necessary to gain confidence in its quality.
+
+Software verification is particularly attractive for situations where the
+software is difficult to test (e.g., parallel and quantum algorithms), or where
+absolute correctness is critical (e.g., control code for airplanes). However,
+verification only rules out bugs *for the property which has been verified*.
+Because of this, there will always be situations where testing techniques are
+preferred-to (or complimentary-to) verification techniques. In particular,
+testing techniques are essential for properties which are challenging or
+impossible to specify formally. (E.g., what is the specification for a website
+to be “user-friendly” or for a game to be “fun”?)
+
+In this course we will study advanced methods for software verification.
+Software verification can mean many things—from “lightweight” verification,
+such as verifying the absence of simple type errors, to “middleweight”
+verification, such as verifying the absence of buffer overflows or runtime
+exceptions, to “heavyweight” verification, such as verifying the full
+functional correctness of a C compiler. We will study this entire spectrum of
+verification, with a sharper focus on the following topics: (1) specification
+design, both deep and shallow; (2) automation and semi-automation techniques in
+verification; and (3) correct-by-construction software design. 
+
+We will explore verification topics through a tool called a *proof assistant*.
+Proof assistants allow the embedding of programs within the tool, as well as
+constructing proofs of correctness about the embedded programs. The default
+mode of verification for the tool is manual and interactive, however full
+automation of correctness proofs can also be achieved. After constructing the
+proof of correctness for a piece of software, one then “extracts” an
+executable, certified program from the tool environment. It is also possible to
+mix computation and logical fragments of the tool, which can lead to a more
+correct-by-construction process for certified software design.
+
+The course will consist primarily of programming assignments using a proof
+assistant. There will be a final project at the end of the course where
+students will verify a medium-sized program of their choice. Students taking
+this course for graduate credit will be expected to complete a more substantial
+final project.
+
+Here is an excerpt from the introduction to the Software Foundations series
+which will be used in the latter part of the course:
+
+> Building reliable software is really hard. The scale and complexity of modern
+> systems, the number of people involved, and the range of demands placed on
+> them make it extremely difficult to build software that is even more-or-less
+> correct, much less 100% correct. At the same time, the increasing degree to
+> which information processing is woven into every aspect of society greatly
+> amplifies the cost of bugs and insecurities.
+>
+> Computer scientists and software engineers have responded to these challenges
+> by developing a whole host of techniques for improving software reliability,
+> ranging from recommendations about managing software projects teams (e.g.,
+> extreme programming) to design philosophies for libraries (e.g.,
+> model-view-controller, publish-subscribe, etc.) and programming languages
+> (e.g., object-oriented programming, aspect-oriented programming, functional
+> programming, ...) to mathematical techniques for specifying and reasoning
+> about properties of software and tools for helping validate these properties.
+> The Software Foundations series is focused on this last set of techniques.
+>
+> The text is constructed around three conceptual threads: (1) basic tools from
+> logic for making and justifying precise claims about programs; (2) the use of
+> proof assistants to construct rigorous logical arguments; (3) functional
+> programming, both as a method of programming that simplifies reasoning about
+> programs and as a bridge between programming and logic.
+
+Interest in “heavyweight” verification of software has grown in recent years.
+The first major success story was [CompCert][] (2009) by Xavier Leroy: a C
+compiler and verification of full functional correctness in the Coq proof
+assistant. CompCert rose to fame in part due to Xuejun et al's paper on [Bugs
+in C Compilers] and [CSmith] tool (2011) which demonstrated the presence of
+bugs in all major C compilers *except* the only compiler that was fully
+verified: CompCert. More recently Microsoft Research launched the [Everest][]
+project (2016) which aims to fully verify the HTTPS stack (in part motivated by the
+[Heartbleed][] bug (2014) in OpenSSL) in (mostly) F*. Also recently is the
+[DeepSpec][] project (2016) at Princeton, MIT, UPenn and Yale which aims to
+achieve a fully verified OS+Compiler+Runtime ecosystem in (mostly) Coq.
+
+[CompCert]: http://compcert.inria.fr
+[Everest]: https://www.microsoft.com/en-us/research/project/project-everest-verified-secure-implementations-https-ecosystem/
+[Heartbleed]: http://heartbleed.com
+[DeepSpec]: https://deepspec.org/main
+[Bugs in C Compilers]: http://www.cs.utah.edu/~regehr/papers/pldi11-preprint.pdf
+[CSmith]: https://embed.cs.utah.edu/csmith/
+
+**Prerequisites:** CS 124 (Data Structures and Algorithms) and CS 125
+(Computability and Complexity)
+
+**Recommended (but not required):** CS 225 (Programming Languages)
+
+### Administration
+
+**Lecture:** Tuesdays and Thursdays, 10:05–11:20am, Kalkin Building 001  
+**Instructor:** [David Darais](http://david.darais.com)   
+**Office Hours:** David Darais — Innovation E456 — at the following times:
+
+- Tuesdays: 4:30–5:00pm
+- Wednesdays: 4:30–5:00pm
+- Fridays: 1:00–2:00pm
+
+**TAs:** Walter (my dog)   
+![Walter](images/walter.jpg)
+
+**Course Piazza:** [CS 295A: Software Verification](https://piazza.com/class#spring2019/cs295A)
+
+- *Course announcements and discussion will take place on Piazza exclusively.*
+- *Please use Piazza exclusively for asking for help on homework.*
+- *I promise to answer any homework questions that are posted more than 24
+  hours before the homework is due.* 
+- I will try to answer questions posted less than 24 hours before the deadline
+  but make no promises. You should still always post—maybe a classmate can help
+  you out!
+
+### Textbook
+
+Course material is heavily based on [Kokke and Wadler's Programming Language
+Foundations in Agda][PLFA] and [Pierce et al's Software Foundations
+Series][SF]. Both books are freely available online. We will loosely follow
+Kokke and Wadler's book for the first half of the class, and the Software
+Verification volume of Pierce et al's series (written by Appel) for the last
+half of the class. Some homework problems will be drawn directly from these
+textbooks.
+
+[PLFA]: https://plfa.github.io
+[SF]: https://softwarefoundations.cis.upenn.edu
+
+### Software Tools
+
+Throughout the course we will use the [Agda][Agda] programming language and
+proof assistant embedded in the [Emacs][Emacs] or (less-supported) [Atom][Atom]
+text editors. For the first assignment you will be required to successfully set
+up and configure both Emacs (or Atom) and Agda on your personal machine. You
+may install these applications directly, or virtualize them, e.g., through a
+Ubuntu virtual machine. A virtual machine which has Emacs, Atom and Agda
+installed and configured is provided in [Agda Setup][Agda Setup]. We will use
+Agda v2.5.4.2. 
+
+[Agda]: https://agda.readthedocs.io
+[Emacs]: https://www.gnu.org/software/emacs/
+[Atom]: https://atom.io
+[Agda Setup]: agda-setup.html
+
+You will know your grade for each assignment before submitting. This is because
+Agda is capable of not just running your code, but also checking your work for
+correctness. If your assignment passes Agda's checker, you are guaranteed a
+100% on the assignment.
+
+- [Agda Documentation](https://agda.readthedocs.io)
+- [Agda-mode](https://agda.readthedocs.io/en/v2.5.4.1/tools/emacs-mode.html)
+- [Darais Unicode Input](https://github.com/davdar/dotfiles/tree/master/unicode)
+- [Agda Setup](agda-setup.html)
+- [Git Info](git-info.html)
+
+<!--
+- ⦗[Basics-v1-A][]⦘ ⦗[Basics-v1-H][]⦘
+- ⦗[Basics-v2-A][]⦘ ⦗[Basics-v2-H][]⦘
+- ⦗[Basics-v3-A][]⦘ ⦗[Basics-v3-H][]⦘
+- ⦗[Basics-v4-A][]⦘ ⦗[Basics-v4-H][]⦘
+- ⦗[Basics-v5-A][]⦘ ⦗[Basics-v5-H][]⦘
+- ⦗[Basics-v6-A][]⦘ ⦗[Basics-v6-H][]⦘
+- ⦗[Basics-v7-A][]⦘ ⦗[Basics-v7-H][]⦘
+- ⦗[Basics-v8-A][]⦘ ⦗[Basics-v8-H][]⦘
+
+[Basics-v1-A]: basics/Basics-v1.agda
+[Basics-v1-H]: basics/html/Basics-v1.html
+[Basics-v2-A]: basics/Basics-v2.agda
+[Basics-v2-H]: basics/html/Basics-v2.html
+[Basics-v3-A]: basics/Basics-v3.agda
+[Basics-v3-H]: basics/html/Basics-v3.html
+[Basics-v4-A]: basics/Basics-v4.agda
+[Basics-v4-H]: basics/html/Basics-v4.html
+[Basics-v5-A]: basics/Basics-v5.agda
+[Basics-v5-H]: basics/html/Basics-v5.html
+[Basics-v6-A]: basics/Basics-v6.agda
+[Basics-v6-H]: basics/html/Basics-v6.html
+[Basics-v7-A]: basics/Basics-v7.agda
+[Basics-v7-H]: basics/html/Basics-v7.html
+[Basics-v8-A]: basics/Basics-v8.agda
+[Basics-v8-H]: basics/html/Basics-v8.html
+-->
+
+### Policies
+
+**Grades:** Your grade for the course will be calculated as follows: 81%
+Assignments (9 assignments at 9% each assignment), and 19% Final Project. You
+are guaranteed a 100% on each assignment if it passes the Agda type checker.
+
+**Late Work:** Each assignment will typically be released after class on a
+Thursday and due before class one week later. *Late work will not be accepted.*
+There are 10 assignments and I will drop your lowest assignment score; your
+best 9 assignments are used to calculate your grade.
+
+**Collaboration:** Collaboration on the high-level ideas and approach on
+assignments is encouraged. Copying someone else's work is not allowed. Copying
+solutions from an online source is not allowed. Any collaboration or online
+resources, even if used only at a high level, must be declared when you submit
+your assignment. Every assignment must include a collaboration and resources
+statement. E.g., “I discussed high-level strategies for solving problem 2 and 5
+with Alex; I found this stackoverflow post helpful while working on problem 3
+<link>” Students caught copying work are eligible for immediate failure of the
+course and disciplinary action by the University. All academic integrity
+misconduct will be treated according to [UVM's Code of Academic
+Integrity][UVM-CAI].
+
+[UVM-CAI]: https://www.uvm.edu/policies/student/acadintegrity.pdf
+
+**Small Group Assignments:** For homeworks 6–10 you may work either
+individually or in groups 2. You may submit a single solution to the assignment
+for 2-person groups. There will be more detailed instructions about how to
+submit groupwork in the assignment writeup.
+
+**Final Group Project:** For the final project, you will be allowed to work in
+groups of size 1–3, however I will expect a larger amount of work to be
+completed as group size increases. For group projects, you must identify
+up-front relatively isolated parts of the project that each group member is
+responsible for.
+
+### In Class Files (.agda)
+
+- [IC3][]
+- [IC4][]
+- [IC5][]
+- [IC6][]
+- [IC7][]
+- [IC8][]
+- [IC9][]
+- [IC10][]
+- [IC11][]
+- [IC12][]
+
+### Assignments (.agda)
+
+- [HW1][HW1-DL]
+- [HW2][HW2-DL]
+- [HW3][HW3-DL]
+- [HW4][HW4-DL]
+- [HW5][HW5-DL]
+- [HW6][HW6-DL]
+- [HW7][HW7-DL]
+- [HW8][HW8-DL]
+- [HW9][HW9-DL]
+- [HW10][HW10-DL]
+
+### Final Project
+
+[Final Project](final-project.html)
+
+### Schedule
+
+Date        | Topic                                             | Homework                       
+------------|---------------------------------------------------|-------------------------------------
+Tue, Aug 27 | Welcome ⅋ Overview ⦗[LN1][]⦘                      |                                
+Thu, Aug 29 | Intro to Verification ⦗[LN2][]⦘                   | HW1 Release ⦗[HW1][]⦘ ⦗SL1⦘                               
+Tue, Sep 03 | Intro to Agda ⦗[IC3-SL][]⦘                        |                                
+Thu, Sep 05 | Naturals ⅋ Induction 1 ⦗[LN4][]⦘ ⦗[IC4-SL][]⦘     | HW1 Due ⌁ HW2 Release ⦗[HW2][]⦘ ⦗SL2⦘
+Tue, Sep 10 | Naturals ⅋ Induction 2 ⦗[LN4][]⦘ ⦗[IC4-SL][]⦘     |                                
+Thu, Sep 12 | Order ⅋ Relations 1 ⦗[LN5][]⦘ ⦗[IC5-SL][]⦘        | HW2 Due ⌁ HW3 Release ⦗[HW3][]⦘ ⦗SL3⦘
+Tue, Sep 17 | Order ⅋ Relations 2 ⦗[LN5][]⦘ ⦗[IC5-SL][]⦘        |                                
+Thu, Sep 29 | Negation ⅋ Quantification 1 ⦗LN6⦘ ⦗[IC6-SL][]⦘    | HW3 Due ⌁ HW4 Release ⦗[HW4][]⦘ ⦗SL4⦘
+Tue, Sep 24 | Negation ⅋ Quantification 2 ⦗LN6⦘ ⦗[IC6-SL][]⦘    |                                
+Thu, Sep 26 | Lists 1 ⦗[IC7-SL][]⦘                              | HW4 Due ⌁ HW5 Release ⦗[HW5][]⦘ ⦗SL5⦘
+Tue, Oct 01 | Lists 2 ⦗[IC7-SL][]⦘                              |                                
+Thu, Oct 03 | Insertion and Selection Sort 1 ⦗[IC8-SL][]⦘       | HW5 Due ⌁ HW6 Release ⦗[HW6][]⦘ ⦗SL6⦘
+Tue, Oct 08 | Insertion and Selection Sort 2 ⦗[IC8-SL][]⦘       |                                
+Thu, Oct 10 | Termination and Merge Sort 1 ⦗[IC9-SL][]⦘         | HW6 Due ⌁ HW7 Release ⦗[HW7][]⦘ ⦗SL7⦘
+Tue, Oct 15 | Termination and Merge Sort 2 ⦗[IC9-SL][]⦘         |                                
+Thu, Oct 17 | Permutations ⦗[IC10-SL][]⦘                        | HW7 Due ⌁ HW8 Release ⦗[HW8][]⦘ ⦗SL8⦘
+Tue, Oct 22 | *No Class*                                        |                                
+Thu, Oct 24 | *No Class*                                        | HW8 Due ⌁ HW9 Release ⦗[HW9][]⦘ ⦗SL9⦘
+Tue, Oct 29 | Vectors ⅋ Matrices ⦗[IC11-SL][]⦘                  | 
+Thu, Nov 31 | Final Project Discussion                          | HW9 Due ⌁ HW10 Release ⦗[HW10][]⦘ ⦗SL10⦘
+Tue, Nov 05 | Graphs ⅋ Graph Algorithms ⦗[IC12-SL][]⦘           |                                
+Thu, Nov 07 | Git Workflow ⦗LNX⦘                                | 
+Tue, Nov 12 | Final Projects                                    | HW10 Due ⌁ Start Final Projects
+Thu, Nov 14 | Final Projects (maybe special topic)              | Checkpoint 1 Due
+Thu, Nov 19 | Final Projects (maybe special topic)              | Checkpoint 2 Due               
+Thu, Nov 21 | Final Projects (maybe special topic)              | Checkpoint 3 Due
+Tue, Nov 26 | *Thanksgiving Recess*                             | Checkpoint 4 Due
+Thu, Nov 28 | *Thanksgiving Recess*                             | 
+Tue, Dec 03 | Final Projects                                    | Checkpoint 5 Due
+Thu, Dec 05 | Final Project Presentations                       | Final Project Due (Fri, Dec 06, 11:59 PM)
+
+<!--
+Tue, Nov 12 | 2-3 Trees ⦗LNX⦘ ⦗ICX⦘                             |                                
+Thu, Nov 14 | Variables, Scope and Binding ⦗LNX⦘ ⦗ICX⦘          | Checkpoint 1 Due
+Thu, Nov 19 | Type Systems ⦗LNX⦘ ⦗ICX⦘                          |                                
+Thu, Nov 21 | Reflective Solvers ⦗LNX⦘ ⦗ICX⦘                    | Checkpoint 2 Due               
+Tue, Nov 26 | *Thanksgiving Recess*                             |                                
+Thu, Nov 28 | *Thanksgiving Recess*                             | Checkpoint 3 Due               
+Tue, Dec 03 | Type Classes ⦗LNX⦘ ⦗ICX⦘                          |                                
+Thu, Dec 05 | Final Project Presentations                       | Final Project Due              
+-->
+
+[LN1]: ln/ln1.md.html
+[LN2]: ln/ln2.md.html
+[LN3]: ln/ln3.md.html
+[LN4]: ln/ln4.md.html
+[LN5]: ln/ln5.md.html
+[LN6]: ln/ln6.md.html
+[LN7]: ln/ln7.md.html
+[LN8]: ln/ln8.md.html
+[LN9]: ln/ln9.md.html
+
+[HW1]: hw/HW1.agda.html
+[HW2]: hw/HW2.agda.html
+[HW3]: hw/HW3.agda.html
+[HW4]: hw/HW4.agda.html
+[HW5]: hw/HW5.agda.html
+[HW6]: hw/HW6.agda.html
+[HW7]: hw/HW7.agda.html
+[HW8]: hw/HW8.agda.html
+[HW9]: hw/HW9.agda.html
+[HW10]: hw/HW10.agda.html
+
+[HW1-DL]: hw/HW1.agda
+[HW2-DL]: hw/HW2.agda
+[HW3-DL]: hw/HW3.agda
+[HW4-DL]: hw/HW4.agda
+[HW5-DL]: hw/HW5.agda
+[HW6-DL]: hw/HW6.agda
+[HW7-DL]: hw/HW7.agda
+[HW8-DL]: hw/HW8.agda
+[HW9-DL]: hw/HW9.agda
+[HW10-DL]: hw/HW10.agda
+
+[IC3]: ic/IC3.agda
+[IC4]: ic/IC4.agda
+[IC5]: ic/IC5.agda
+[IC6]: ic/IC6.agda
+[IC7]: ic/IC7.agda
+[IC8]: ic/IC8.agda
+[IC9]: ic/IC9.agda
+[IC10]: ic/IC10.agda
+[IC11]: ic/IC11.agda
+[IC12]: ic/IC12.agda
+
+[IC3-SL]: ic/IC3-SL.agda.html
+[IC4-SL]: ic/IC4-SL.agda.html
+[IC5-SL]: ic/IC5-SL.agda.html
+[IC6-SL]: ic/IC6-SL.agda.html
+[IC7-SL]: ic/IC7-SL.agda.html
+[IC8-SL]: ic/IC8-SL.agda.html
+[IC9-SL]: ic/IC9-SL.agda.html
+[IC10-SL]: ic/IC10-SL.agda.html
+[IC11-SL]: ic/IC11-SL.agda.html
+[IC12-SL]: ic/IC12-SL.agda.html
+
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.2.js"></script>
+
+<!-- CUSTOM -->
+<script>
+</script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

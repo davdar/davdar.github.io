@@ -1,0 +1,362 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>hw1</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">{-
+Name: ⁇
+Date: ⁇
+
+Collaboration Statement:
+«Write your collaboration statement here…»
+-}</a>
+
+<a id="93" class="Comment">---------------</a>
+<a id="109" class="Comment">-- LOGISTICS --</a>
+<a id="125" class="Comment">---------------</a>
+
+<a id="142" class="Comment">-- To submit the assignment, upload your solution to blackboard as a</a>
+<a id="211" class="Comment">-- single .agda file.</a>
+<a id="233" class="Comment">--</a>
+<a id="236" class="Comment">-- Make sure you write your name, the date, and your collaboration</a>
+<a id="303" class="Comment">-- statement above, as indicated by the course course collaboration</a>
+<a id="371" class="Comment">-- policy:</a>
+<a id="382" class="Comment">--</a>
+<a id="385" class="Comment">--     Collaboration on the high-level ideas and approach on</a>
+<a id="446" class="Comment">--     assignments is encouraged. Copying someone else&#39;s work is not</a>
+<a id="515" class="Comment">--     allowed. Any collaboration, even at a high level, must be</a>
+<a id="580" class="Comment">--     declared when you submit your assignment. Every assignment must</a>
+<a id="651" class="Comment">--     include a collaboration statement. E.g., &quot;I discussed</a>
+<a id="712" class="Comment">--     high-level strategies for solving problem 2 and 5 with Alex.&quot;</a>
+<a id="781" class="Comment">--     Students caught copying work are eligible for immediate failure</a>
+<a id="852" class="Comment">--     of the course and disciplinary action by the University. All</a>
+<a id="920" class="Comment">--     academic integrity misconduct will be treated according to</a>
+<a id="986" class="Comment">--     UVM&#39;s Code of Academic Integrity.</a>
+<a id="1027" class="Comment">--</a>
+<a id="1030" class="Comment">-- This assignment consists of a LIB section which contains relevant</a>
+<a id="1099" class="Comment">-- definitions and lemmas which you should refer to throughout the</a>
+<a id="1166" class="Comment">-- assignment, and an ASSIGNMENT section which contains definitions</a>
+<a id="1234" class="Comment">-- and lemmas with “holes” in them. *If you only change the code</a>
+<a id="1299" class="Comment">-- within the holes and your entire assignment compiles without</a>
+<a id="1363" class="Comment">-- errors, you are guaranteed 100% on the assignment.*</a>
+
+<a id="1419" class="Keyword">module</a> <a id="1426" href="hw1.html" class="Module">hw1</a> <a id="1430" class="Keyword">where</a>
+
+<a id="1437" class="Comment">---------</a>
+<a id="1447" class="Comment">-- LIB --</a>
+<a id="1457" class="Comment">---------</a>
+
+<a id="1468" class="Keyword">module</a> <a id="Lib"></a><a id="1475" href="hw1.html#1475" class="Module">Lib</a> <a id="1479" class="Keyword">where</a>
+  <a id="1487" class="Keyword">infix</a> <a id="1493" class="Number">1</a> <a id="1495" href="hw1.html#1693" class="Function Operator">begin_</a>
+  <a id="1504" class="Keyword">infixr</a> <a id="1511" class="Number">2</a> <a id="1513" href="hw1.html#1763" class="Function Operator">_is-≡_</a> <a id="1520" href="hw1.html#1840" class="Function Operator">_is-≡[_]_</a>
+  <a id="1532" class="Keyword">infix</a> <a id="1538" class="Number">3</a> <a id="1540" href="hw1.html#1938" class="Function Operator">_∎</a>
+  <a id="1545" class="Keyword">infix</a> <a id="1551" class="Number">4</a> <a id="1553" href="hw1.html#1599" class="Datatype Operator">_≡_</a>
+  <a id="1559" class="Keyword">infixl</a> <a id="1566" class="Number">6</a> <a id="1568" href="hw1.html#2230" class="Function Operator">_+_</a> <a id="1572" href="hw1.html#2375" class="Function Operator">_∸_</a>
+  <a id="1578" class="Keyword">infixl</a> <a id="1585" class="Number">7</a> <a id="1587" href="hw1.html#2301" class="Function Operator">_*_</a>
+
+  <a id="1594" class="Keyword">data</a> <a id="Lib._≡_"></a><a id="1599" href="hw1.html#1599" class="Datatype Operator">_≡_</a> <a id="1603" class="Symbol">{</a><a id="1604" href="hw1.html#1604" class="Bound">A</a> <a id="1606" class="Symbol">:</a> <a id="1608" class="PrimitiveType">Set</a><a id="1611" class="Symbol">}</a> <a id="1613" class="Symbol">(</a><a id="1614" href="hw1.html#1614" class="Bound">x</a> <a id="1616" class="Symbol">:</a> <a id="1618" href="hw1.html#1604" class="Bound">A</a><a id="1619" class="Symbol">)</a> <a id="1621" class="Symbol">:</a> <a id="1623" href="hw1.html#1604" class="Bound">A</a> <a id="1625" class="Symbol">→</a> <a id="1627" class="PrimitiveType">Set</a> <a id="1631" class="Keyword">where</a>
+    <a id="Lib._≡_.refl"></a><a id="1641" href="hw1.html#1641" class="InductiveConstructor">refl</a> <a id="1646" class="Symbol">:</a> <a id="1648" href="hw1.html#1614" class="Bound">x</a> <a id="1650" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="1652" href="hw1.html#1614" class="Bound">x</a>
+  
+  <a id="1659" class="Symbol">{-#</a> <a id="1663" class="Keyword">BUILTIN</a> EQUALITY <a id="1680" href="hw1.html#1599" class="Datatype Operator">_≡_</a> <a id="1684" class="Symbol">#-}</a>
+  
+  <a id="Lib.begin_"></a><a id="1693" href="hw1.html#1693" class="Function Operator">begin_</a> <a id="1700" class="Symbol">:</a> <a id="1702" class="Symbol">∀</a> <a id="1704" class="Symbol">{</a><a id="1705" href="hw1.html#1705" class="Bound">A</a> <a id="1707" class="Symbol">:</a> <a id="1709" class="PrimitiveType">Set</a><a id="1712" class="Symbol">}</a> <a id="1714" class="Symbol">{</a><a id="1715" href="hw1.html#1715" class="Bound">x</a> <a id="1717" href="hw1.html#1717" class="Bound">y</a> <a id="1719" class="Symbol">:</a> <a id="1721" href="hw1.html#1705" class="Bound">A</a><a id="1722" class="Symbol">}</a> <a id="1724" class="Symbol">→</a> <a id="1726" href="hw1.html#1715" class="Bound">x</a> <a id="1728" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="1730" href="hw1.html#1717" class="Bound">y</a> <a id="1732" class="Symbol">→</a> <a id="1734" href="hw1.html#1715" class="Bound">x</a> <a id="1736" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="1738" href="hw1.html#1717" class="Bound">y</a>
+  <a id="1742" href="hw1.html#1693" class="Function Operator">begin</a> <a id="1748" href="hw1.html#1748" class="Bound">x≡y</a> <a id="1752" class="Symbol">=</a> <a id="1754" href="hw1.html#1748" class="Bound">x≡y</a>
+  
+  <a id="Lib._is-≡_"></a><a id="1763" href="hw1.html#1763" class="Function Operator">_is-≡_</a> <a id="1770" class="Symbol">:</a> <a id="1772" class="Symbol">∀</a> <a id="1774" class="Symbol">{</a><a id="1775" href="hw1.html#1775" class="Bound">A</a> <a id="1777" class="Symbol">:</a> <a id="1779" class="PrimitiveType">Set</a><a id="1782" class="Symbol">}</a> <a id="1784" class="Symbol">(</a><a id="1785" href="hw1.html#1785" class="Bound">x</a> <a id="1787" class="Symbol">:</a> <a id="1789" href="hw1.html#1775" class="Bound">A</a><a id="1790" class="Symbol">)</a> <a id="1792" class="Symbol">{</a><a id="1793" href="hw1.html#1793" class="Bound">y</a> <a id="1795" class="Symbol">:</a> <a id="1797" href="hw1.html#1775" class="Bound">A</a><a id="1798" class="Symbol">}</a> <a id="1800" class="Symbol">→</a> <a id="1802" href="hw1.html#1785" class="Bound">x</a> <a id="1804" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="1806" href="hw1.html#1793" class="Bound">y</a> <a id="1808" class="Symbol">→</a> <a id="1810" href="hw1.html#1785" class="Bound">x</a> <a id="1812" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="1814" href="hw1.html#1793" class="Bound">y</a>
+  <a id="1818" class="Symbol">_</a> <a id="1820" href="hw1.html#1763" class="Function Operator">is-≡</a> <a id="1825" href="hw1.html#1825" class="Bound">x≡y</a> <a id="1829" class="Symbol">=</a> <a id="1831" href="hw1.html#1825" class="Bound">x≡y</a>
+  
+  <a id="Lib._is-≡[_]_"></a><a id="1840" href="hw1.html#1840" class="Function Operator">_is-≡[_]_</a> <a id="1850" class="Symbol">:</a> <a id="1852" class="Symbol">∀</a> <a id="1854" class="Symbol">{</a><a id="1855" href="hw1.html#1855" class="Bound">A</a> <a id="1857" class="Symbol">:</a> <a id="1859" class="PrimitiveType">Set</a><a id="1862" class="Symbol">}</a> <a id="1864" class="Symbol">(</a><a id="1865" href="hw1.html#1865" class="Bound">x</a> <a id="1867" class="Symbol">:</a> <a id="1869" href="hw1.html#1855" class="Bound">A</a><a id="1870" class="Symbol">)</a> <a id="1872" class="Symbol">{</a><a id="1873" href="hw1.html#1873" class="Bound">y</a> <a id="1875" href="hw1.html#1875" class="Bound">z</a> <a id="1877" class="Symbol">:</a> <a id="1879" href="hw1.html#1855" class="Bound">A</a><a id="1880" class="Symbol">}</a> <a id="1882" class="Symbol">→</a> <a id="1884" href="hw1.html#1865" class="Bound">x</a> <a id="1886" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="1888" href="hw1.html#1873" class="Bound">y</a> <a id="1890" class="Symbol">→</a> <a id="1892" href="hw1.html#1873" class="Bound">y</a> <a id="1894" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="1896" href="hw1.html#1875" class="Bound">z</a> <a id="1898" class="Symbol">→</a> <a id="1900" href="hw1.html#1865" class="Bound">x</a> <a id="1902" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="1904" href="hw1.html#1875" class="Bound">z</a>
+  <a id="1908" class="Symbol">_</a> <a id="1910" href="hw1.html#1840" class="Function Operator">is-≡[</a> <a id="1916" href="hw1.html#1641" class="InductiveConstructor">refl</a> <a id="1921" href="hw1.html#1840" class="Function Operator">]</a> <a id="1923" href="hw1.html#1923" class="Bound">y≡z</a> <a id="1927" class="Symbol">=</a> <a id="1929" href="hw1.html#1923" class="Bound">y≡z</a>
+  
+  <a id="Lib._∎"></a><a id="1938" href="hw1.html#1938" class="Function Operator">_∎</a> <a id="1941" class="Symbol">:</a> <a id="1943" class="Symbol">∀</a> <a id="1945" class="Symbol">{</a><a id="1946" href="hw1.html#1946" class="Bound">A</a> <a id="1948" class="Symbol">:</a> <a id="1950" class="PrimitiveType">Set</a><a id="1953" class="Symbol">}</a> <a id="1955" class="Symbol">(</a><a id="1956" href="hw1.html#1956" class="Bound">x</a> <a id="1958" class="Symbol">:</a> <a id="1960" href="hw1.html#1946" class="Bound">A</a><a id="1961" class="Symbol">)</a> <a id="1963" class="Symbol">→</a> <a id="1965" href="hw1.html#1956" class="Bound">x</a> <a id="1967" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="1969" href="hw1.html#1956" class="Bound">x</a>
+  <a id="1973" class="Symbol">_</a> <a id="1975" href="hw1.html#1938" class="Function Operator">∎</a> <a id="1977" class="Symbol">=</a> <a id="1979" href="hw1.html#1641" class="InductiveConstructor">refl</a>
+  
+  <a id="Lib.cong"></a><a id="1989" href="hw1.html#1989" class="Function">cong</a> <a id="1994" class="Symbol">:</a> <a id="1996" class="Symbol">∀</a> <a id="1998" class="Symbol">{</a><a id="1999" href="hw1.html#1999" class="Bound">A</a> <a id="2001" href="hw1.html#2001" class="Bound">B</a> <a id="2003" class="Symbol">:</a> <a id="2005" class="PrimitiveType">Set</a><a id="2008" class="Symbol">}</a> <a id="2010" class="Symbol">(</a><a id="2011" href="hw1.html#2011" class="Bound">f</a> <a id="2013" class="Symbol">:</a> <a id="2015" href="hw1.html#1999" class="Bound">A</a> <a id="2017" class="Symbol">→</a> <a id="2019" href="hw1.html#2001" class="Bound">B</a><a id="2020" class="Symbol">)</a> <a id="2022" class="Symbol">{</a><a id="2023" href="hw1.html#2023" class="Bound">x</a> <a id="2025" href="hw1.html#2025" class="Bound">y</a> <a id="2027" class="Symbol">:</a> <a id="2029" href="hw1.html#1999" class="Bound">A</a><a id="2030" class="Symbol">}</a> <a id="2032" class="Symbol">→</a> <a id="2034" href="hw1.html#2023" class="Bound">x</a> <a id="2036" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="2038" href="hw1.html#2025" class="Bound">y</a> <a id="2040" class="Symbol">→</a> <a id="2042" href="hw1.html#2011" class="Bound">f</a> <a id="2044" href="hw1.html#2023" class="Bound">x</a> <a id="2046" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="2048" href="hw1.html#2011" class="Bound">f</a> <a id="2050" href="hw1.html#2025" class="Bound">y</a>
+  <a id="2054" href="hw1.html#1989" class="Function">cong</a> <a id="2059" href="hw1.html#2059" class="Bound">f</a> <a id="2061" href="hw1.html#1641" class="InductiveConstructor">refl</a> <a id="2066" class="Symbol">=</a> <a id="2068" href="hw1.html#1641" class="InductiveConstructor">refl</a>
+  
+  <a id="Lib.sym"></a><a id="2078" href="hw1.html#2078" class="Function">sym</a> <a id="2082" class="Symbol">:</a> <a id="2084" class="Symbol">∀</a> <a id="2086" class="Symbol">{</a><a id="2087" href="hw1.html#2087" class="Bound">A</a> <a id="2089" class="Symbol">:</a> <a id="2091" class="PrimitiveType">Set</a><a id="2094" class="Symbol">}</a> <a id="2096" class="Symbol">{</a><a id="2097" href="hw1.html#2097" class="Bound">x</a> <a id="2099" href="hw1.html#2099" class="Bound">y</a> <a id="2101" class="Symbol">:</a> <a id="2103" href="hw1.html#2087" class="Bound">A</a><a id="2104" class="Symbol">}</a> <a id="2106" class="Symbol">→</a> <a id="2108" href="hw1.html#2097" class="Bound">x</a> <a id="2110" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="2112" href="hw1.html#2099" class="Bound">y</a> <a id="2114" class="Symbol">→</a> <a id="2116" href="hw1.html#2099" class="Bound">y</a> <a id="2118" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="2120" href="hw1.html#2097" class="Bound">x</a>
+  <a id="2124" href="hw1.html#2078" class="Function">sym</a> <a id="2128" href="hw1.html#1641" class="InductiveConstructor">refl</a> <a id="2133" class="Symbol">=</a> <a id="2135" href="hw1.html#1641" class="InductiveConstructor">refl</a>
+  
+  <a id="2145" class="Keyword">data</a> <a id="Lib.ℕ"></a><a id="2150" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="2152" class="Symbol">:</a> <a id="2154" class="PrimitiveType">Set</a> <a id="2158" class="Keyword">where</a>
+    <a id="Lib.ℕ.zero"></a><a id="2168" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="2173" class="Symbol">:</a> <a id="2175" href="hw1.html#2150" class="Datatype">ℕ</a>
+    <a id="Lib.ℕ.suc"></a><a id="2181" href="hw1.html#2181" class="InductiveConstructor">suc</a>  <a id="2186" class="Symbol">:</a> <a id="2188" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="2190" class="Symbol">→</a> <a id="2192" href="hw1.html#2150" class="Datatype">ℕ</a>
+  
+  <a id="2199" class="Symbol">{-#</a> <a id="2203" class="Keyword">BUILTIN</a> NATURAL <a id="2219" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="2221" class="Symbol">#-}</a>
+  
+  <a id="Lib._+_"></a><a id="2230" href="hw1.html#2230" class="Function Operator">_+_</a> <a id="2234" class="Symbol">:</a> <a id="2236" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="2238" class="Symbol">→</a> <a id="2240" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="2242" class="Symbol">→</a> <a id="2244" href="hw1.html#2150" class="Datatype">ℕ</a>
+  <a id="2248" href="hw1.html#2168" class="InductiveConstructor">zero</a>    <a id="2256" href="hw1.html#2230" class="Function Operator">+</a> <a id="2258" href="hw1.html#2258" class="Bound">n</a>  <a id="2261" class="Symbol">=</a>  <a id="2264" href="hw1.html#2258" class="Bound">n</a>
+  <a id="2268" class="Symbol">(</a><a id="2269" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2273" href="hw1.html#2273" class="Bound">m</a><a id="2274" class="Symbol">)</a> <a id="2276" href="hw1.html#2230" class="Function Operator">+</a> <a id="2278" href="hw1.html#2278" class="Bound">n</a>  <a id="2281" class="Symbol">=</a>  <a id="2284" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2288" class="Symbol">(</a><a id="2289" href="hw1.html#2273" class="Bound">m</a> <a id="2291" href="hw1.html#2230" class="Function Operator">+</a> <a id="2293" href="hw1.html#2278" class="Bound">n</a><a id="2294" class="Symbol">)</a>
+  
+  <a id="Lib._*_"></a><a id="2301" href="hw1.html#2301" class="Function Operator">_*_</a> <a id="2305" class="Symbol">:</a> <a id="2307" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="2309" class="Symbol">→</a> <a id="2311" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="2313" class="Symbol">→</a> <a id="2315" href="hw1.html#2150" class="Datatype">ℕ</a>
+  <a id="2319" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="2324" href="hw1.html#2301" class="Function Operator">*</a> <a id="2326" href="hw1.html#2326" class="Bound">n</a>     <a id="2332" class="Symbol">=</a>  <a id="2335" href="hw1.html#2168" class="InductiveConstructor">zero</a>
+  <a id="2342" class="Symbol">(</a><a id="2343" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2347" href="hw1.html#2347" class="Bound">m</a><a id="2348" class="Symbol">)</a> <a id="2350" href="hw1.html#2301" class="Function Operator">*</a> <a id="2352" href="hw1.html#2352" class="Bound">n</a>  <a id="2355" class="Symbol">=</a>  <a id="2358" href="hw1.html#2352" class="Bound">n</a> <a id="2360" href="hw1.html#2230" class="Function Operator">+</a> <a id="2362" class="Symbol">(</a><a id="2363" href="hw1.html#2347" class="Bound">m</a> <a id="2365" href="hw1.html#2301" class="Function Operator">*</a> <a id="2367" href="hw1.html#2352" class="Bound">n</a><a id="2368" class="Symbol">)</a>
+  
+  <a id="Lib._∸_"></a><a id="2375" href="hw1.html#2375" class="Function Operator">_∸_</a> <a id="2379" class="Symbol">:</a> <a id="2381" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="2383" class="Symbol">→</a> <a id="2385" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="2387" class="Symbol">→</a> <a id="2389" href="hw1.html#2150" class="Datatype">ℕ</a>
+  <a id="2393" href="hw1.html#2393" class="Bound">m</a>       <a id="2401" href="hw1.html#2375" class="Function Operator">∸</a> <a id="2403" href="hw1.html#2168" class="InductiveConstructor">zero</a>     <a id="2412" class="Symbol">=</a>  <a id="2415" href="hw1.html#2393" class="Bound">m</a>
+  <a id="2419" href="hw1.html#2168" class="InductiveConstructor">zero</a>    <a id="2427" href="hw1.html#2375" class="Function Operator">∸</a> <a id="2429" class="Symbol">(</a><a id="2430" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2434" href="hw1.html#2434" class="Bound">n</a><a id="2435" class="Symbol">)</a>  <a id="2438" class="Symbol">=</a>  <a id="2441" href="hw1.html#2168" class="InductiveConstructor">zero</a>
+  <a id="2448" class="Symbol">(</a><a id="2449" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2453" href="hw1.html#2453" class="Bound">m</a><a id="2454" class="Symbol">)</a> <a id="2456" href="hw1.html#2375" class="Function Operator">∸</a> <a id="2458" class="Symbol">(</a><a id="2459" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2463" href="hw1.html#2463" class="Bound">n</a><a id="2464" class="Symbol">)</a>  <a id="2467" class="Symbol">=</a>  <a id="2470" href="hw1.html#2453" class="Bound">m</a> <a id="2472" href="hw1.html#2375" class="Function Operator">∸</a> <a id="2474" href="hw1.html#2463" class="Bound">n</a>
+  
+  <a id="Lib.+-assoc"></a><a id="2481" href="hw1.html#2481" class="Function">+-assoc</a> <a id="2489" class="Symbol">:</a> <a id="2491" class="Symbol">∀</a> <a id="2493" class="Symbol">(</a><a id="2494" href="hw1.html#2494" class="Bound">m</a> <a id="2496" href="hw1.html#2496" class="Bound">n</a> <a id="2498" href="hw1.html#2498" class="Bound">p</a> <a id="2500" class="Symbol">:</a> <a id="2502" href="hw1.html#2150" class="Datatype">ℕ</a><a id="2503" class="Symbol">)</a> <a id="2505" class="Symbol">→</a> <a id="2507" class="Symbol">(</a><a id="2508" href="hw1.html#2494" class="Bound">m</a> <a id="2510" href="hw1.html#2230" class="Function Operator">+</a> <a id="2512" href="hw1.html#2496" class="Bound">n</a><a id="2513" class="Symbol">)</a> <a id="2515" href="hw1.html#2230" class="Function Operator">+</a> <a id="2517" href="hw1.html#2498" class="Bound">p</a> <a id="2519" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="2521" href="hw1.html#2494" class="Bound">m</a> <a id="2523" href="hw1.html#2230" class="Function Operator">+</a> <a id="2525" class="Symbol">(</a><a id="2526" href="hw1.html#2496" class="Bound">n</a> <a id="2528" href="hw1.html#2230" class="Function Operator">+</a> <a id="2530" href="hw1.html#2498" class="Bound">p</a><a id="2531" class="Symbol">)</a>
+  <a id="2535" href="hw1.html#2481" class="Function">+-assoc</a> <a id="2543" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="2548" href="hw1.html#2548" class="Bound">n</a> <a id="2550" href="hw1.html#2550" class="Bound">p</a> <a id="2552" class="Symbol">=</a>
+    <a id="2558" href="hw1.html#1693" class="Function Operator">begin</a>
+      <a id="2570" class="Symbol">(</a><a id="2571" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="2576" href="hw1.html#2230" class="Function Operator">+</a> <a id="2578" href="hw1.html#2548" class="Bound">n</a><a id="2579" class="Symbol">)</a> <a id="2581" href="hw1.html#2230" class="Function Operator">+</a> <a id="2583" href="hw1.html#2550" class="Bound">p</a>
+    <a id="2589" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="2600" href="hw1.html#2548" class="Bound">n</a> <a id="2602" href="hw1.html#2230" class="Function Operator">+</a> <a id="2604" href="hw1.html#2550" class="Bound">p</a>
+    <a id="2610" href="hw1.html#1763" class="Function Operator">is-≡</a>
+     <a id="2620" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="2625" href="hw1.html#2230" class="Function Operator">+</a> <a id="2627" class="Symbol">(</a><a id="2628" href="hw1.html#2548" class="Bound">n</a> <a id="2630" href="hw1.html#2230" class="Function Operator">+</a> <a id="2632" href="hw1.html#2550" class="Bound">p</a><a id="2633" class="Symbol">)</a>
+    <a id="2639" href="hw1.html#1938" class="Function Operator">∎</a>
+  <a id="2643" href="hw1.html#2481" class="Function">+-assoc</a> <a id="2651" class="Symbol">(</a><a id="2652" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2656" href="hw1.html#2656" class="Bound">m</a><a id="2657" class="Symbol">)</a> <a id="2659" href="hw1.html#2659" class="Bound">n</a> <a id="2661" href="hw1.html#2661" class="Bound">p</a> <a id="2663" class="Symbol">=</a>
+    <a id="2669" href="hw1.html#1693" class="Function Operator">begin</a>
+      <a id="2681" class="Symbol">(</a><a id="2682" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2686" href="hw1.html#2656" class="Bound">m</a> <a id="2688" href="hw1.html#2230" class="Function Operator">+</a> <a id="2690" href="hw1.html#2659" class="Bound">n</a><a id="2691" class="Symbol">)</a> <a id="2693" href="hw1.html#2230" class="Function Operator">+</a> <a id="2695" href="hw1.html#2661" class="Bound">p</a>
+    <a id="2701" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="2712" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2716" class="Symbol">(</a><a id="2717" href="hw1.html#2656" class="Bound">m</a> <a id="2719" href="hw1.html#2230" class="Function Operator">+</a> <a id="2721" href="hw1.html#2659" class="Bound">n</a><a id="2722" class="Symbol">)</a> <a id="2724" href="hw1.html#2230" class="Function Operator">+</a> <a id="2726" href="hw1.html#2661" class="Bound">p</a>
+    <a id="2732" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="2743" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2747" class="Symbol">((</a><a id="2749" href="hw1.html#2656" class="Bound">m</a> <a id="2751" href="hw1.html#2230" class="Function Operator">+</a> <a id="2753" href="hw1.html#2659" class="Bound">n</a><a id="2754" class="Symbol">)</a> <a id="2756" href="hw1.html#2230" class="Function Operator">+</a> <a id="2758" href="hw1.html#2661" class="Bound">p</a><a id="2759" class="Symbol">)</a>
+    <a id="2765" href="hw1.html#1840" class="Function Operator">is-≡[</a> <a id="2771" href="hw1.html#1989" class="Function">cong</a> <a id="2776" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2780" class="Symbol">(</a><a id="2781" href="hw1.html#2481" class="Function">+-assoc</a> <a id="2789" href="hw1.html#2656" class="Bound">m</a> <a id="2791" href="hw1.html#2659" class="Bound">n</a> <a id="2793" href="hw1.html#2661" class="Bound">p</a><a id="2794" class="Symbol">)</a> <a id="2796" href="hw1.html#1840" class="Function Operator">]</a>
+      <a id="2804" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2808" class="Symbol">(</a><a id="2809" href="hw1.html#2656" class="Bound">m</a> <a id="2811" href="hw1.html#2230" class="Function Operator">+</a> <a id="2813" class="Symbol">(</a><a id="2814" href="hw1.html#2659" class="Bound">n</a> <a id="2816" href="hw1.html#2230" class="Function Operator">+</a> <a id="2818" href="hw1.html#2661" class="Bound">p</a><a id="2819" class="Symbol">))</a>
+    <a id="2826" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="2837" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2841" href="hw1.html#2656" class="Bound">m</a> <a id="2843" href="hw1.html#2230" class="Function Operator">+</a> <a id="2845" class="Symbol">(</a><a id="2846" href="hw1.html#2659" class="Bound">n</a> <a id="2848" href="hw1.html#2230" class="Function Operator">+</a> <a id="2850" href="hw1.html#2661" class="Bound">p</a><a id="2851" class="Symbol">)</a>
+    <a id="2857" href="hw1.html#1938" class="Function Operator">∎</a>
+  
+  <a id="Lib.+-runit"></a><a id="2864" href="hw1.html#2864" class="Function">+-runit</a> <a id="2872" class="Symbol">:</a> <a id="2874" class="Symbol">∀</a> <a id="2876" class="Symbol">(</a><a id="2877" href="hw1.html#2877" class="Bound">m</a> <a id="2879" class="Symbol">:</a> <a id="2881" href="hw1.html#2150" class="Datatype">ℕ</a><a id="2882" class="Symbol">)</a> <a id="2884" class="Symbol">→</a> <a id="2886" href="hw1.html#2877" class="Bound">m</a> <a id="2888" href="hw1.html#2230" class="Function Operator">+</a> <a id="2890" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="2895" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="2897" href="hw1.html#2877" class="Bound">m</a>
+  <a id="2901" href="hw1.html#2864" class="Function">+-runit</a> <a id="2909" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="2914" class="Symbol">=</a>
+    <a id="2920" href="hw1.html#1693" class="Function Operator">begin</a>
+      <a id="2932" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="2937" href="hw1.html#2230" class="Function Operator">+</a> <a id="2939" href="hw1.html#2168" class="InductiveConstructor">zero</a>
+    <a id="2948" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="2959" href="hw1.html#2168" class="InductiveConstructor">zero</a>
+    <a id="2968" href="hw1.html#1938" class="Function Operator">∎</a>
+  <a id="2972" href="hw1.html#2864" class="Function">+-runit</a> <a id="2980" class="Symbol">(</a><a id="2981" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="2985" href="hw1.html#2985" class="Bound">m</a><a id="2986" class="Symbol">)</a> <a id="2988" class="Symbol">=</a>
+    <a id="2994" href="hw1.html#1693" class="Function Operator">begin</a>
+      <a id="3006" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3010" href="hw1.html#2985" class="Bound">m</a> <a id="3012" href="hw1.html#2230" class="Function Operator">+</a> <a id="3014" href="hw1.html#2168" class="InductiveConstructor">zero</a>
+    <a id="3023" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="3034" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3038" class="Symbol">(</a><a id="3039" href="hw1.html#2985" class="Bound">m</a> <a id="3041" href="hw1.html#2230" class="Function Operator">+</a> <a id="3043" href="hw1.html#2168" class="InductiveConstructor">zero</a><a id="3047" class="Symbol">)</a>
+    <a id="3053" href="hw1.html#1840" class="Function Operator">is-≡[</a> <a id="3059" href="hw1.html#1989" class="Function">cong</a> <a id="3064" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3068" class="Symbol">(</a><a id="3069" href="hw1.html#2864" class="Function">+-runit</a> <a id="3077" href="hw1.html#2985" class="Bound">m</a><a id="3078" class="Symbol">)</a> <a id="3080" href="hw1.html#1840" class="Function Operator">]</a>
+      <a id="3088" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3092" href="hw1.html#2985" class="Bound">m</a>
+    <a id="3098" href="hw1.html#1938" class="Function Operator">∎</a>
+  
+  <a id="Lib.+-suc"></a><a id="3105" href="hw1.html#3105" class="Function">+-suc</a> <a id="3111" class="Symbol">:</a> <a id="3113" class="Symbol">∀</a> <a id="3115" class="Symbol">(</a><a id="3116" href="hw1.html#3116" class="Bound">m</a> <a id="3118" href="hw1.html#3118" class="Bound">n</a> <a id="3120" class="Symbol">:</a> <a id="3122" href="hw1.html#2150" class="Datatype">ℕ</a><a id="3123" class="Symbol">)</a> <a id="3125" class="Symbol">→</a> <a id="3127" href="hw1.html#3116" class="Bound">m</a> <a id="3129" href="hw1.html#2230" class="Function Operator">+</a> <a id="3131" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3135" href="hw1.html#3118" class="Bound">n</a> <a id="3137" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="3139" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3143" class="Symbol">(</a><a id="3144" href="hw1.html#3116" class="Bound">m</a> <a id="3146" href="hw1.html#2230" class="Function Operator">+</a> <a id="3148" href="hw1.html#3118" class="Bound">n</a><a id="3149" class="Symbol">)</a>
+  <a id="3153" href="hw1.html#3105" class="Function">+-suc</a> <a id="3159" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="3164" href="hw1.html#3164" class="Bound">n</a> <a id="3166" class="Symbol">=</a>
+    <a id="3172" href="hw1.html#1693" class="Function Operator">begin</a>
+      <a id="3184" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="3189" href="hw1.html#2230" class="Function Operator">+</a> <a id="3191" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3195" href="hw1.html#3164" class="Bound">n</a>
+    <a id="3201" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="3212" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3216" href="hw1.html#3164" class="Bound">n</a>
+    <a id="3222" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="3233" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3237" class="Symbol">(</a><a id="3238" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="3243" href="hw1.html#2230" class="Function Operator">+</a> <a id="3245" href="hw1.html#3164" class="Bound">n</a><a id="3246" class="Symbol">)</a>
+    <a id="3252" href="hw1.html#1938" class="Function Operator">∎</a>
+  <a id="3256" href="hw1.html#3105" class="Function">+-suc</a> <a id="3262" class="Symbol">(</a><a id="3263" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3267" href="hw1.html#3267" class="Bound">m</a><a id="3268" class="Symbol">)</a> <a id="3270" href="hw1.html#3270" class="Bound">n</a> <a id="3272" class="Symbol">=</a>
+    <a id="3278" href="hw1.html#1693" class="Function Operator">begin</a>
+      <a id="3290" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3294" href="hw1.html#3267" class="Bound">m</a> <a id="3296" href="hw1.html#2230" class="Function Operator">+</a> <a id="3298" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3302" href="hw1.html#3270" class="Bound">n</a>
+    <a id="3308" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="3319" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3323" class="Symbol">(</a><a id="3324" href="hw1.html#3267" class="Bound">m</a> <a id="3326" href="hw1.html#2230" class="Function Operator">+</a> <a id="3328" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3332" href="hw1.html#3270" class="Bound">n</a><a id="3333" class="Symbol">)</a>
+    <a id="3339" href="hw1.html#1840" class="Function Operator">is-≡[</a> <a id="3345" href="hw1.html#1989" class="Function">cong</a> <a id="3350" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3354" class="Symbol">(</a><a id="3355" href="hw1.html#3105" class="Function">+-suc</a> <a id="3361" href="hw1.html#3267" class="Bound">m</a> <a id="3363" href="hw1.html#3270" class="Bound">n</a><a id="3364" class="Symbol">)</a> <a id="3366" href="hw1.html#1840" class="Function Operator">]</a>
+      <a id="3374" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3378" class="Symbol">(</a><a id="3379" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3383" class="Symbol">(</a><a id="3384" href="hw1.html#3267" class="Bound">m</a> <a id="3386" href="hw1.html#2230" class="Function Operator">+</a> <a id="3388" href="hw1.html#3270" class="Bound">n</a><a id="3389" class="Symbol">))</a>
+    <a id="3396" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="3407" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3411" class="Symbol">(</a><a id="3412" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3416" href="hw1.html#3267" class="Bound">m</a> <a id="3418" href="hw1.html#2230" class="Function Operator">+</a> <a id="3420" href="hw1.html#3270" class="Bound">n</a><a id="3421" class="Symbol">)</a>
+    <a id="3427" href="hw1.html#1938" class="Function Operator">∎</a>
+  
+  <a id="Lib.+-comm"></a><a id="3434" href="hw1.html#3434" class="Function">+-comm</a> <a id="3441" class="Symbol">:</a> <a id="3443" class="Symbol">∀</a> <a id="3445" class="Symbol">(</a><a id="3446" href="hw1.html#3446" class="Bound">m</a> <a id="3448" href="hw1.html#3448" class="Bound">n</a> <a id="3450" class="Symbol">:</a> <a id="3452" href="hw1.html#2150" class="Datatype">ℕ</a><a id="3453" class="Symbol">)</a> <a id="3455" class="Symbol">→</a> <a id="3457" href="hw1.html#3446" class="Bound">m</a> <a id="3459" href="hw1.html#2230" class="Function Operator">+</a> <a id="3461" href="hw1.html#3448" class="Bound">n</a> <a id="3463" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="3465" href="hw1.html#3448" class="Bound">n</a> <a id="3467" href="hw1.html#2230" class="Function Operator">+</a> <a id="3469" href="hw1.html#3446" class="Bound">m</a>
+  <a id="3473" href="hw1.html#3434" class="Function">+-comm</a> <a id="3480" href="hw1.html#3480" class="Bound">m</a> <a id="3482" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="3487" class="Symbol">=</a>
+    <a id="3493" href="hw1.html#1693" class="Function Operator">begin</a>
+      <a id="3505" href="hw1.html#3480" class="Bound">m</a> <a id="3507" href="hw1.html#2230" class="Function Operator">+</a> <a id="3509" href="hw1.html#2168" class="InductiveConstructor">zero</a>
+    <a id="3518" href="hw1.html#1840" class="Function Operator">is-≡[</a> <a id="3524" href="hw1.html#2864" class="Function">+-runit</a> <a id="3532" href="hw1.html#3480" class="Bound">m</a> <a id="3534" href="hw1.html#1840" class="Function Operator">]</a>
+      <a id="3542" href="hw1.html#3480" class="Bound">m</a>
+    <a id="3548" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="3559" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="3564" href="hw1.html#2230" class="Function Operator">+</a> <a id="3566" href="hw1.html#3480" class="Bound">m</a>
+    <a id="3572" href="hw1.html#1938" class="Function Operator">∎</a>
+  <a id="3576" href="hw1.html#3434" class="Function">+-comm</a> <a id="3583" href="hw1.html#3583" class="Bound">m</a> <a id="3585" class="Symbol">(</a><a id="3586" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3590" href="hw1.html#3590" class="Bound">n</a><a id="3591" class="Symbol">)</a> <a id="3593" class="Symbol">=</a>
+    <a id="3599" href="hw1.html#1693" class="Function Operator">begin</a>
+      <a id="3611" href="hw1.html#3583" class="Bound">m</a> <a id="3613" href="hw1.html#2230" class="Function Operator">+</a> <a id="3615" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3619" href="hw1.html#3590" class="Bound">n</a>
+    <a id="3625" href="hw1.html#1840" class="Function Operator">is-≡[</a> <a id="3631" href="hw1.html#3105" class="Function">+-suc</a> <a id="3637" href="hw1.html#3583" class="Bound">m</a> <a id="3639" href="hw1.html#3590" class="Bound">n</a> <a id="3641" href="hw1.html#1840" class="Function Operator">]</a>
+      <a id="3649" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3653" class="Symbol">(</a><a id="3654" href="hw1.html#3583" class="Bound">m</a> <a id="3656" href="hw1.html#2230" class="Function Operator">+</a> <a id="3658" href="hw1.html#3590" class="Bound">n</a><a id="3659" class="Symbol">)</a>
+    <a id="3665" href="hw1.html#1840" class="Function Operator">is-≡[</a> <a id="3671" href="hw1.html#1989" class="Function">cong</a> <a id="3676" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3680" class="Symbol">(</a><a id="3681" href="hw1.html#3434" class="Function">+-comm</a> <a id="3688" href="hw1.html#3583" class="Bound">m</a> <a id="3690" href="hw1.html#3590" class="Bound">n</a><a id="3691" class="Symbol">)</a> <a id="3693" href="hw1.html#1840" class="Function Operator">]</a>
+      <a id="3701" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3705" class="Symbol">(</a><a id="3706" href="hw1.html#3590" class="Bound">n</a> <a id="3708" href="hw1.html#2230" class="Function Operator">+</a> <a id="3710" href="hw1.html#3583" class="Bound">m</a><a id="3711" class="Symbol">)</a>
+    <a id="3717" href="hw1.html#1763" class="Function Operator">is-≡</a>
+      <a id="3728" href="hw1.html#2181" class="InductiveConstructor">suc</a> <a id="3732" href="hw1.html#3590" class="Bound">n</a> <a id="3734" href="hw1.html#2230" class="Function Operator">+</a> <a id="3736" href="hw1.html#3583" class="Bound">m</a>
+    <a id="3742" href="hw1.html#1938" class="Function Operator">∎</a>
+<a id="3744" class="Keyword">open</a> <a id="3749" href="hw1.html#1475" class="Module">Lib</a> <a id="3753" class="Keyword">public</a>
+
+<a id="3761" class="Comment">----------------</a>
+<a id="3778" class="Comment">-- ASSIGNMENT --</a>
+<a id="3795" class="Comment">----------------</a>
+
+<a id="3813" class="Comment">-- # E1: [★]</a>
+<a id="3826" class="Comment">-- Write out 7 in longhand</a>
+<a id="seven"></a><a id="3853" href="hw1.html#3853" class="Function">seven</a> <a id="3859" class="Symbol">:</a> <a id="3861" href="hw1.html#2150" class="Datatype">ℕ</a>
+<a id="3863" href="hw1.html#3853" class="Function">seven</a> <a id="3869" class="Symbol">=</a> <a id="3871" class="Symbol">{!!}</a>
+
+<a id="3877" class="Comment">-- this will fail if you got E1 wrong!</a>
+<a id="seven-is-correct"></a><a id="3916" href="hw1.html#3916" class="Function">seven-is-correct</a> <a id="3933" class="Symbol">:</a> <a id="3935" href="hw1.html#3853" class="Function">seven</a> <a id="3941" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="3943" class="Number">7</a>
+<a id="3945" href="hw1.html#3916" class="Function">seven-is-correct</a> <a id="3962" class="Symbol">=</a> <a id="3964" href="hw1.html#1641" class="UnsolvedMeta UnsolvedConstraint InductiveConstructor">refl</a>
+
+<a id="3970" class="Comment">-- # E2: [★]</a>
+<a id="3983" class="Comment">-- Compute 3 + 4, writing out your reasoning as a chain of equations.</a>
+<a id="three+four"></a><a id="4053" href="hw1.html#4053" class="Function">three+four</a> <a id="4064" class="Symbol">:</a> <a id="4066" class="Number">3</a> <a id="4068" href="hw1.html#2230" class="Function Operator">+</a> <a id="4070" class="Number">4</a> <a id="4072" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="4074" class="Number">7</a>
+<a id="4076" href="hw1.html#4053" class="Function">three+four</a> <a id="4087" class="Symbol">=</a>
+  <a id="4091" href="hw1.html#1693" class="Function Operator">begin</a>
+    <a id="4101" class="Number">3</a> <a id="4103" href="hw1.html#2230" class="Function Operator">+</a> <a id="4105" class="Number">4</a>
+  <a id="4109" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4118" class="Symbol">{!!}</a>
+  <a id="4125" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4134" class="Symbol">{!!}</a>
+  <a id="4141" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4150" class="Symbol">{!!}</a>
+  <a id="4157" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4166" class="Symbol">{!!}</a>
+  <a id="4173" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4182" class="Symbol">{!!}</a>
+  <a id="4189" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4198" class="Number">7</a>
+  <a id="4202" href="hw1.html#1938" class="Function Operator">∎</a>
+
+<a id="4205" class="Comment">-- # E3: [★]</a>
+<a id="4218" class="Comment">-- Compute 3 * 4, writing out your reasoning as a chain of equations.</a>
+<a id="three*four"></a><a id="4288" href="hw1.html#4288" class="Function">three*four</a> <a id="4299" class="Symbol">:</a> <a id="4301" class="Number">3</a> <a id="4303" href="hw1.html#2301" class="Function Operator">*</a> <a id="4305" class="Number">4</a> <a id="4307" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="4309" class="Number">12</a>
+<a id="4312" href="hw1.html#4288" class="Function">three*four</a> <a id="4323" class="Symbol">=</a> <a id="4325" href="hw1.html#1693" class="Function Operator">begin</a>
+    <a id="4335" class="Number">3</a> <a id="4337" href="hw1.html#2301" class="Function Operator">*</a> <a id="4339" class="Number">4</a>
+  <a id="4343" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4352" class="Symbol">{!!}</a>
+  <a id="4359" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4368" class="Symbol">{!!}</a>
+  <a id="4375" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4384" class="Symbol">{!!}</a>
+  <a id="4391" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4400" class="Symbol">{!!}</a>
+  <a id="4407" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4416" class="Symbol">{!!}</a>
+  <a id="4423" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4432" class="Symbol">{!!}</a>
+  <a id="4439" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4448" class="Number">12</a>
+  <a id="4453" href="hw1.html#1938" class="Function Operator">∎</a>
+
+<a id="4456" class="Comment">-- # E4: [★★]</a>
+<a id="4470" class="Comment">-- Define exponentiation, which is given by the following equations:</a>
+<a id="4539" class="Comment">--     m ^ 0        =  1</a>
+<a id="4564" class="Comment">--     m ^ (1 + n)  =  m * (m ^ n)</a>
+<a id="_^_"></a><a id="4599" href="hw1.html#4599" class="Function Operator">_^_</a> <a id="4603" class="Symbol">:</a> <a id="4605" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="4607" class="Symbol">→</a> <a id="4609" href="hw1.html#2150" class="Datatype">ℕ</a> <a id="4611" class="Symbol">→</a> <a id="4613" href="hw1.html#2150" class="Datatype">ℕ</a>
+<a id="4615" href="hw1.html#4615" class="Bound">m</a> <a id="4617" href="hw1.html#4599" class="Function Operator">^</a> <a id="4619" href="hw1.html#4619" class="Bound">n</a> <a id="4621" class="Symbol">=</a> <a id="4623" class="Symbol">{!!}</a>
+
+<a id="4629" class="Comment">-- this will fail if you got E4 wrong!</a>
+<a id="^-is-correct"></a><a id="4668" href="hw1.html#4668" class="Function">^-is-correct</a> <a id="4681" class="Symbol">:</a> <a id="4683" class="Number">2</a> <a id="4685" href="hw1.html#4599" class="Function Operator">^</a> <a id="4687" class="Number">5</a> <a id="4689" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="4691" class="Number">32</a>
+<a id="4694" href="hw1.html#4668" class="Function">^-is-correct</a> <a id="4707" class="Symbol">=</a> <a id="4709" href="hw1.html#1641" class="UnsolvedMeta UnsolvedConstraint InductiveConstructor">refl</a>
+
+<a id="4715" class="Comment">-- E5: [★]</a>
+<a id="4726" class="Comment">-- Compute 3 ^ 4, writing out your reasoning as a chain of equations.</a>
+<a id="three^four"></a><a id="4796" href="hw1.html#4796" class="Function">three^four</a> <a id="4807" class="Symbol">:</a> <a id="4809" class="Number">3</a> <a id="4811" href="hw1.html#4599" class="Function Operator">^</a> <a id="4813" class="Number">4</a> <a id="4815" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="4817" class="Number">81</a>
+<a id="4820" href="hw1.html#4796" class="Function">three^four</a> <a id="4831" class="Symbol">=</a>
+  <a id="4835" href="hw1.html#1693" class="Function Operator">begin</a>
+    <a id="4845" class="Number">3</a> <a id="4847" href="hw1.html#4599" class="Function Operator">^</a> <a id="4849" class="Number">4</a>
+  <a id="4853" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4862" class="Symbol">{!!}</a>
+  <a id="4869" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4878" class="Symbol">{!!}</a>
+  <a id="4885" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4894" class="Symbol">{!!}</a>
+  <a id="4901" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4910" class="Symbol">{!!}</a>
+  <a id="4917" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4926" class="Symbol">{!!}</a>
+  <a id="4933" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4942" class="Symbol">{!!}</a>
+  <a id="4949" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4958" class="Symbol">{!!}</a>
+  <a id="4965" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4974" class="Symbol">{!!}</a>
+  <a id="4981" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="4990" class="UnsolvedMeta UnsolvedConstraint Number">81</a>
+  <a id="4995" href="hw1.html#1938" class="UnsolvedMeta UnsolvedConstraint Function Operator">∎</a>
+
+<a id="4998" class="Comment">-- E6: [★]</a>
+<a id="5009" class="Comment">-- Compute 5 ∸ 3, writing out your reasoning as a chain of equations.</a>
+<a id="five∸three"></a><a id="5079" href="hw1.html#5079" class="Function">five∸three</a> <a id="5090" class="Symbol">:</a> <a id="5092" class="Number">5</a> <a id="5094" href="hw1.html#2375" class="Function Operator">∸</a> <a id="5096" class="Number">3</a> <a id="5098" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="5100" class="Number">2</a>
+<a id="5102" href="hw1.html#5079" class="Function">five∸three</a> <a id="5113" class="Symbol">=</a>
+  <a id="5117" href="hw1.html#1693" class="Function Operator">begin</a>
+    <a id="5127" class="Number">5</a> <a id="5129" href="hw1.html#2375" class="Function Operator">∸</a> <a id="5131" class="Number">3</a>
+  <a id="5135" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="5144" class="Symbol">{!!}</a>
+  <a id="5151" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="5160" class="Symbol">{!!}</a>
+  <a id="5167" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="5176" class="Symbol">{!!}</a>
+  <a id="5183" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="5192" class="Number">2</a>
+  <a id="5196" href="hw1.html#1938" class="Function Operator">∎</a>
+
+<a id="5199" class="Comment">-- E7: [★]</a>
+<a id="5210" class="Comment">-- Compute 3 ∸ 5, writing out your reasoning as a chain of equations.</a>
+<a id="three∸five"></a><a id="5280" href="hw1.html#5280" class="Function">three∸five</a> <a id="5291" class="Symbol">:</a> <a id="5293" class="Number">3</a> <a id="5295" href="hw1.html#2375" class="Function Operator">∸</a> <a id="5297" class="Number">5</a> <a id="5299" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="5301" class="Number">0</a>
+<a id="5303" href="hw1.html#5280" class="Function">three∸five</a> <a id="5314" class="Symbol">=</a>
+  <a id="5318" href="hw1.html#1693" class="Function Operator">begin</a>
+    <a id="5328" class="Number">3</a> <a id="5330" href="hw1.html#2375" class="Function Operator">∸</a> <a id="5332" class="Number">5</a>
+  <a id="5336" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="5345" class="Symbol">{!!}</a>
+  <a id="5352" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="5361" class="Symbol">{!!}</a>
+  <a id="5368" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="5377" class="Symbol">{!!}</a>
+  <a id="5384" href="hw1.html#1763" class="Function Operator">is-≡</a>
+    <a id="5393" class="Number">0</a>
+  <a id="5397" href="hw1.html#1938" class="Function Operator">∎</a>
+
+<a id="5400" class="Comment">-- E8: [★★]</a>
+<a id="5412" class="Comment">-- Show m + (n + p) ≡ n + (m + p) for all naturals m, n, and p. No</a>
+<a id="5479" class="Comment">-- induction is needed, just apply the previous results which show</a>
+<a id="5546" class="Comment">-- addition is associative and commutative.</a>
+<a id="5590" class="Comment">-- (Hint: use rewrite.)</a>
+<a id="+-swap"></a><a id="5614" href="hw1.html#5614" class="Function">+-swap</a> <a id="5621" class="Symbol">:</a> <a id="5623" class="Symbol">∀</a> <a id="5625" class="Symbol">(</a><a id="5626" href="hw1.html#5626" class="Bound">m</a> <a id="5628" href="hw1.html#5628" class="Bound">n</a> <a id="5630" href="hw1.html#5630" class="Bound">p</a> <a id="5632" class="Symbol">:</a> <a id="5634" href="hw1.html#2150" class="Datatype">ℕ</a><a id="5635" class="Symbol">)</a> <a id="5637" class="Symbol">→</a> <a id="5639" class="Symbol">(</a><a id="5640" href="hw1.html#5626" class="Bound">m</a> <a id="5642" href="hw1.html#2230" class="Function Operator">+</a> <a id="5644" href="hw1.html#5628" class="Bound">n</a><a id="5645" class="Symbol">)</a> <a id="5647" href="hw1.html#2230" class="Function Operator">+</a> <a id="5649" href="hw1.html#5630" class="Bound">p</a> <a id="5651" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="5653" href="hw1.html#5628" class="Bound">n</a> <a id="5655" href="hw1.html#2230" class="Function Operator">+</a> <a id="5657" class="Symbol">(</a><a id="5658" href="hw1.html#5626" class="Bound">m</a> <a id="5660" href="hw1.html#2230" class="Function Operator">+</a> <a id="5662" href="hw1.html#5630" class="Bound">p</a><a id="5663" class="Symbol">)</a>
+<a id="5665" href="hw1.html#5614" class="Function">+-swap</a> <a id="5672" href="hw1.html#5672" class="Bound">m</a> <a id="5674" href="hw1.html#5674" class="Bound">n</a> <a id="5676" href="hw1.html#5676" class="Bound">p</a> <a id="5678" class="Symbol">=</a> <a id="5680" class="Symbol">{!!}</a>
+
+<a id="5686" class="Comment">-- E9: [★★★]</a>
+<a id="5699" class="Comment">-- Show multiplication distributes over addition, that is,</a>
+<a id="5758" class="Comment">-- (m + n) * p ≡ m * p + n * p for all naturals m, n, and p.</a>
+<a id="5819" class="Comment">-- (Hint: proceed by induction on m.)</a>
+<a id="5857" class="Comment">-- (Hint: use rewrite.)</a>
+<a id="5881" class="Comment">-- (Hint: use lemma +-assoc and helper sym.)</a>
+<a id="*-+-rdistrib"></a><a id="5926" href="hw1.html#5926" class="Function">*-+-rdistrib</a> <a id="5939" class="Symbol">:</a> <a id="5941" class="Symbol">∀</a> <a id="5943" class="Symbol">(</a><a id="5944" href="hw1.html#5944" class="Bound">m</a> <a id="5946" href="hw1.html#5946" class="Bound">n</a> <a id="5948" href="hw1.html#5948" class="Bound">p</a> <a id="5950" class="Symbol">:</a> <a id="5952" href="hw1.html#2150" class="Datatype">ℕ</a><a id="5953" class="Symbol">)</a> <a id="5955" class="Symbol">→</a> <a id="5957" class="Symbol">(</a><a id="5958" href="hw1.html#5944" class="Bound">m</a> <a id="5960" href="hw1.html#2230" class="Function Operator">+</a> <a id="5962" href="hw1.html#5946" class="Bound">n</a><a id="5963" class="Symbol">)</a> <a id="5965" href="hw1.html#2301" class="Function Operator">*</a> <a id="5967" href="hw1.html#5948" class="Bound">p</a> <a id="5969" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="5971" href="hw1.html#5944" class="Bound">m</a> <a id="5973" href="hw1.html#2301" class="Function Operator">*</a> <a id="5975" href="hw1.html#5948" class="Bound">p</a> <a id="5977" href="hw1.html#2230" class="Function Operator">+</a> <a id="5979" href="hw1.html#5946" class="Bound">n</a> <a id="5981" href="hw1.html#2301" class="Function Operator">*</a> <a id="5983" href="hw1.html#5948" class="Bound">p</a>
+<a id="5985" href="hw1.html#5926" class="Function">*-+-rdistrib</a> <a id="5998" href="hw1.html#5998" class="Bound">m</a> <a id="6000" href="hw1.html#6000" class="Bound">n</a> <a id="6002" href="hw1.html#6002" class="Bound">p</a> <a id="6004" class="Symbol">=</a> <a id="6006" class="Symbol">{!!}</a>
+
+<a id="6012" class="Comment">-- E10: [★★★]</a>
+<a id="6026" class="Comment">-- Show multiplication is associative, that is,</a>
+<a id="6074" class="Comment">-- (m * n) * p ≡ m * (n * p)</a>
+<a id="6103" class="Comment">-- (Hint: proceed by induction on m.)</a>
+<a id="6141" class="Comment">-- (Hint: use rewrite.)</a>
+<a id="6165" class="Comment">-- (Hint: use lemma *-distrib-+.)</a>
+<a id="*-assoc"></a><a id="6199" href="hw1.html#6199" class="Function">*-assoc</a> <a id="6207" class="Symbol">:</a> <a id="6209" class="Symbol">∀</a> <a id="6211" class="Symbol">(</a><a id="6212" href="hw1.html#6212" class="Bound">m</a> <a id="6214" href="hw1.html#6214" class="Bound">n</a> <a id="6216" href="hw1.html#6216" class="Bound">p</a> <a id="6218" class="Symbol">:</a> <a id="6220" href="hw1.html#2150" class="Datatype">ℕ</a><a id="6221" class="Symbol">)</a> <a id="6223" class="Symbol">→</a> <a id="6225" class="Symbol">(</a><a id="6226" href="hw1.html#6212" class="Bound">m</a> <a id="6228" href="hw1.html#2301" class="Function Operator">*</a> <a id="6230" href="hw1.html#6214" class="Bound">n</a><a id="6231" class="Symbol">)</a> <a id="6233" href="hw1.html#2301" class="Function Operator">*</a> <a id="6235" href="hw1.html#6216" class="Bound">p</a> <a id="6237" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="6239" href="hw1.html#6212" class="Bound">m</a> <a id="6241" href="hw1.html#2301" class="Function Operator">*</a> <a id="6243" class="Symbol">(</a><a id="6244" href="hw1.html#6214" class="Bound">n</a> <a id="6246" href="hw1.html#2301" class="Function Operator">*</a> <a id="6248" href="hw1.html#6216" class="Bound">p</a><a id="6249" class="Symbol">)</a>
+<a id="6251" href="hw1.html#6199" class="Function">*-assoc</a> <a id="6259" href="hw1.html#6259" class="Bound">m</a> <a id="6261" href="hw1.html#6261" class="Bound">n</a> <a id="6263" href="hw1.html#6263" class="Bound">p</a> <a id="6265" class="Symbol">=</a> <a id="6267" class="Symbol">{!!}</a>
+
+<a id="6273" class="Comment">-- E11: [★★★]</a>
+<a id="6287" class="Comment">-- Show multiplication is commutative, that is, m * n ≡ n * m for all</a>
+<a id="6357" class="Comment">-- naturals m and n. As with commutativity of addition, you will need</a>
+<a id="6427" class="Comment">-- to formulate and prove suitable lemmas.</a>
+<a id="6470" class="Keyword">module</a> <a id="*-comm-lemmas"></a><a id="6477" href="hw1.html#6477" class="Module">*-comm-lemmas</a> <a id="6491" class="Keyword">where</a>
+  <a id="6499" class="Comment">-- (Hint: proceed by induction on m.)</a>
+  <a id="*-comm-lemmas.*-rzero"></a><a id="6539" href="hw1.html#6539" class="Function">*-rzero</a> <a id="6547" class="Symbol">:</a> <a id="6549" class="Symbol">∀</a> <a id="6551" class="Symbol">(</a><a id="6552" href="hw1.html#6552" class="Bound">m</a> <a id="6554" class="Symbol">:</a> <a id="6556" href="hw1.html#2150" class="Datatype">ℕ</a><a id="6557" class="Symbol">)</a> <a id="6559" class="Symbol">→</a> <a id="6561" href="hw1.html#6552" class="Bound">m</a> <a id="6563" href="hw1.html#2301" class="Function Operator">*</a> <a id="6565" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="6570" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="6572" href="hw1.html#2168" class="InductiveConstructor">zero</a>
+  <a id="6579" href="hw1.html#6539" class="Function">*-rzero</a> <a id="6587" href="hw1.html#6587" class="Bound">m</a> <a id="6589" class="Symbol">=</a> <a id="6591" class="Symbol">{!!}</a>
+
+  <a id="6599" class="Comment">-- (Hint: proceed by induction on m.)</a>
+  <a id="6639" class="Comment">-- (Hint: use rewrite.)</a>
+  <a id="*-comm-lemmas.*-runit"></a><a id="6665" href="hw1.html#6665" class="Function">*-runit</a> <a id="6673" class="Symbol">:</a> <a id="6675" class="Symbol">∀</a> <a id="6677" class="Symbol">(</a><a id="6678" href="hw1.html#6678" class="Bound">m</a> <a id="6680" class="Symbol">:</a> <a id="6682" href="hw1.html#2150" class="Datatype">ℕ</a><a id="6683" class="Symbol">)</a> <a id="6685" class="Symbol">→</a> <a id="6687" href="hw1.html#6678" class="Bound">m</a> <a id="6689" href="hw1.html#2301" class="Function Operator">*</a> <a id="6691" class="Number">1</a> <a id="6693" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="6695" href="hw1.html#6678" class="Bound">m</a>
+  <a id="6699" href="hw1.html#6665" class="Function">*-runit</a> <a id="6707" href="hw1.html#6707" class="Bound">m</a> <a id="6709" class="Symbol">=</a> <a id="6711" class="Symbol">{!!}</a>
+
+  <a id="6719" class="Comment">-- (Hint: proceed by induction on m.)</a>
+  <a id="6759" class="Comment">-- (Hint: use rewrite.)</a>
+  <a id="6785" class="Comment">-- (Hint: use lemmas.)</a>
+  <a id="*-comm-lemmas.*-+-ldistrib"></a><a id="6810" href="hw1.html#6810" class="Function">*-+-ldistrib</a> <a id="6823" class="Symbol">:</a> <a id="6825" class="Symbol">∀</a> <a id="6827" class="Symbol">(</a><a id="6828" href="hw1.html#6828" class="Bound">m</a> <a id="6830" href="hw1.html#6830" class="Bound">n</a> <a id="6832" href="hw1.html#6832" class="Bound">p</a> <a id="6834" class="Symbol">:</a> <a id="6836" href="hw1.html#2150" class="Datatype">ℕ</a><a id="6837" class="Symbol">)</a> <a id="6839" class="Symbol">→</a> <a id="6841" href="hw1.html#6828" class="Bound">m</a> <a id="6843" href="hw1.html#2301" class="Function Operator">*</a> <a id="6845" class="Symbol">(</a><a id="6846" href="hw1.html#6830" class="Bound">n</a> <a id="6848" href="hw1.html#2230" class="Function Operator">+</a> <a id="6850" href="hw1.html#6832" class="Bound">p</a><a id="6851" class="Symbol">)</a> <a id="6853" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="6855" href="hw1.html#6828" class="Bound">m</a> <a id="6857" href="hw1.html#2301" class="Function Operator">*</a> <a id="6859" href="hw1.html#6830" class="Bound">n</a> <a id="6861" href="hw1.html#2230" class="Function Operator">+</a> <a id="6863" href="hw1.html#6828" class="Bound">m</a> <a id="6865" href="hw1.html#2301" class="Function Operator">*</a> <a id="6867" href="hw1.html#6832" class="Bound">p</a>
+  <a id="6871" href="hw1.html#6810" class="Function">*-+-ldistrib</a> <a id="6884" href="hw1.html#6884" class="Bound">m</a> <a id="6886" href="hw1.html#6886" class="Bound">n</a> <a id="6888" href="hw1.html#6888" class="Bound">p</a> <a id="6890" class="Symbol">=</a> <a id="6892" class="Symbol">{!!}</a>
+<a id="6897" class="Keyword">open</a> <a id="6902" href="hw1.html#6477" class="Module">*-comm-lemmas</a> <a id="6916" class="Keyword">public</a>
+
+<a id="6924" class="Comment">-- (Hint: proceed by induction on m.)</a>
+<a id="6962" class="Comment">-- (Hint: use rewrite.)</a>
+<a id="6986" class="Comment">-- (Hint: use lemmas.)</a>
+<a id="*-comm"></a><a id="7009" href="hw1.html#7009" class="Function">*-comm</a> <a id="7016" class="Symbol">:</a> <a id="7018" class="Symbol">∀</a> <a id="7020" class="Symbol">(</a><a id="7021" href="hw1.html#7021" class="Bound">m</a> <a id="7023" href="hw1.html#7023" class="Bound">n</a> <a id="7025" class="Symbol">:</a> <a id="7027" href="hw1.html#2150" class="Datatype">ℕ</a><a id="7028" class="Symbol">)</a> <a id="7030" class="Symbol">→</a> <a id="7032" href="hw1.html#7021" class="Bound">m</a> <a id="7034" href="hw1.html#2301" class="Function Operator">*</a> <a id="7036" href="hw1.html#7023" class="Bound">n</a> <a id="7038" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="7040" href="hw1.html#7023" class="Bound">n</a> <a id="7042" href="hw1.html#2301" class="Function Operator">*</a> <a id="7044" href="hw1.html#7021" class="Bound">m</a>
+<a id="7046" href="hw1.html#7009" class="Function">*-comm</a> <a id="7053" href="hw1.html#7053" class="Bound">m</a> <a id="7055" href="hw1.html#7055" class="Bound">n</a> <a id="7057" class="Symbol">=</a> <a id="7059" class="Symbol">{!!}</a>
+
+<a id="7065" class="Comment">-- E12: [★★]</a>
+<a id="7078" class="Comment">-- Show zero ∸ m ≡ zero for all naturals m. Did your proof require</a>
+<a id="7145" class="Comment">-- induction?</a>
+<a id="0∸n≡0"></a><a id="7159" href="hw1.html#7159" class="Function">0∸n≡0</a> <a id="7165" class="Symbol">:</a> <a id="7167" class="Symbol">∀</a> <a id="7169" class="Symbol">(</a><a id="7170" href="hw1.html#7170" class="Bound">m</a> <a id="7172" class="Symbol">:</a> <a id="7174" href="hw1.html#2150" class="Datatype">ℕ</a><a id="7175" class="Symbol">)</a> <a id="7177" class="Symbol">→</a> <a id="7179" href="hw1.html#2168" class="InductiveConstructor">zero</a> <a id="7184" href="hw1.html#2375" class="Function Operator">∸</a> <a id="7186" href="hw1.html#7170" class="Bound">m</a> <a id="7188" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="7190" href="hw1.html#2168" class="InductiveConstructor">zero</a>
+<a id="7195" href="hw1.html#7159" class="Function">0∸n≡0</a> <a id="7201" href="hw1.html#7201" class="Bound">m</a> <a id="7203" class="Symbol">=</a> <a id="7205" class="Symbol">{!!}</a>
+
+<a id="7211" class="Comment">-- E13: [★★★]</a>
+<a id="7225" class="Comment">-- Show that monus associates with addition, that is,</a>
+<a id="7279" class="Comment">-- m ∸ n ∸ p ≡ m ∸ (n + p) for all naturals m, n, and p.</a>
+<a id="7336" class="Comment">-- (Hint: proceed by induction on m and n.)</a>
+<a id="∸-assoc"></a><a id="7380" href="hw1.html#7380" class="Function">∸-assoc</a> <a id="7388" class="Symbol">:</a> <a id="7390" class="Symbol">∀</a> <a id="7392" class="Symbol">(</a><a id="7393" href="hw1.html#7393" class="Bound">m</a> <a id="7395" href="hw1.html#7395" class="Bound">n</a> <a id="7397" href="hw1.html#7397" class="Bound">p</a> <a id="7399" class="Symbol">:</a> <a id="7401" href="hw1.html#2150" class="Datatype">ℕ</a><a id="7402" class="Symbol">)</a> <a id="7404" class="Symbol">→</a> <a id="7406" href="hw1.html#7393" class="Bound">m</a> <a id="7408" href="hw1.html#2375" class="Function Operator">∸</a> <a id="7410" href="hw1.html#7395" class="Bound">n</a> <a id="7412" href="hw1.html#2375" class="Function Operator">∸</a> <a id="7414" href="hw1.html#7397" class="Bound">p</a> <a id="7416" href="hw1.html#1599" class="Datatype Operator">≡</a> <a id="7418" href="hw1.html#7393" class="Bound">m</a> <a id="7420" href="hw1.html#2375" class="Function Operator">∸</a> <a id="7422" class="Symbol">(</a><a id="7423" href="hw1.html#7395" class="Bound">n</a> <a id="7425" href="hw1.html#2230" class="Function Operator">+</a> <a id="7427" href="hw1.html#7397" class="Bound">p</a><a id="7428" class="Symbol">)</a>
+<a id="7430" href="hw1.html#7380" class="Function">∸-assoc</a> <a id="7438" href="hw1.html#7438" class="Bound">m</a> <a id="7440" href="hw1.html#7440" class="Bound">n</a> <a id="7442" href="hw1.html#7442" class="Bound">p</a> <a id="7444" class="Symbol">=</a> <a id="7446" class="Symbol">{!!}</a>
+</pre></body></html>

@@ -1,0 +1,8 @@
+@INPROCEEDINGS{micinski-csf20,
+  author={K. {Micinski} and D. {Darais} and T. {Gilray}},
+  booktitle={2020 IEEE 33rd Computer Security Foundations Symposium (CSF)}, 
+  title={Abstracting Faceted Execution}, 
+  year={2020},
+  volume={},
+  number={},
+  pages={184-198},}
