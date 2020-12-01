@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.1.css">
+
+  <!-- Title -->
+  <meta name="title" content="UVM CS 225: Programming Languages / Spring 2019">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+
+### Course Description
+
+What does it mean for a C++ program to be "undefined"? What is the difference
+between "proc" and "lambda" in Ruby? What is the difference between "function"
+in Javascript and "lambda" in Python? What does "yield" do in the various
+programming languages that support it? What is the difference between a
+"variable", a "pointer" and a "reference"? What's the difference between a
+Javascript "prototype", a Java "class", and a Rust "trait"? If I wanted to
+automatically translate python to javascript, and in a way that preserves the
+original program's meaning, (1) how would I do it, and (2) how would I know I
+did it correctly?
+
+This course will explore topics in programming language design, implementation
+and analysis. We will examine existing programming language designs, as well as
+give a rigorous mathematical account for core subsets of programming language
+features. Finally, we will use this mathematical account of programming
+language semantics as a foundation for tools which analyze programs to (a) find
+bugs in programs, (b) verify correctness and security properties of programs,
+and (c) automatically construct programs which adhere to a specification.
+
+This course is structured around *language interpreters* as an avenue for
+exploring language features and mathematical properties of programs. We will
+not study any single mainstream programming language, rather we will focus on
+smaller toy languages in order to focus on the essence of language features in
+isolation. After studying language features through interpreters, we will
+relate these features back to mainstream programming languages and discuss
+their designs.
+
+Students are expected to implement concepts discussed in the course in the
+Haskell programming language, and manipulate mathematical definitions of
+programming language semantics on paper. Students will be evaluated through
+weekly programming assignments, a midterm exam and a final project. There will
+be no final exam.
+
+**Prerequisites:** CS 124 (Data Structures and Algorithms) and CS 125
+(Computability and Complexity)
+
+### Administration
+
+**Lecture:** Tuesdays and Thursdays, 1:15–2:30pm, Aiken Center 110  
+
+**Instructor:** [David Darais](http://david.darais.com)   
+**Office Hours:** 
+- Tuesdays, 4:00–5:00pm, Votey 319
+- Wednesdays, 4:00–5:00pm, Votey 319
+
+**TA:** Lindsey Stuntz  
+**Office Hours:** 
+- Tuesdays, 10:00-12:00pm, CS Conference Room
+
+**Course Piazza:** [CS 225: Programming Languages][Piazza]
+
+[Piazza]: https://piazza.com/class#spring2019/cs225
+
+*Course announcements and discussion will take place on Piazza exclusively.
+Questions sent to the instructor or TAs via email will receive the following
+reply: “Please post this question to Piazza.” The instructor and TAs are not
+required to respond to Piazza questions after 5pm, or any earlier than 24 hours
+after the question is posted.*
+
+### Textbook
+
+We will use Shriram Krishnamurthi's [Programming Languages: Application and
+Interpretation][PLAI]. The book is freely available online. Although the book
+uses Racket for programming examples and exercises, we will be using Haskell.
+Aside from this change in implementation language, we will follow the book
+quite closely. We will deviate from the book to explore a broad range of
+advanced topics towards the end of the course.
+
+[PLAI]: http://cs.brown.edu/courses/cs173/2012/book/
+
+### Software Tools
+
+Throughout the course we will use the [Haskell] programming language. See
+[Haskell Setup][HaskellSetup] for instructions on setting up Haskell. We will
+use Haskell GHC version 8.6.3 for this course, along with the [Stack] tool for
+managing Haskell compiler and package installations.
+
+You may find [Hoogle] useful for looking up documentation of Haskell operators
+and functions.
+
+[Haskell]: https://haskell-lang.org
+[HaskellSetup]: haskell-setup.html
+[Stack]: https://haskellstack.org
+[Hoogle]: https://www.haskell.org/hoogle/
+
+### Policies
+
+**Grades:** Your grade for the course will be calculated as follows: 60%
+Assignments, 20% midterm and 20% final project. Grades for assignments will be
+calculated based on tests passed in our grading scripts. *I will drop your
+lowest assignment grade.* This means that out of the 9 assignments, your best 8
+will be used to calculated 60% of your grade, so each assignment is worth 7.5%
+of your total grade. Letter grades are calculated in the [usual
+way][LetterGrades]. A+ will only be given to students who achieve 97–100% *and*
+an outstanding final project.
+
+[LetterGrades]: letter-grades.html
+
+I will grade assignments within one week and post snapshots of your grade after
+each assignment. *I will not create new extra credit opportunities for students
+who are unhappy with their grades late in the semester.* You will have all of
+the information you need to achieve your desired grade by the end of the
+course: your grade at any given point in the course, and the formula I will use
+to calculate final grades at the end of the course. Students concerned about
+their grade should schedule a meeting with me promptly after the midterm.
+
+**Extra Credit:** During the semester there will be ~7 guest lectures from
+visiting faculty. *I will give 0.5% extra credit towards your final grade for
+each of these lectures that you attend.* To receive extra credit, you must
+bring a notepad to the lecture, take notes in person during the lecture, and
+then turn your notes in to the instructor or TA personally at the end of the
+talk. If you attend all lectures you will receive a ~3.5% bump to your final
+grade.
+
+- Guest Lecture 1: Tuesday, February 12, 12–1pm (Systems Security)
+- Guest Lecture 2: Thursday, February 14, 12–1pm (CS Theory)
+- Guest Lecture 3: Tuesday, February 19, 12–1pm (Systems Security)
+- Guest Lecture 4: Friday, February 22, 12–1pm (Systems Security)
+- Guest Lecture 5: Tuesday, February 26, 1–2pm (Systems Security) (CLASS CANCELED)
+- Guest Lecture 6: ??? (CS Theory)
+- Guest Lecture 7: ??? (CS Theory)
+- Guest Lecture 8: Monday, March 04, 12–1pm (Systems Security)
+
+**Assignments:** There will be 9 weekly assignments. Each assignment is
+released on a Thursday after class and due the following Thursday *before
+class*. Your lowest assignment grade will be dropped when calculating final
+grades.
+
+**Late Work:** Each assignment will be released after class on a Thursday and
+due before class one week later. *Late work will not be accepted.* The purpose
+of my policy to drop your lowest homework grade (see above) is to accommodate
+situations that interfere with turning in assignments on time: e.g., illness,
+travel, extracurricular activities, or other coursework. Please use this “free”
+assignment carefully, and only for situations that are truly outside your
+control.
+
+**Collaboration and Copying:** Collaboration with peers on the high-level ideas
+and approach on assignments is encouraged. *Copying someone else's work is not
+allowed.* Any collaboration, even at a high level, must be declared when you
+submit your assignment. Every assignment must include a collaboration
+statement. E.g., “I discussed high-level strategies for solving problems 2 and
+5 with Alex.” 
+
+Obtaining high-level information on the internet is allowed and encouraged if
+it helps you learn the material. However, I strongly discourage googling for
+answers to homework problems. *Copying code from the internet and submitting
+copied content for assignments is not allowed.*
+
+Students caught copying work from peers or submitting copied code from the
+internet will be eligible for immediate failure of the course and disciplinary
+action by the University. All academic integrity misconduct will be treated
+according to [UVM's Code of Academic Integrity][UVM-CAI].
+
+[UVM-CAI]: https://www.uvm.edu/policies/student/acadintegrity.pdf
+
+**Small Group Assignments:** For homeworks 5–9 you will be allowed to work in
+groups of size 1–2 (independently or in pairs). You may submit a single
+solution to the assignment for 2-person groups.
+
+**Midterm:** The midterm will be closed note, closed book and closed laptop.
+
+**Final Group Project:** For the final project, you will be allowed to work in
+groups of size 1–2, however I will expect a larger amount of work to be
+completed for groups of 2. For the final project you will do the following, all
+of which will be graded:
+
+- Submit a project proposal as part of HW 9
+- Submit a project checkpoint each week for two weeks
+- Present your project during the last week of classes
+- Submit your final project on the last Friday of classes
+
+**Special Topics Lectures:** Possible special topics include:
+
+- Effects, via Monads
+- Logic Programming, via MiniKanren
+- Software Verification, via LiquidHaskell and/or Dependent Types
+- Static Analysis, via Galois Connections
+- Memory Safe Languages, via Rust
+- Security and Privacy, via Duet
+
+### Schedule
+
+Date        | Topic                                                                              | Homework                       
+------------|------------------------------------------------------------------------------------|-------------------------------------
+Tue, Jan 15 | Welcome [[LN01]]                                                                   |
+Thu, Jan 17 | Technical Intro ⅋ Haskell [[LN02]]                                                 | HW 1 Release [[HW01]] [[SL01]]
+Tue, Jan 22 | Syntax ⅋ Interpretation [[LN03]] [[LC03]]                                          |
+Thu, Jan 24 | Desugaring ⅋ Partiality [[LN04]] [[LC04]]                                          | HW 1 Due ⌁ HW 2 Release [[HW02]] [[SL02]]
+Tue, Jan 29 | Lists, Trees, Sets ⅋ Variables [[LN05]] [[LC05]]                                   |
+Thu, Jan 31 | Binding and Scope [[LN06]] [[LC06]]                                                | HW 2 Due ⌁ HW 3 Release [[HW03]] [[SL03]]
+Tue, Feb 05 | Substitution [[LN07]]                                                              |
+Thu, Feb 07 | Functions ⅋ Environments [[LN08]] [[LC08]]                                         | HW 3 Due ⌁ HW 4 Release [[HW04]] [[SL04]]
+Tue, Feb 12 | Functions II [[LN09]]                                                              |
+Thu, Feb 14 | Haskell Review                                                                     | HW 4 Due ⌁ HW 5 Release [[HW05]] [[SL05]]
+Tue, Feb 19 | Higher Order Haskell [[LN11]] [[LC11]]                                             | 
+Thu, Feb 21 | Mutation [[LN12]]                                                                  | HW 5 Due ⌁ HW 6 Release [[HW06]] [[SL06]]
+Tue, Feb 26 | *NO CLASS* (Guest Lecture)                                                         |
+Thu, Feb 28 | **REVIEW FOR MIDTERM** [[MidtermPractice]]                                         | HW 6 Due
+Tue, Mar 05 | *NO CLASS: Town Meeting Day*                                                       |
+Thu, Mar 07 | **MIDTERM**                                                                        |       
+Tue, Mar 12 | *NO CLASS: Spring Break*                                                           |
+Thu, Mar 14 | *NO CLASS: Spring Break*                                                           |
+Tue, Mar 19 | Objects [[LN13]]                                                                   |
+Thu, Mar 21 | Self Reference ⅋ Core OO [[LN14]]                                                  | HW 7 Release [[HW07]] [[SL07]]
+Tue, Mar 26 | OO Interpreter [[LN15]] [[LC15]]                                                   |       
+Thu, Mar 28 | Object Creation                                                                    | HW 7 Due ⌁ HW 8 Release [[HW08]] [[HW08-pdf]] [[SL08]]
+Tue, Apr 02 | Types I [[LN17]] [[LN17-pdf]] [[LC17]]                                             |        
+Thu, Apr 04 | Types II                                                                           | HW 8 Due ⌁ HW 9 Release [[HW09]] [[HW09-pdf]] [[SL09]]
+Tue, Apr 09 | Program Analysis [[LN19]]                                                          |                     
+Thu, Apr 11 | Final Project Options I [[LN20]]                                                   | HW 9 Due
+Tue, Apr 16 | Final Project Opions II [[LN21]]                                                   | 
+Thu, Apr 18 | Big-step ⅋ Small-step [[LN22]]                                                     | Project Proposals Due (9pm)
+Tue, Apr 23 | Monads [[LN23]]                                                                    | Project Checkpoint 1 Due (before class)
+Thu, Apr 25 | Software Verification [[LN24]]                                                     | 
+Tue, Apr 30 | Project Presentations I                                                            | Project Checkpoint 2 Due (before class)
+Thu, May 02 | Project Presentations II                                                           |
+Fri, May 03 | *NO CLASS*                                                                         | Project Due (at 11:59pm)
+
+[LN01]: ln/ln01.html
+[LN02]: ln/ln02.html
+[LN03]: ln/ln03.html
+[LN04]: ln/ln04.html
+[LN05]: ln/ln05.html
+[LN06]: ln/ln06.html
+[LN07]: ln/ln07.html
+[LN08]: ln/ln08.html
+[LN09]: ln/ln09.html
+[LN10]: ln/ln10.html
+[LN11]: ln/ln11.html
+[LN12]: ln/ln12.html
+[LN13]: ln/ln13.html
+[LN14]: ln/ln14.html
+[LN15]: ln/ln15.html
+[LN16]: ln/ln16.html
+[LN17]: ln/ln17.html
+[LN18]: ln/ln18.html
+[LN19]: ln/ln19.html
+[LN20]: ln/ln20.html
+[LN21]: ln/ln21.html
+[LN22]: ln/ln22.html
+[LN23]: ln/ln23.html
+[LN24]: ln/ln24.html
+[LN25]: ln/ln25.html
+[LN26]: ln/ln26.html
+[LN27]: ln/ln27.html
+[LN28]: ln/ln28.html
+[LN29]: ln/ln29.html
+
+[LN17-pdf]: ln/ln17.md.pdf
+
+[LC01]: lc/Lc01.hs
+[LC02]: lc/Lc02.hs
+[LC03]: lc/Lc03.hs
+[LC04]: lc/Lc04.hs
+[LC05]: lc/Lc05.hs
+[LC06]: lc/Lc06.hs
+[LC07]: lc/Lc07.hs
+[LC08]: lc/Lc08.hs
+[LC09]: lc/Lc09.hs
+[LC10]: lc/Lc10.hs
+[LC11]: lc/Lc11.hs
+[LC12]: lc/Lc12.hs
+[LC13]: lc/Lc13.hs
+[LC14]: lc/Lc14.hs
+[LC15]: lc/Lc15.hs
+[LC16]: lc/Lc16.hs
+[LC17]: lc/Lc17.hs
+[LC18]: lc/Lc18.hs
+[LC19]: lc/Lc19.hs
+[LC20]: lc/Lc20.hs
+[LC21]: lc/Lc21.hs
+[LC22]: lc/Lc22.hs
+[LC23]: lc/Lc23.hs
+[LC24]: lc/Lc24.hs
+[LC25]: lc/Lc25.hs
+[LC26]: lc/Lc26.hs
+[LC27]: lc/Lc27.hs
+[LC28]: lc/Lc28.hs
+[LC29]: lc/Lc29.hs
+
+[HW01]: hw/Hw01.hs
+[HW02]: hw/Hw02.hs
+[HW03]: hw/Hw03.hs
+[HW04]: hw/Hw04.hs
+[HW05]: hw/Hw05.hs
+[HW06]: hw/Hw06.hs
+[HW07]: hw/Hw07.hs
+[HW08]: hw/Hw08.hs
+[HW09]: hw/Hw09.hs
+
+[HW08-pdf]: hw/Hw08.hs.pdf
+[HW09-pdf]: hw/Hw09.hs.pdf
+
+[SL01]: sl/Sl01.hs
+[SL02]: sl/Sl02.hs
+[SL03]: sl/Sl03.hs
+[SL04]: sl/Sl04.hs
+[SL05]: sl/Sl05.hs
+[SL06]: sl/Sl06.hs
+[SL07]: sl/Sl07.hs
+[SL08]: sl/Sl08.hs
+[SL09]: sl/Sl09.hs
+
+[MidtermPractice]: midterm/practice.pdf
+
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<script>
+</script>
+  
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.2.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+It is important when developing software to verify the absence of undesirable
+behavior such as crashes, bugs and security vulnerabilities. Some settings
+require high assurance in verification results, e.g., for embedded software in
+automobiles or airplanes. To achieve high assurance in these verification
+results, formal methods are used to automatically construct or check proofs of
+their correctness. However, achieving high assurance for program analysis
+results is challenging, and current methods are ill suited for both complex
+critical domains and mainstream use.
+
+To verify the correctness of software we consider program analyzers---automated
+tools which detect software defects---and to achieve high assurance in
+verification results we consider mechanized verification---a rigorous process
+for establishing the correctness of program analyzers via computer-checked
+proofs.
+
+The key challenges to designing verified program analyzers are: (1) achieving
+an analyzer design for a given programming language and correctness property;
+(2) achieving an implementation for the design; and (3) achieving a mechanized
+verification that the implementation is correct w.r.t. the design. The state of
+the art in (1) and (2) is to use abstract interpretation: a guiding
+mathematical framework for systematically constructing analyzers directly from
+programming language semantics. However, achieving (3) in the presence of
+abstract interpretation has remained an open problem since the late 1990's.
+Furthermore, even the state-of-the art which achieves (3) in the absence of
+abstract interpretation suffers from the inability to be reused in the presence
+of new analyzer designs or programming language features.
+
+First, we solve the open problem which has prevented the combination of
+abstract interpretation (and in particular, calculational abstract
+interpretation) with mechanized verification, which advances the state of the
+art in designing, implementing, and verifying analyzers for critical software.
+We do this through a new mathematical framework Constructive Galois Connections
+which supports synthesizing specifications for program analyzers, calculating
+implementations from these induced specifications, and is amenable to
+mechanized verification.
+
+Finally, we introduce reusable components for implementing analyzers for a wide
+range of designs and semantics. We do this though two new frameworks Galois
+Transformers and Definitional Abstract Interpreters. These frameworks tightly
+couple analyzer design decisions, implementation fragments, and verification
+properties into compositional components which are (target)
+programming-language independent and amenable to mechanized verification.
+Variations in the analysis design are then recovered by simply re-assembling
+the combination of components. Using this framework, sophisticated program
+analyzers can be assembled by non-experts, and the result are guaranteed to be
+verified by construction.

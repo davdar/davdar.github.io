@@ -1,0 +1,51 @@
+VM Setup
+
+Remove Amazon from desktop toolbar favorites
+Remove Rythmbox from desktop toolbar favorites
+Add Terminal to top of desktop toolbar favorites
+
+> sudo vi /etc/gdm3/custom.conf
+
+Uncomment "#WaylandEnable=false" in /etc/gdm3/custom.conf
+
+> sudo reboot
+> apt-get update
+> sudo apt-get install aptitude curl vim emacs make gcc perl opam
+
+Follow instructions to install Pathogen [1]
+Follow instructions to install Syntastic [2]
+Don't forget to add these lines from the instructions:
+
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
+    
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
+
+Add this to .vimrc:
+
+    let g:syntastic_ocaml_checkers = ['merlin']
+
+Follow instructions to install Atom [3]
+
+Add Atom to top of desktop toolbar favorites (under Terminal)
+
+> opam init
+> opam switch 4.06.0
+> opam depext conf-m4.1
+> opam install tuareg merlin utop ppx_deriving
+> opam user-setup install
+
+> apm install linter-ui-default intentions busy-signal language-ocaml ocaml-indent linter ocaml-merlin
+
+Install VirtualBox Guest Additions. Use the latest version posted on install website [6]
+
+[1] https://github.com/tpope/vim-pathogen
+[2] https://github.com/vim-syntastic/syntastic
+[3] https://flight-manual.atom.io/getting-started/sections/installing-atom/#platform-linux
+[4] https://github.com/ocaml/merlin/wiki/vim-from-scratch
+[5] https://github.com/ocaml/merlin/wiki/emacs-from-scratch
+[6] https://www.virtualbox.org/wiki/Downloads

@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>ic3</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Keyword">module</a> <a id="8" href="ic3.html" class="Module">ic3</a> <a id="12" class="Keyword">where</a>
+
+<a id="19" class="Comment">---------</a>
+<a id="29" class="Comment">-- LIB --</a>
+<a id="39" class="Comment">---------</a>
+
+<a id="50" class="Keyword">infix</a> <a id="56" class="Number">1</a> <a id="58" href="ic3.html#194" class="Function Operator">begin_</a>
+<a id="65" class="Keyword">infixr</a> <a id="72" class="Number">2</a> <a id="74" href="ic3.html#258" class="Function Operator">_is-≡_</a>
+<a id="81" class="Keyword">infix</a> <a id="87" class="Number">3</a> <a id="89" href="ic3.html#329" class="Function Operator">_∎</a>
+<a id="92" class="Keyword">infix</a> <a id="98" class="Number">4</a> <a id="100" href="ic3.html#110" class="Datatype Operator">_≡_</a>
+
+<a id="105" class="Keyword">data</a> <a id="_≡_"></a><a id="110" href="ic3.html#110" class="Datatype Operator">_≡_</a> <a id="114" class="Symbol">{</a><a id="115" href="ic3.html#115" class="Bound">A</a> <a id="117" class="Symbol">:</a> <a id="119" class="PrimitiveType">Set</a><a id="122" class="Symbol">}</a> <a id="124" class="Symbol">(</a><a id="125" href="ic3.html#125" class="Bound">x</a> <a id="127" class="Symbol">:</a> <a id="129" href="ic3.html#115" class="Bound">A</a><a id="130" class="Symbol">)</a> <a id="132" class="Symbol">:</a> <a id="134" href="ic3.html#115" class="Bound">A</a> <a id="136" class="Symbol">→</a> <a id="138" class="PrimitiveType">Set</a> <a id="142" class="Keyword">where</a>
+  <a id="_≡_.refl"></a><a id="150" href="ic3.html#150" class="InductiveConstructor">refl</a> <a id="155" class="Symbol">:</a> <a id="157" href="ic3.html#125" class="Bound">x</a> <a id="159" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="161" href="ic3.html#125" class="Bound">x</a>
+
+<a id="164" class="Symbol">{-#</a> <a id="168" class="Keyword">BUILTIN</a> EQUALITY <a id="185" href="ic3.html#110" class="Datatype Operator">_≡_</a> <a id="189" class="Symbol">#-}</a>
+
+<a id="begin_"></a><a id="194" href="ic3.html#194" class="Function Operator">begin_</a> <a id="201" class="Symbol">:</a> <a id="203" class="Symbol">∀</a> <a id="205" class="Symbol">{</a><a id="206" href="ic3.html#206" class="Bound">A</a> <a id="208" class="Symbol">:</a> <a id="210" class="PrimitiveType">Set</a><a id="213" class="Symbol">}</a> <a id="215" class="Symbol">{</a><a id="216" href="ic3.html#216" class="Bound">x</a> <a id="218" href="ic3.html#218" class="Bound">y</a> <a id="220" class="Symbol">:</a> <a id="222" href="ic3.html#206" class="Bound">A</a><a id="223" class="Symbol">}</a> <a id="225" class="Symbol">→</a> <a id="227" href="ic3.html#216" class="Bound">x</a> <a id="229" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="231" href="ic3.html#218" class="Bound">y</a> <a id="233" class="Symbol">→</a> <a id="235" href="ic3.html#216" class="Bound">x</a> <a id="237" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="239" href="ic3.html#218" class="Bound">y</a>
+<a id="241" href="ic3.html#194" class="Function Operator">begin</a> <a id="247" href="ic3.html#247" class="Bound">x≡y</a> <a id="251" class="Symbol">=</a> <a id="253" href="ic3.html#247" class="Bound">x≡y</a>
+
+<a id="_is-≡_"></a><a id="258" href="ic3.html#258" class="Function Operator">_is-≡_</a> <a id="265" class="Symbol">:</a> <a id="267" class="Symbol">∀</a> <a id="269" class="Symbol">{</a><a id="270" href="ic3.html#270" class="Bound">A</a> <a id="272" class="Symbol">:</a> <a id="274" class="PrimitiveType">Set</a><a id="277" class="Symbol">}</a> <a id="279" class="Symbol">(</a><a id="280" href="ic3.html#280" class="Bound">x</a> <a id="282" class="Symbol">:</a> <a id="284" href="ic3.html#270" class="Bound">A</a><a id="285" class="Symbol">)</a> <a id="287" class="Symbol">{</a><a id="288" href="ic3.html#288" class="Bound">y</a> <a id="290" class="Symbol">:</a> <a id="292" href="ic3.html#270" class="Bound">A</a><a id="293" class="Symbol">}</a> <a id="295" class="Symbol">→</a> <a id="297" href="ic3.html#280" class="Bound">x</a> <a id="299" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="301" href="ic3.html#288" class="Bound">y</a> <a id="303" class="Symbol">→</a> <a id="305" href="ic3.html#280" class="Bound">x</a> <a id="307" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="309" href="ic3.html#288" class="Bound">y</a>
+<a id="311" class="Symbol">_</a> <a id="313" href="ic3.html#258" class="Function Operator">is-≡</a> <a id="318" href="ic3.html#318" class="Bound">x≡y</a> <a id="322" class="Symbol">=</a> <a id="324" href="ic3.html#318" class="Bound">x≡y</a>
+
+<a id="_∎"></a><a id="329" href="ic3.html#329" class="Function Operator">_∎</a> <a id="332" class="Symbol">:</a> <a id="334" class="Symbol">∀</a> <a id="336" class="Symbol">{</a><a id="337" href="ic3.html#337" class="Bound">A</a> <a id="339" class="Symbol">:</a> <a id="341" class="PrimitiveType">Set</a><a id="344" class="Symbol">}</a> <a id="346" class="Symbol">(</a><a id="347" href="ic3.html#347" class="Bound">x</a> <a id="349" class="Symbol">:</a> <a id="351" href="ic3.html#337" class="Bound">A</a><a id="352" class="Symbol">)</a> <a id="354" class="Symbol">→</a> <a id="356" href="ic3.html#347" class="Bound">x</a> <a id="358" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="360" href="ic3.html#347" class="Bound">x</a>
+<a id="362" class="Symbol">_</a> <a id="364" href="ic3.html#329" class="Function Operator">∎</a> <a id="366" class="Symbol">=</a> <a id="368" href="ic3.html#150" class="InductiveConstructor">refl</a>
+
+<a id="374" class="Comment">--------------</a>
+<a id="389" class="Comment">-- IN CLASS --</a>
+<a id="404" class="Comment">--------------</a>
+
+<a id="420" class="Keyword">data</a> <a id="ℕ"></a><a id="425" href="ic3.html#425" class="Datatype">ℕ</a> <a id="427" class="Symbol">:</a> <a id="429" class="PrimitiveType">Set</a> <a id="433" class="Keyword">where</a>
+  <a id="ℕ.zero"></a><a id="441" href="ic3.html#441" class="InductiveConstructor">zero</a> <a id="446" class="Symbol">:</a> <a id="448" href="ic3.html#425" class="Datatype">ℕ</a>
+  <a id="ℕ.suc"></a><a id="452" href="ic3.html#452" class="InductiveConstructor">suc</a>  <a id="457" class="Symbol">:</a> <a id="459" href="ic3.html#425" class="Datatype">ℕ</a> <a id="461" class="Symbol">→</a> <a id="463" href="ic3.html#425" class="Datatype">ℕ</a>
+
+<a id="466" class="Symbol">{-#</a> <a id="470" class="Keyword">BUILTIN</a> NATURAL <a id="486" href="ic3.html#425" class="Datatype">ℕ</a> <a id="488" class="Symbol">#-}</a>
+
+<a id="493" class="Keyword">data</a> <a id="ℕ′"></a><a id="498" href="ic3.html#498" class="Datatype">ℕ′</a> <a id="501" class="Symbol">:</a> <a id="503" class="PrimitiveType">Set</a> <a id="507" class="Keyword">where</a>
+  <a id="515" class="Comment">-- --------</a>
+  <a id="529" class="Comment">-- zero : ℕ</a>
+
+  <a id="ℕ′.zero"></a><a id="544" href="ic3.html#544" class="InductiveConstructor">zero</a> <a id="549" class="Symbol">:</a> <a id="551" href="ic3.html#498" class="Datatype">ℕ′</a>
+
+  <a id="557" class="Comment">-- m : ℕ</a>
+  <a id="568" class="Comment">-- ---------</a>
+  <a id="583" class="Comment">-- suc m : ℕ</a>
+
+  <a id="ℕ′.suc"></a><a id="599" href="ic3.html#599" class="InductiveConstructor">suc</a> <a id="603" class="Symbol">:</a> <a id="605" href="ic3.html#498" class="Datatype">ℕ′</a> <a id="608" class="Symbol">→</a> <a id="610" href="ic3.html#498" class="Datatype">ℕ′</a>
+
+<a id="e-one"></a><a id="614" href="ic3.html#614" class="Function">e-one</a> <a id="620" class="Symbol">:</a> <a id="622" href="ic3.html#425" class="Datatype">ℕ</a>
+<a id="624" href="ic3.html#614" class="Function">e-one</a> <a id="630" class="Symbol">=</a> <a id="632" class="Symbol">{!!}</a>
+
+<a id="638" href="ic3.html#638" class="Function">_</a> <a id="640" class="Symbol">:</a> <a id="642" href="ic3.html#614" class="Function">e-one</a> <a id="648" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="650" class="Number">1</a>
+<a id="652" class="Symbol">_</a> <a id="654" class="Symbol">=</a> <a id="656" href="ic3.html#150" class="UnsolvedMeta UnsolvedConstraint InductiveConstructor">refl</a>
+
+<a id="e-zero"></a><a id="662" href="ic3.html#662" class="Function">e-zero</a> <a id="669" class="Symbol">:</a> <a id="671" href="ic3.html#425" class="Datatype">ℕ</a>
+<a id="673" href="ic3.html#662" class="Function">e-zero</a> <a id="680" class="Symbol">=</a> <a id="682" class="Symbol">{!!}</a>
+
+<a id="e-two"></a><a id="688" href="ic3.html#688" class="Function">e-two</a> <a id="694" class="Symbol">:</a> <a id="696" href="ic3.html#425" class="Datatype">ℕ</a>
+<a id="698" href="ic3.html#688" class="Function">e-two</a> <a id="704" class="Symbol">=</a> <a id="706" class="Symbol">{!!}</a>
+
+<a id="e-three"></a><a id="712" href="ic3.html#712" class="Function">e-three</a> <a id="720" class="Symbol">:</a> <a id="722" href="ic3.html#425" class="Datatype">ℕ</a>
+<a id="724" href="ic3.html#712" class="Function">e-three</a> <a id="732" class="Symbol">=</a> <a id="734" class="Symbol">{!!}</a>
+
+<a id="740" href="ic3.html#740" class="Function">_</a> <a id="742" class="Symbol">:</a> <a id="744" href="ic3.html#662" class="Function">e-zero</a> <a id="751" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="753" class="Number">0</a>
+<a id="755" class="Symbol">_</a> <a id="757" class="Symbol">=</a> <a id="759" href="ic3.html#150" class="UnsolvedMeta UnsolvedConstraint InductiveConstructor">refl</a>
+
+<a id="765" href="ic3.html#765" class="Function">_</a> <a id="767" class="Symbol">:</a> <a id="769" href="ic3.html#712" class="Function">e-three</a> <a id="777" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="779" class="Number">3</a>
+<a id="781" class="Symbol">_</a> <a id="783" class="Symbol">=</a> <a id="785" href="ic3.html#150" class="UnsolvedMeta UnsolvedConstraint InductiveConstructor">refl</a>
+
+<a id="e-three′"></a><a id="791" href="ic3.html#791" class="Function">e-three′</a> <a id="800" class="Symbol">:</a> <a id="802" href="ic3.html#425" class="Datatype">ℕ</a>
+<a id="804" href="ic3.html#791" class="Function">e-three′</a> <a id="813" class="Symbol">=</a> <a id="815" class="Symbol">{!!}</a>
+
+<a id="_+_"></a><a id="821" href="ic3.html#821" class="Function Operator">_+_</a> <a id="825" class="Symbol">:</a> <a id="827" href="ic3.html#425" class="Datatype">ℕ</a> <a id="829" class="Symbol">→</a> <a id="831" href="ic3.html#425" class="Datatype">ℕ</a> <a id="833" class="Symbol">→</a> <a id="835" href="ic3.html#425" class="Datatype">ℕ</a>
+<a id="837" href="ic3.html#837" class="Bound">m</a> <a id="839" href="ic3.html#821" class="Function Operator">+</a> <a id="841" href="ic3.html#841" class="Bound">n</a> <a id="843" class="Symbol">=</a> <a id="845" class="Symbol">{!!}</a>
+
+<a id="851" href="ic3.html#851" class="Function">_</a> <a id="853" class="Symbol">:</a> <a id="855" class="Number">2</a> <a id="857" href="ic3.html#821" class="Function Operator">+</a> <a id="859" class="Number">3</a> <a id="861" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="863" class="Number">5</a>
+<a id="865" class="Symbol">_</a> <a id="867" class="Symbol">=</a>
+  <a id="871" href="ic3.html#194" class="Function Operator">begin</a>
+    <a id="881" class="Number">2</a> <a id="883" href="ic3.html#821" class="Function Operator">+</a> <a id="885" class="Number">3</a>
+  <a id="889" href="ic3.html#258" class="Function Operator">is-≡</a>    <a id="897" class="Comment">-- is shorthand for</a>
+    <a id="921" class="Symbol">{!!}</a>
+  <a id="928" href="ic3.html#258" class="Function Operator">is-≡</a>    <a id="936" class="Comment">-- inductive case</a>
+    <a id="958" class="Symbol">{!!}</a>
+  <a id="965" href="ic3.html#258" class="Function Operator">is-≡</a>    <a id="973" class="Comment">-- inductive case</a>
+    <a id="995" class="Symbol">{!!}</a>
+  <a id="1002" href="ic3.html#258" class="Function Operator">is-≡</a>    <a id="1010" class="Comment">-- base case</a>
+    <a id="1027" class="Symbol">{!!}</a>
+  <a id="1034" href="ic3.html#258" class="Function Operator">is-≡</a>    <a id="1042" class="Comment">-- is longhand for</a>
+    <a id="1065" class="UnsolvedMeta UnsolvedConstraint Number">5</a>
+  <a id="1069" href="ic3.html#329" class="UnsolvedMeta UnsolvedConstraint Function Operator">∎</a>
+  
+<a id="1074" href="ic3.html#1074" class="Function">_</a> <a id="1076" class="Symbol">:</a> <a id="1078" class="Number">2</a> <a id="1080" href="ic3.html#821" class="Function Operator">+</a> <a id="1082" class="Number">3</a> <a id="1084" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="1086" class="Number">5</a>
+<a id="1088" class="Symbol">_</a> <a id="1090" class="Symbol">=</a> <a id="1092" href="ic3.html#150" class="UnsolvedMeta UnsolvedConstraint InductiveConstructor">refl</a>
+
+<a id="_*_"></a><a id="1098" href="ic3.html#1098" class="Function Operator">_*_</a> <a id="1102" class="Symbol">:</a> <a id="1104" href="ic3.html#425" class="Datatype">ℕ</a> <a id="1106" class="Symbol">→</a> <a id="1108" href="ic3.html#425" class="Datatype">ℕ</a> <a id="1110" class="Symbol">→</a> <a id="1112" href="ic3.html#425" class="Datatype">ℕ</a>
+<a id="1114" href="ic3.html#441" class="InductiveConstructor">zero</a> <a id="1119" href="ic3.html#1098" class="Function Operator">*</a> <a id="1121" href="ic3.html#1121" class="Bound">n</a>     <a id="1127" class="Symbol">=</a>  <a id="1130" href="ic3.html#441" class="InductiveConstructor">zero</a>
+<a id="1135" class="Symbol">(</a><a id="1136" href="ic3.html#452" class="InductiveConstructor">suc</a> <a id="1140" href="ic3.html#1140" class="Bound">m</a><a id="1141" class="Symbol">)</a> <a id="1143" href="ic3.html#1098" class="Function Operator">*</a> <a id="1145" href="ic3.html#1145" class="Bound">n</a>  <a id="1148" class="Symbol">=</a>  <a id="1151" href="ic3.html#1145" class="Bound">n</a> <a id="1153" href="ic3.html#821" class="Function Operator">+</a> <a id="1155" class="Symbol">(</a><a id="1156" href="ic3.html#1140" class="Bound">m</a> <a id="1158" href="ic3.html#1098" class="Function Operator">*</a> <a id="1160" href="ic3.html#1145" class="Bound">n</a><a id="1161" class="Symbol">)</a>
+
+<a id="1164" href="ic3.html#1164" class="Function">_</a> <a id="1166" class="Symbol">=</a>
+  <a id="1170" href="ic3.html#194" class="Function Operator">begin</a>
+    <a id="1180" class="Number">2</a> <a id="1182" href="ic3.html#1098" class="Function Operator">*</a> <a id="1184" class="Number">3</a>
+  <a id="1188" href="ic3.html#258" class="Function Operator">is-≡</a>    <a id="1196" class="Comment">-- inductive case</a>
+    <a id="1218" class="Symbol">{!!}</a>
+  <a id="1225" href="ic3.html#258" class="Function Operator">is-≡</a>    <a id="1233" class="Comment">-- inductive case</a>
+    <a id="1255" class="Symbol">{!!}</a>
+  <a id="1262" href="ic3.html#258" class="Function Operator">is-≡</a>    <a id="1270" class="Comment">-- base case</a>
+    <a id="1287" class="Symbol">{!!}</a>
+  <a id="1294" href="ic3.html#258" class="Function Operator">is-≡</a>    <a id="1302" class="Comment">-- simplify</a>
+    <a id="1318" class="UnsolvedMeta UnsolvedConstraint Number">6</a>
+  <a id="1322" href="ic3.html#329" class="UnsolvedMeta UnsolvedConstraint Function Operator">∎</a>
+  
+<a id="_∸_"></a><a id="1327" href="ic3.html#1327" class="Function Operator">_∸_</a> <a id="1331" class="Symbol">:</a> <a id="1333" href="ic3.html#425" class="Datatype">ℕ</a> <a id="1335" class="Symbol">→</a> <a id="1337" href="ic3.html#425" class="Datatype">ℕ</a> <a id="1339" class="Symbol">→</a> <a id="1341" href="ic3.html#425" class="Datatype">ℕ</a>
+<a id="1343" href="ic3.html#1343" class="Bound">m</a>       <a id="1351" href="ic3.html#1327" class="Function Operator">∸</a> <a id="1353" href="ic3.html#441" class="InductiveConstructor">zero</a>     <a id="1362" class="Symbol">=</a>  <a id="1365" href="ic3.html#1343" class="Bound">m</a>
+<a id="1367" href="ic3.html#441" class="CatchallClause InductiveConstructor">zero</a><a id="1371" class="CatchallClause">    </a><a id="1375" href="ic3.html#1327" class="CatchallClause Function Operator">∸</a><a id="1376" class="CatchallClause"> </a><a id="1377" href="ic3.html#1377" class="CatchallClause Bound">n</a>        <a id="1386" class="Symbol">=</a>  <a id="1389" href="ic3.html#441" class="InductiveConstructor">zero</a>
+<a id="1394" class="Symbol">(</a><a id="1395" href="ic3.html#452" class="InductiveConstructor">suc</a> <a id="1399" href="ic3.html#1399" class="Bound">m</a><a id="1400" class="Symbol">)</a> <a id="1402" href="ic3.html#1327" class="Function Operator">∸</a> <a id="1404" class="Symbol">(</a><a id="1405" href="ic3.html#452" class="InductiveConstructor">suc</a> <a id="1409" href="ic3.html#1409" class="Bound">n</a><a id="1410" class="Symbol">)</a>  <a id="1413" class="Symbol">=</a>  <a id="1416" href="ic3.html#1399" class="Bound">m</a> <a id="1418" href="ic3.html#1327" class="Function Operator">∸</a> <a id="1420" href="ic3.html#1409" class="Bound">n</a>
+
+<a id="1423" href="ic3.html#1423" class="Function">_</a> <a id="1425" class="Symbol">=</a>
+  <a id="1429" href="ic3.html#194" class="Function Operator">begin</a>
+     <a id="1440" class="Number">3</a> <a id="1442" href="ic3.html#1327" class="Function Operator">∸</a> <a id="1444" class="Number">2</a>
+  <a id="1448" href="ic3.html#258" class="Function Operator">is-≡</a>
+     <a id="1458" class="Symbol">{!!}</a>
+  <a id="1465" href="ic3.html#258" class="Function Operator">is-≡</a>
+     <a id="1475" class="Symbol">{!!}</a>
+  <a id="1482" href="ic3.html#258" class="Function Operator">is-≡</a>
+     <a id="1492" class="Number">1</a>
+  <a id="1496" href="ic3.html#329" class="Function Operator">∎</a>
+  
+<a id="1501" href="ic3.html#1501" class="Function">_</a> <a id="1503" class="Symbol">=</a>
+  <a id="1507" href="ic3.html#194" class="Function Operator">begin</a>
+     <a id="1518" class="Number">2</a> <a id="1520" href="ic3.html#1327" class="Function Operator">∸</a> <a id="1522" class="Number">3</a>
+  <a id="1526" href="ic3.html#258" class="Function Operator">is-≡</a>
+     <a id="1536" class="Symbol">{!!}</a>
+  <a id="1543" href="ic3.html#258" class="Function Operator">is-≡</a>
+     <a id="1553" class="Symbol">{!!}</a>
+  <a id="1560" href="ic3.html#258" class="Function Operator">is-≡</a>
+     <a id="1570" class="Number">0</a>
+  <a id="1574" href="ic3.html#329" class="Function Operator">∎</a>
+  
+<a id="1579" class="Keyword">infixl</a> <a id="1586" class="Number">6</a>  <a id="1589" href="ic3.html#821" class="Function Operator">_+_</a>  <a id="1594" href="ic3.html#1327" class="Function Operator">_∸_</a>
+<a id="1598" class="Keyword">infixl</a> <a id="1605" class="Number">7</a>  <a id="1608" href="ic3.html#1098" class="Function Operator">_*_</a>
+
+<a id="1613" href="ic3.html#1613" class="Function">_</a> <a id="1615" class="Symbol">:</a> <a id="1617" class="Number">1</a> <a id="1619" href="ic3.html#821" class="Function Operator">+</a> <a id="1621" class="Number">2</a> <a id="1623" href="ic3.html#1098" class="Function Operator">*</a> <a id="1625" class="Number">3</a> <a id="1627" href="ic3.html#1327" class="Function Operator">∸</a> <a id="1629" class="Number">7</a> <a id="1631" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="1633" class="Number">0</a>
+<a id="1635" class="Symbol">_</a> <a id="1637" class="Symbol">=</a> <a id="1639" href="ic3.html#150" class="UnsolvedMeta UnsolvedConstraint InductiveConstructor">refl</a>
+
+<a id="1645" class="Keyword">data</a> <a id="bin-ℕ"></a><a id="1650" href="ic3.html#1650" class="Datatype">bin-ℕ</a> <a id="1656" class="Symbol">:</a> <a id="1658" class="PrimitiveType">Set</a> <a id="1662" class="Keyword">where</a>
+  <a id="bin-ℕ.bits"></a><a id="1670" href="ic3.html#1670" class="InductiveConstructor">bits</a> <a id="1675" class="Symbol">:</a> <a id="1677" href="ic3.html#1650" class="Datatype">bin-ℕ</a>
+  <a id="bin-ℕ._x0"></a><a id="1685" href="ic3.html#1685" class="InductiveConstructor Operator">_x0</a> <a id="1689" class="Symbol">:</a> <a id="1691" href="ic3.html#1650" class="Datatype">bin-ℕ</a> <a id="1697" class="Symbol">→</a> <a id="1699" href="ic3.html#1650" class="Datatype">bin-ℕ</a>
+  <a id="bin-ℕ._x1"></a><a id="1707" href="ic3.html#1707" class="InductiveConstructor Operator">_x1</a> <a id="1711" class="Symbol">:</a> <a id="1713" href="ic3.html#1650" class="Datatype">bin-ℕ</a> <a id="1719" class="Symbol">→</a> <a id="1721" href="ic3.html#1650" class="Datatype">bin-ℕ</a>
+  
+<a id="inc"></a><a id="1730" href="ic3.html#1730" class="Function">inc</a> <a id="1734" class="Symbol">:</a> <a id="1736" href="ic3.html#1650" class="Datatype">bin-ℕ</a> <a id="1742" class="Symbol">→</a> <a id="1744" href="ic3.html#1650" class="Datatype">bin-ℕ</a>
+<a id="1750" href="ic3.html#1730" class="Function">inc</a> <a id="1754" href="ic3.html#1754" class="Bound">n</a> <a id="1756" class="Symbol">=</a> <a id="1758" class="Symbol">{!!}</a>
+
+<a id="1764" href="ic3.html#1764" class="Function">_</a> <a id="1766" class="Symbol">:</a> <a id="1768" href="ic3.html#1730" class="Function">inc</a> <a id="1772" class="Symbol">(</a><a id="1773" href="ic3.html#1670" class="InductiveConstructor">bits</a> <a id="1778" href="ic3.html#1707" class="InductiveConstructor Operator">x1</a> <a id="1781" href="ic3.html#1685" class="InductiveConstructor Operator">x0</a> <a id="1784" href="ic3.html#1707" class="InductiveConstructor Operator">x1</a> <a id="1787" href="ic3.html#1707" class="InductiveConstructor Operator">x1</a><a id="1789" class="Symbol">)</a> <a id="1791" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="1793" href="ic3.html#1670" class="InductiveConstructor">bits</a> <a id="1798" href="ic3.html#1707" class="InductiveConstructor Operator">x1</a> <a id="1801" href="ic3.html#1707" class="InductiveConstructor Operator">x1</a> <a id="1804" href="ic3.html#1685" class="InductiveConstructor Operator">x0</a> <a id="1807" href="ic3.html#1685" class="InductiveConstructor Operator">x0</a>
+<a id="1810" class="Symbol">_</a> <a id="1812" class="Symbol">=</a> <a id="1814" href="ic3.html#150" class="UnsolvedMeta UnsolvedConstraint InductiveConstructor">refl</a>
+
+<a id="to"></a><a id="1820" href="ic3.html#1820" class="Function">to</a> <a id="1823" class="Symbol">:</a> <a id="1825" href="ic3.html#425" class="Datatype">ℕ</a> <a id="1827" class="Symbol">→</a> <a id="1829" href="ic3.html#1650" class="Datatype">bin-ℕ</a>
+<a id="1835" href="ic3.html#1820" class="Function">to</a> <a id="1838" href="ic3.html#1838" class="Bound">n</a> <a id="1840" class="Symbol">=</a> <a id="1842" class="Symbol">{!!}</a>
+
+<a id="from"></a><a id="1848" href="ic3.html#1848" class="Function">from</a> <a id="1853" class="Symbol">:</a> <a id="1855" href="ic3.html#1650" class="Datatype">bin-ℕ</a> <a id="1861" class="Symbol">→</a> <a id="1863" href="ic3.html#425" class="Datatype">ℕ</a>
+<a id="1865" href="ic3.html#1848" class="Function">from</a> <a id="1870" href="ic3.html#1870" class="Bound">n</a> <a id="1872" class="Symbol">=</a> <a id="1874" class="Symbol">{!!}</a>
+
+<a id="1880" href="ic3.html#1880" class="Function">_</a> <a id="1882" class="Symbol">:</a> <a id="1884" href="ic3.html#1848" class="Function">from</a> <a id="1889" class="Symbol">(</a><a id="1890" href="ic3.html#1670" class="InductiveConstructor">bits</a> <a id="1895" href="ic3.html#1707" class="InductiveConstructor Operator">x1</a> <a id="1898" href="ic3.html#1685" class="InductiveConstructor Operator">x0</a> <a id="1901" href="ic3.html#1707" class="InductiveConstructor Operator">x1</a><a id="1903" class="Symbol">)</a> <a id="1905" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="1907" class="Number">5</a>
+<a id="1909" class="Symbol">_</a> <a id="1911" class="Symbol">=</a> <a id="1913" href="ic3.html#150" class="UnsolvedMeta UnsolvedConstraint InductiveConstructor">refl</a>
+
+<a id="1919" href="ic3.html#1919" class="Function">_</a> <a id="1921" class="Symbol">:</a> <a id="1923" href="ic3.html#1820" class="Function">to</a> <a id="1926" class="Number">5</a> <a id="1928" href="ic3.html#110" class="Datatype Operator">≡</a> <a id="1930" href="ic3.html#1670" class="InductiveConstructor">bits</a> <a id="1935" href="ic3.html#1707" class="InductiveConstructor Operator">x1</a> <a id="1938" href="ic3.html#1685" class="InductiveConstructor Operator">x0</a> <a id="1941" href="ic3.html#1707" class="InductiveConstructor Operator">x1</a>
+<a id="1944" class="Symbol">_</a> <a id="1946" class="Symbol">=</a> <a id="1948" href="ic3.html#150" class="UnsolvedMeta UnsolvedConstraint InductiveConstructor">refl</a>
+</pre></body></html>

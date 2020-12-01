@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.1.css">
+
+  <!-- Custom CSS -->
+  <style>
+  </style>
+
+  <!-- Title -->
+  <meta name="title" content="UVM CS 295A: Software Verification / Fall 2019 / Agda Setup">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+
+### Agda Setup
+
+You may either (1) install Agda directly on your personal machine, or (2) use a
+pre-configured virtual appliance with Agda already installed and set up. I
+recommend (1) and am providing (2) as a fallback in case you can't get (1) to
+work.
+
+You will be interacting with Agda through either Emacs or Atom text editors. If
+you are familiar with Vim I recommend using Emacs with `evil-mode`, or Atom with
+`vim-mode-plus`. Emacs has weird keyboard shortcuts for simple things like
+save, quit, copy and paste. To use normal keyboard shortcuts try
+`ergoemacs-mode`; instructions for setting it up are included.
+
+After installing Agda and your editor's support for Agda, you should install
+[Darais Unicode Input][] for inserting unicode characters, and the [MenloX][]
+font for displaying mathematical unicode characters.
+
+[Darais Unicode Input]: https://github.com/davdar/dotfiles/tree/master/unicode
+[MenloX]: https://github.com/davdar/dotfiles/blob/master/unicode/MenloX.ttf
+
+When properly configured, you should be able to copy this Agda code into a file
+called Test.agda:
+
+    module Test where
+    
+    data bool : Set where
+      True : bool
+      False : bool
+    
+    data color : Set where
+      Red : color
+      Green : color
+      Blue : color
+    
+    is-red : color -&gt; bool
+    is-red c = {!!}
+
+Open the file in Emacs (or Atom) and load it by typing C-c C-l (control-“c”
+then control-“l”); you should see a goals buffer pop up that shows:
+
+    ?0 : bool
+
+Type C-c C-f (control-“c” then control-“f”); your cursor should jump inside the
+definition of foo. Type C-c C-, (control-“c” then control-“,”); you should see
+the goal buffer change to show the state of the goal:
+
+    Goal: bool
+    ————————————————————————————————————————————————————————————
+    c : color
+
+To test that Darais Unicode Input is working, type `\shrug` and you should see
+`¯\_﹙ツ﹚_/¯` expanded as the input. Additionally, after typing `\r`,
+`\lambda`, and `\all` you should see `→`, `λ` and `∀`.
+
+#### Direct Install
+
+-   **Mac**
+    +   (Homebrew)
+
+            /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    +   (Stack)
+
+            curl -sSL https://get.haskellstack.org/ | sh
+            echo "export PATH=\$HOME/.local/bin:\$PATH" &gt;&gt; .bash_profile
+            source .bash_profile
+
+    +   (Agda)
+
+            stack install Agda-2.5.4.2 --resolver=lts-12.26
+
+    +   (MenloX font)
+
+            curl -sSL https://github.com/davdar/dotfiles/raw/master/unicode/MenloX.ttf &gt; MenloX.ttf
+            open MenloX.ttf
+
+    +   **Mac &gt;&gt; Emacs**
+        -   (Install Emacs) [required if using Emacs]
+
+                brew cask install emacs
+
+        -   (Emacs agda-mode) [required if using Emacs]
+          
+                agda-mode setup
+                agda-mode compile
+
+        -   (Use MenloX in Emacs) [required if using Emacs]
+
+                echo "(set-frame-font \"MenloX 12\" nil t)" &gt;&gt; ~/.emacs
+       
+        -   (Emacs Darais Input) [required if using Emacs]
+
+                mkdir -p ~/.emacs.d/lib
+                curl -sSL https://raw.githubusercontent.com/davdar/dotfiles/master/unicode/unicode.el &gt; ~/.emacs.d/lib/unicode.el
+                echo -e "; include local .emacs.d/lib in path \n (add-to-list 'load-path \"~/.emacs.d/lib\")" &gt;&gt; ~/.emacs
+                echo -e "; enable darais input \n (load-library \"unicode\") \n (add-hook 'agda2-mode-hook (lambda () (set-input-method \"darais\")))" &gt;&gt; ~/.emacs
+
+        -   (Emacs ergoemacs-mode) [optional]
+        
+                git clone -b master --single-branch https://github.com/ergoemacs/ergoemacs-mode.git .emacs.d/ergoemacs-mode
+                echo "(add-to-list 'load-path \"~/.emacs.d/ergoemacs-mode\")" &gt;&gt; .emacs
+                echo "(require 'ergoemacs-mode)" &gt;&gt; .emacs
+                echo "(setq ergoemacs-theme nil) ;; Uses Standard Ergoemacs keyboard theme" &gt;&gt; .emacs
+                echo "(setq ergoemacs-keyboard-layout \"us\") ;; Assumes QWERTY keyboard layout" &gt;&gt; .emacs
+                echo "(ergoemacs-mode 1)" &gt;&gt; .emacs
+           
+        -   (Emacs vim-mode) [optional — do not mix with ergoemacs]
+
+                mkdir -p emacs.d
+                git clone http://www.dr-qubit.org/git/undo-tree.git .emacs.d/undo-tree
+                git clone https://github.com/emacs-evil/evil .emacs.d/evil
+                echo "(add-to-list 'load-path \"~/.emacs.d/undo-tree\")" &gt;&gt; .emacs
+                echo "(require 'undo-tree)" &gt;&gt; .emacs
+                echo "(add-to-list 'load-path \"~/.emacs.d/evil\")" &gt;&gt; .emacs
+                echo "(require 'evil)" &gt;&gt; .emacs
+                echo "(evil-mode 1)" &gt;&gt; .emacs
+
+    +   **Mac &gt;&gt; Atom**
+        -   (Install Atom) [required if using Atom]
+            +   download and install [Atom](https://atom.io)   
+            +   open Atom and run the “Atom &gt;&gt; Install Shell Commands” menu
+                option
+        -   (Atom agda-mode) [required if using Atom]
+
+                apm install language-agda
+                apm install agda-mode
+
+        -   (Use MenloX in Atom) [required if using Atom]
+            +   open Atom and go to “Atom &gt;&gt; Preferences &gt;&gt; Font Family” and set it to `MenloX`
+        -   (Atom Darais Input) [required if using Atom]
+
+                mkdir -p ~/.atom
+                curl -sSL https://raw.githubusercontent.com/davdar/dotfiles/master/unicode/unicode-init.coffee &gt;&gt; ~/.atom/init.coffee
+                curl -sSL https://raw.githubusercontent.com/davdar/dotfiles/master/unicode/unicode-keymap.cson &gt;&gt; ~/.atom/keymap.cson
+
+        -   (Atom vim-mode) [optional]
+
+                apm install vim-mode-plus
+
+-   **Ubuntu**
+    +   update repositories
+
+            sudo apt-get update
+
+    +   (Stack)
+
+            curl -sSL https://get.haskellstack.org/ | sh
+            echo "export PATH=\$HOME/.local/bin:\$PATH" &gt;&gt; .bash_profile
+            source .bash_profile
+
+    +   (Agda)
+
+            sudo apt-get install libtinfo-dev
+            stack install Agda-2.5.4.2 --resolver=lts-12.26
+
+    +   (MenloX font)
+
+            mkdir -p ~/.local/share/fonts
+            curl -sSL https://github.com/davdar/dotfiles/raw/master/unicode/MenloX.ttf &gt; MenloX.ttf
+            mv MenloX.ttf ~/.local/share/fonts
+            fc-cache -f -v
+
+    + **Ubuntu &gt;&gt; Emacs**
+        -   (Install Emacs) 
+
+                apt-get install emacs
+
+        -   (Emacs agda-mode)
+
+                agda-mode setup
+                agda-mode compile
+
+        -   (Use MenloX in Emacs) [required if using Emacs]
+
+                echo "(set-frame-font \"MenloX 12\" nil t)" &gt;&gt; ~/.emacs
+       
+        -   (Emacs Darais Input) [required if using Emacs]
+
+                mkdir -p ~/.emacs.d/lib
+                curl -sSL https://raw.githubusercontent.com/davdar/dotfiles/master/unicode/unicode.el &gt; ~/.emacs.d/lib/unicode.el
+                echo -e "; include local .emacs.d/lib in path \n (add-to-list 'load-path \"~/.emacs.d/lib\")" &gt;&gt; ~/.emacs
+                echo -e "; enable darais input \n (load-library \"unicode\") \n (add-hook 'agda2-mode-hook (lambda () (set-input-method \"darais\")))" &gt;&gt; ~/.emacs
+
+        -   (Emacs ergoemacs-mode) [optional]
+        
+                git clone -b master --single-branch https://github.com/ergoemacs/ergoemacs-mode.git .emacs.d/ergoemacs-mode
+                echo "(add-to-list 'load-path \"~/.emacs.d/ergoemacs-mode\")" &gt;&gt; .emacs
+                echo "(require 'ergoemacs-mode)" &gt;&gt; .emacs
+                echo "(setq ergoemacs-theme nil) ;; Uses Standard Ergoemacs keyboard theme" &gt;&gt; .emacs
+                echo "(setq ergoemacs-keyboard-layout \"us\") ;; Assumes QWERTY keyboard layout" &gt;&gt; .emacs
+                echo "(ergoemacs-mode 1)" &gt;&gt; .emacs
+
+        -   (Emacs vim-mode) [optional — do not mix with ergoemacs]
+
+                mkdir -p emacs.d
+                git clone http://www.dr-qubit.org/git/undo-tree.git .emacs.d/undo-tree
+                git clone https://github.com/emacs-evil/evil .emacs.d/evil
+                echo "(add-to-list 'load-path \"~/.emacs.d/undo-tree\")" &gt;&gt; .emacs
+                echo "(require 'undo-tree)" &gt;&gt; .emacs
+                echo "(add-to-list 'load-path \"~/.emacs.d/evil\")" &gt;&gt; .emacs
+                echo "(require 'evil)" &gt;&gt; .emacs
+                echo "(evil-mode 1)" &gt;&gt; .emacs
+
+    + **Ubuntu &gt;&gt; Atom**
+        -   (Install Atom)
+
+                curl -sL https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
+                sudo sh -c 'echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" &gt; /etc/apt/sources.list.d/atom.list'
+                sudo apt-get update
+                sudo apt-get install atom
+
+        -   (Atom agda-mode) [required if using Atom]
+
+                apm install language-agda
+                apm install agda-mode
+
+        -   (Use MenloX in Atom) [required if using Atom]
+            +   open Atom and go to “Edit &gt;&gt; Preferences &gt;&gt; Font Family” and set it to `MenloX`
+        -   (Atom Darais Input) [required if using Atom]
+
+                mkdir -p ~/.atom
+                curl -sSL https://raw.githubusercontent.com/davdar/dotfiles/master/unicode/unicode-init.coffee &gt;&gt; ~/.atom/init.coffee
+                curl -sSL https://raw.githubusercontent.com/davdar/dotfiles/master/unicode/unicode-keymap.cson &gt;&gt; ~/.atom/keymap.cson
+
+        -   (Atom vim-mode) [optional]
+
+                apm install vim-mode-plus
+
+#### Pre-configured Virtual Appliance
+
+-   Install virtualization software. A good free option is [Virtual Box][].
+-   Download the pre-configured [Virtual Appliance][].
+-   The username is “lambda” and the password is a single space “␣”.
+-   The virtual appliance is pre-configured with Emacs, Atom, Agda, `agda-mode`,
+    and Darais Input for both Emacs and Atom. 
+-   If you want Vim bindings for Emacs run from the Terminal:
+
+        echo "(evil-mode 1)" &gt;&gt; .emacs
+
+    “Evil-mode” is a powerful Vim emulation layer for Emacs and will feel a lot
+    like using Vim.
+  
+-   If you want Vim bindings for atom run from the Terminal:
+
+        apm enable vim-mode-plus
+
+    “vim-mode-plus” is a weak emulation layer for Atom and only supports basic
+    Vim modes (normal/insert) and movement commands. (E.g., it doesn't support
+    `:wq` for save and quit.)
+
+-   The virtual appliance is a clean install of [Ubuntu][] 18.04 LTS
+    Desktop configured with 4GB of RAM and 20GB of disk space, and initialized
+    with the following commands. (You don't need to run these commands; this is
+    just documentation for how the VA was set up.)
+
+        # &lt;add Terminal to app favorites bar&gt;
+        
+        # update apt-get
+        sudo apt-get update
+        
+        # required for VirtualBox Guest Additions
+        sudo apt-get install gcc make perl
+        
+        # &lt;install VirtualBox Guest Additions&gt;
+        # &lt;reboot&gt;
+
+        # install stack
+        curl -sSL https://get.haskellstack.org/ | sh
+        echo "export PATH=\$HOME/.local/bin:\$PATH" &gt;&gt; .bash_profile
+        source .bash_profile
+        
+        # required lib for Agda
+        sudo apt-get install libtinfo-dev
+        
+        # install Agda (takes a very long time)
+        stack install Agda-2.5.4.2 --resolver=lts-12.26
+        
+        # install utilities + vim/emacs
+        sudo apt-get install aptitude curl vim emacs
+        
+        # install atom
+        curl -sL https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
+        sudo sh -c 'echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" &gt; /etc/apt/sources.list.d/atom.list'
+        sudo apt-get update
+        sudo apt-get install atom
+
+        # install emacs and Atom agda-mode
+        agda-mode setup
+        agda-mode compile
+        apm install language-agda
+        apm install agda-mode
+        # in Atom:
+        #   Go to “Settings &gt; Editor &gt; Scroll Past End” and enable it to allow
+        #   the editor to be scrolled past the end of the last line.
+
+        # install MenloX font
+        mkdir -p ~/.local/share/fonts
+        curl -sSL https://github.com/davdar/dotfiles/raw/master/unicode/MenloX.ttf > MenloX.ttf
+        mv MenloX.ttf ~/.local/share/fonts
+        fc-cache -f -v
+
+        # configure Emacs with MenloX
+        echo "(set-frame-font \"MenloX 12\" nil t)" >> ~/.emacs
+
+        # configure Atom with MenloX
+        # &lt;open Atom and go to “Edit >> Preferences >> Font Family” and set it to MenloX&gt;
+        
+        # install emacs Darais input
+        mkdir -p ~/.emacs.d/lib
+        curl -sSL https://raw.githubusercontent.com/davdar/dotfiles/master/unicode/unicode.el &gt; ~/.emacs.d/lib/unicode.el
+        echo -e "; include local .emacs.d/lib in path \n (add-to-list 'load-path \"~/.emacs.d/lib\")" &gt;&gt; ~/.emacs
+        echo -e "; enable darais input \n (load-library \"unicode\") \n (add-hook 'agda2-mode-hook (lambda () (set-input-method \"darais\")))" &gt;&gt; ~/.emacs
+
+        # install Atom Darais input
+        mkdir -p ~/.atom
+        curl -sSL https://raw.githubusercontent.com/davdar/dotfiles/master/unicode/unicode-init.coffee &gt;&gt; ~/.atom/init.coffee
+        curl -sSL https://raw.githubusercontent.com/davdar/dotfiles/master/unicode/unicode-keymap.cson &gt;&gt; ~/.atom/keymap.cson
+
+        # install ergoemacs-mode (disabled)
+        git clone -b master --single-branch https://github.com/ergoemacs/ergoemacs-mode.git .emacs.d/ergoemacs-mode
+        echo "(add-to-list 'load-path \"~/.emacs.d/ergoemacs-mode\")" &gt;&gt; .emacs
+        echo "(require 'ergoemacs-mode)" &gt;&gt; .emacs
+        echo "(setq ergoemacs-theme nil) ;; Uses Standard Ergoemacs keyboard theme" &gt;&gt; .emacs
+        echo "(setq ergoemacs-keyboard-layout \"us\") ;; Assumes QWERTY keyboard layout" &gt;&gt; .emacs
+        echo "; (ergoemacs-mode 1)" &gt;&gt; .emacs
+        
+        # install emacs vim-mode (disabled)
+        mkdir -p emacs.d
+        git clone http://www.dr-qubit.org/git/undo-tree.git .emacs.d/undo-tree
+        git clone https://github.com/emacs-evil/evil .emacs.d/evil
+        echo "(add-to-list 'load-path \"~/.emacs.d/undo-tree\")" &gt;&gt; .emacs
+        echo "(require 'undo-tree)" &gt;&gt; .emacs
+        echo "(add-to-list 'load-path \"~/.emacs.d/evil\")" &gt;&gt; .emacs
+        echo "(require 'evil)" &gt;&gt; .emacs
+        echo "; (evil-mode 1)" &gt;&gt; .emacs
+        
+        # install Atom vim-mode (disabled)
+        apm install vim-mode-plus
+        apm disable vim-mode-plus
+
+        # download MenloX font
+        curl -sSL https://github.com/davdar/dotfiles/raw/master/unicode/MenloX.ttf
+
+[Virtual Box]:       https://www.virtualbox.org/wiki/Downloads
+[Virtual Appliance]: http://cs.uvm.edu/~ddarais/fa2019-cs295A/resources/AgdaVM.ova
+[Ubuntu]:            https://www.ubuntu.com
+
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.2.js"></script>
+
+<!-- Custom JS -->
+<script>
+</script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

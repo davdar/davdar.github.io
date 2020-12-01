@@ -1,0 +1,19 @@
+Racket is a large language that is built mostly within itself. Unlike the usual
+approach taken by non-Lisp languages, the self-hosting of Racket is not a
+matter of bootstrapping one implementation through a previous implementation,
+but instead a matter of building a tower of languages and libraries via macros.
+The upper layers of the tower include a class system, a component system,
+pedagogic variants of Scheme, a statically typed dialect of Scheme, and more.
+The demands of this language-construction effort require a macro system that
+is substantially more expressive than previous macro systems. In particular,
+while conventional Scheme macro systems handle stand-alone syntactic forms
+adequately, they provide weak support for macros that share information or
+macros that use existing syntactic forms in new contexts. This paper describes
+and models features of the Racket macro system, including support for general
+compile-time bindings, sub-form expansion and analysis, and environment
+management. The presentation assumes a basic familiarity with Lisp-style
+macros, and it takes for granted the need for macros that respect lexical
+scope. The model, however, strips away the pattern and template system that is
+normally associated with Scheme macros, isolating a core that is simpler, can
+support pattern and template forms themselves as macros, and generalizes
+naturally to Racket's other extensions.

@@ -1,0 +1,10 @@
+@article{darais-jfp19,
+  title={Constructive Galois Connections}, 
+  volume={29}, 
+  doi={10.1017/S0956796819000066}, 
+  journal={Journal of Functional Programming}, 
+  publisher={Cambridge University Press}, 
+  author={Darais, David and Horn, David Van}, 
+  year={2019}, 
+  pages={e11}
+}

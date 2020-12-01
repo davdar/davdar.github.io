@@ -1,0 +1,26 @@
+<!doctype html>
+<!--meta http-equiv="refresh" content="0; URL=https://calendar.google.com/calendar/u/0/embed?src=darais@galois.com&ctz=America/Denver&mode=WEEK" /-->
+<html lang="en">
+<head>
+</head>
+<body>
+<iframe 
+  id="the-calendar"
+  src="https://calendar.google.com/calendar/embed?src=ZGFyYWlzQGdhbG9pcy5jb20"
+  style="position: fixed; display: block; width: 95%; height: 95%; border: none; margin-left: 2%"
+  >
+</iframe>
+
+<!-- JQeury -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- JSTZ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.7/jstz.js" integrity="sha512-gPgCxBK1xjsllNvxhv6tdK4IU2lH7c5a/O9kg9y73K1+hDC4TUlkHz0pLfL6jyS7RrghnscJutlzvAiAojHh+w==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  var timezone = jstz.determine();
+  var e = $("#the-calendar");
+  var src = e.attr("src");
+  e.attr("src", src + "&ctz=" + timezone.name() + "&mode=WEEK");
+</script>
+</body>
+</html>

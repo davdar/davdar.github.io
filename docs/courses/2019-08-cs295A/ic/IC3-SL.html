@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>IC3-SL</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Keyword">module</a> <a id="8" href="IC3-SL.html" class="Module">IC3-SL</a> <a id="15" class="Keyword">where</a>
+
+<a id="22" class="Comment">-- UNICODE --</a>
+
+<a id="37" class="Comment">-- ′: \&#39;</a>
+<a id="46" class="Comment">-- ↯: \zd</a>
+<a id="56" class="Comment">-- ∀: \all</a>
+<a id="67" class="Comment">-- ≡: \==</a>
+<a id="77" class="Comment">-- 𝔹: \bbB</a>
+<a id="88" class="Comment">-- →: \r</a>
+
+<a id="98" class="Comment">-- LIB --</a>
+
+<a id="109" class="Keyword">infix</a> <a id="115" class="Number">4</a> <a id="117" href="IC3-SL.html#126" class="Datatype Operator">_≡_</a>
+<a id="121" class="Keyword">data</a> <a id="_≡_"></a><a id="126" href="IC3-SL.html#126" class="Datatype Operator">_≡_</a> <a id="130" class="Symbol">{</a><a id="131" href="IC3-SL.html#131" class="Bound">A</a> <a id="133" class="Symbol">:</a> <a id="135" class="PrimitiveType">Set</a><a id="138" class="Symbol">}</a> <a id="140" class="Symbol">(</a><a id="141" href="IC3-SL.html#141" class="Bound">x</a> <a id="143" class="Symbol">:</a> <a id="145" href="IC3-SL.html#131" class="Bound">A</a><a id="146" class="Symbol">)</a> <a id="148" class="Symbol">:</a> <a id="150" href="IC3-SL.html#131" class="Bound">A</a> <a id="152" class="Symbol">→</a> <a id="154" class="PrimitiveType">Set</a> <a id="158" class="Keyword">where</a>
+  <a id="_≡_.↯"></a><a id="166" href="IC3-SL.html#166" class="InductiveConstructor">↯</a> <a id="168" class="Symbol">:</a> <a id="170" href="IC3-SL.html#141" class="Bound">x</a> <a id="172" href="IC3-SL.html#126" class="Datatype Operator">≡</a> <a id="174" href="IC3-SL.html#141" class="Bound">x</a>
+
+<a id="177" class="Symbol">{-#</a> <a id="181" class="Keyword">BUILTIN</a> EQUALITY <a id="198" href="IC3-SL.html#126" class="Datatype Operator">_≡_</a> <a id="202" class="Symbol">#-}</a>
+
+<a id="207" class="Comment">-- ⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄ --</a>
+<a id="226" class="Comment">-- FROM SCRATCH --</a>
+<a id="245" class="Comment">-- ⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄⌄ --</a>
+
+<a id="265" class="Keyword">data</a> <a id="𝔹"></a><a id="270" href="IC3-SL.html#270" class="Datatype">𝔹</a> <a id="272" class="Symbol">:</a> <a id="274" class="PrimitiveType">Set</a> <a id="278" class="Keyword">where</a>
+  <a id="𝔹.True"></a><a id="286" href="IC3-SL.html#286" class="InductiveConstructor">True</a> <a id="291" class="Symbol">:</a> <a id="293" href="IC3-SL.html#270" class="Datatype">𝔹</a>
+  <a id="𝔹.False"></a><a id="297" href="IC3-SL.html#297" class="InductiveConstructor">False</a> <a id="303" class="Symbol">:</a> <a id="305" href="IC3-SL.html#270" class="Datatype">𝔹</a>
+
+<a id="308" class="Keyword">data</a> <a id="color"></a><a id="313" href="IC3-SL.html#313" class="Datatype">color</a> <a id="319" class="Symbol">:</a> <a id="321" class="PrimitiveType">Set</a> <a id="325" class="Keyword">where</a>
+  <a id="color.Red"></a><a id="333" href="IC3-SL.html#333" class="InductiveConstructor">Red</a> <a id="337" class="Symbol">:</a> <a id="339" href="IC3-SL.html#313" class="Datatype">color</a>
+  <a id="color.Green"></a><a id="347" href="IC3-SL.html#347" class="InductiveConstructor">Green</a> <a id="353" class="Symbol">:</a> <a id="355" href="IC3-SL.html#313" class="Datatype">color</a>
+  <a id="color.Blue"></a><a id="363" href="IC3-SL.html#363" class="InductiveConstructor">Blue</a> <a id="368" class="Symbol">:</a> <a id="370" href="IC3-SL.html#313" class="Datatype">color</a>
+
+<a id="is-red"></a><a id="377" href="IC3-SL.html#377" class="Function">is-red</a> <a id="384" class="Symbol">:</a> <a id="386" href="IC3-SL.html#313" class="Datatype">color</a> <a id="392" class="Symbol">→</a> <a id="394" href="IC3-SL.html#270" class="Datatype">𝔹</a>
+<a id="396" href="IC3-SL.html#377" class="Function">is-red</a> <a id="403" href="IC3-SL.html#333" class="InductiveConstructor">Red</a> <a id="407" class="Symbol">=</a> <a id="409" href="IC3-SL.html#286" class="InductiveConstructor">True</a>
+<a id="414" href="IC3-SL.html#377" class="Function">is-red</a> <a id="421" href="IC3-SL.html#347" class="InductiveConstructor">Green</a> <a id="427" class="Symbol">=</a> <a id="429" href="IC3-SL.html#297" class="InductiveConstructor">False</a>
+<a id="435" href="IC3-SL.html#377" class="Function">is-red</a> <a id="442" href="IC3-SL.html#363" class="InductiveConstructor">Blue</a> <a id="447" class="Symbol">=</a> <a id="449" href="IC3-SL.html#297" class="InductiveConstructor">False</a>
+
+<a id="456" class="Keyword">data</a> <a id="animal"></a><a id="461" href="IC3-SL.html#461" class="Datatype">animal</a> <a id="468" class="Symbol">:</a> <a id="470" class="PrimitiveType">Set</a> <a id="474" class="Keyword">where</a>
+  <a id="animal.Cat"></a><a id="482" href="IC3-SL.html#482" class="InductiveConstructor">Cat</a> <a id="486" class="Symbol">:</a> <a id="488" href="IC3-SL.html#461" class="Datatype">animal</a>
+  <a id="animal.Dog"></a><a id="497" href="IC3-SL.html#497" class="InductiveConstructor">Dog</a> <a id="501" class="Symbol">:</a> <a id="503" href="IC3-SL.html#461" class="Datatype">animal</a>
+  <a id="animal.Fish"></a><a id="512" href="IC3-SL.html#512" class="InductiveConstructor">Fish</a> <a id="517" class="Symbol">:</a> <a id="519" href="IC3-SL.html#461" class="Datatype">animal</a>
+
+<a id="david-has-one"></a><a id="527" href="IC3-SL.html#527" class="Function">david-has-one</a> <a id="541" class="Symbol">:</a> <a id="543" href="IC3-SL.html#461" class="Datatype">animal</a> <a id="550" class="Symbol">→</a> <a id="552" href="IC3-SL.html#270" class="Datatype">𝔹</a>
+<a id="554" href="IC3-SL.html#527" class="Function">david-has-one</a> <a id="568" href="IC3-SL.html#482" class="InductiveConstructor">Cat</a> <a id="572" class="Symbol">=</a> <a id="574" href="IC3-SL.html#286" class="InductiveConstructor">True</a>
+<a id="579" href="IC3-SL.html#527" class="Function">david-has-one</a> <a id="593" href="IC3-SL.html#497" class="InductiveConstructor">Dog</a> <a id="597" class="Symbol">=</a> <a id="599" href="IC3-SL.html#286" class="InductiveConstructor">True</a>
+<a id="604" href="IC3-SL.html#527" class="Function">david-has-one</a> <a id="618" href="IC3-SL.html#512" class="InductiveConstructor">Fish</a> <a id="623" class="Symbol">=</a> <a id="625" href="IC3-SL.html#297" class="InductiveConstructor">False</a>
+
+<a id="632" class="Keyword">postulate</a>
+  <a id="david-wants[_]"></a><a id="644" href="IC3-SL.html#644" class="Postulate Operator">david-wants[_]</a> <a id="659" class="Symbol">:</a> <a id="661" href="IC3-SL.html#461" class="Datatype">animal</a> <a id="668" class="Symbol">→</a> <a id="670" class="PrimitiveType">Set</a>
+
+  <a id="dwc"></a><a id="677" href="IC3-SL.html#677" class="Postulate">dwc</a> <a id="681" class="Symbol">:</a> <a id="683" href="IC3-SL.html#644" class="Postulate Operator">david-wants[</a> <a id="696" href="IC3-SL.html#482" class="InductiveConstructor">Cat</a> <a id="700" href="IC3-SL.html#644" class="Postulate Operator">]</a> 
+  <a id="dwd"></a><a id="705" href="IC3-SL.html#705" class="Postulate">dwd</a> <a id="709" class="Symbol">:</a> <a id="711" href="IC3-SL.html#644" class="Postulate Operator">david-wants[</a> <a id="724" href="IC3-SL.html#497" class="InductiveConstructor">Dog</a> <a id="728" href="IC3-SL.html#644" class="Postulate Operator">]</a>
+  <a id="dwf"></a><a id="732" href="IC3-SL.html#732" class="Postulate">dwf</a> <a id="736" class="Symbol">:</a> <a id="738" href="IC3-SL.html#644" class="Postulate Operator">david-wants[</a> <a id="751" href="IC3-SL.html#512" class="InductiveConstructor">Fish</a> <a id="756" href="IC3-SL.html#644" class="Postulate Operator">]</a>
+
+<a id="david-wants-all-animals"></a><a id="759" href="IC3-SL.html#759" class="Function">david-wants-all-animals</a> <a id="783" class="Symbol">:</a> <a id="785" class="Symbol">∀</a> <a id="787" class="Symbol">(</a><a id="788" href="IC3-SL.html#788" class="Bound">a</a> <a id="790" class="Symbol">:</a> <a id="792" href="IC3-SL.html#461" class="Datatype">animal</a><a id="798" class="Symbol">)</a> <a id="800" class="Symbol">→</a> <a id="802" href="IC3-SL.html#644" class="Postulate Operator">david-wants[</a> <a id="815" href="IC3-SL.html#788" class="Bound">a</a> <a id="817" href="IC3-SL.html#644" class="Postulate Operator">]</a>
+<a id="819" href="IC3-SL.html#759" class="Function">david-wants-all-animals</a> <a id="843" href="IC3-SL.html#482" class="InductiveConstructor">Cat</a> <a id="847" class="Symbol">=</a> <a id="849" href="IC3-SL.html#677" class="Postulate">dwc</a>
+<a id="853" href="IC3-SL.html#759" class="Function">david-wants-all-animals</a> <a id="877" href="IC3-SL.html#497" class="InductiveConstructor">Dog</a> <a id="881" class="Symbol">=</a> <a id="883" href="IC3-SL.html#705" class="Postulate">dwd</a>
+<a id="887" href="IC3-SL.html#759" class="Function">david-wants-all-animals</a> <a id="911" href="IC3-SL.html#512" class="InductiveConstructor">Fish</a> <a id="916" class="Symbol">=</a> <a id="918" href="IC3-SL.html#732" class="Postulate">dwf</a>
+
+<a id="has-implies-wants"></a><a id="923" href="IC3-SL.html#923" class="Function">has-implies-wants</a> <a id="941" class="Symbol">:</a> <a id="943" class="Symbol">∀</a> <a id="945" class="Symbol">(</a><a id="946" href="IC3-SL.html#946" class="Bound">a</a> <a id="948" class="Symbol">:</a> <a id="950" href="IC3-SL.html#461" class="Datatype">animal</a><a id="956" class="Symbol">)</a> <a id="958" class="Symbol">→</a> <a id="960" href="IC3-SL.html#527" class="Function">david-has-one</a> <a id="974" href="IC3-SL.html#946" class="Bound">a</a> <a id="976" href="IC3-SL.html#126" class="Datatype Operator">≡</a> <a id="978" href="IC3-SL.html#286" class="InductiveConstructor">True</a> <a id="983" class="Symbol">→</a> <a id="985" href="IC3-SL.html#644" class="Postulate Operator">david-wants[</a> <a id="998" href="IC3-SL.html#946" class="Bound">a</a> <a id="1000" href="IC3-SL.html#644" class="Postulate Operator">]</a>
+<a id="1002" href="IC3-SL.html#923" class="Function">has-implies-wants</a> <a id="1020" href="IC3-SL.html#482" class="InductiveConstructor">Cat</a> <a id="1024" href="IC3-SL.html#1024" class="Bound">has[a]</a> <a id="1031" class="Symbol">=</a> <a id="1033" href="IC3-SL.html#677" class="Postulate">dwc</a>
+<a id="1037" href="IC3-SL.html#923" class="Function">has-implies-wants</a> <a id="1055" href="IC3-SL.html#497" class="InductiveConstructor">Dog</a> <a id="1059" href="IC3-SL.html#1059" class="Bound">has[a]</a> <a id="1066" class="Symbol">=</a> <a id="1068" href="IC3-SL.html#705" class="Postulate">dwd</a>
+<a id="1072" href="IC3-SL.html#923" class="Function">has-implies-wants</a> <a id="1090" href="IC3-SL.html#512" class="InductiveConstructor">Fish</a> <a id="1095" class="Symbol">()</a>
+
+<a id="1099" class="Keyword">data</a> <a id="ℕ"></a><a id="1104" href="IC3-SL.html#1104" class="Datatype">ℕ</a> <a id="1106" class="Symbol">:</a> <a id="1108" class="PrimitiveType">Set</a> <a id="1112" class="Keyword">where</a>
+  <a id="ℕ.Z"></a><a id="1120" href="IC3-SL.html#1120" class="InductiveConstructor">Z</a> <a id="1122" class="Symbol">:</a> <a id="1124" href="IC3-SL.html#1104" class="Datatype">ℕ</a>
+  <a id="ℕ.S"></a><a id="1128" href="IC3-SL.html#1128" class="InductiveConstructor">S</a> <a id="1130" class="Symbol">:</a> <a id="1132" href="IC3-SL.html#1104" class="Datatype">ℕ</a> <a id="1134" class="Symbol">→</a> <a id="1136" href="IC3-SL.html#1104" class="Datatype">ℕ</a>
+
+<a id="1139" class="Symbol">{-#</a> <a id="1143" class="Keyword">BUILTIN</a> NATURAL <a id="1159" href="IC3-SL.html#1104" class="Datatype">ℕ</a> <a id="1161" class="Symbol">#-}</a>
+
+<a id="five"></a><a id="1166" href="IC3-SL.html#1166" class="Function">five</a> <a id="1171" class="Symbol">:</a> <a id="1173" href="IC3-SL.html#1104" class="Datatype">ℕ</a>
+<a id="1175" href="IC3-SL.html#1166" class="Function">five</a> <a id="1180" class="Symbol">=</a> <a id="1182" class="Number">5</a>
+
+<a id="five′"></a><a id="1185" href="IC3-SL.html#1185" class="Function">five′</a> <a id="1191" class="Symbol">:</a> <a id="1193" href="IC3-SL.html#1104" class="Datatype">ℕ</a>
+<a id="1195" href="IC3-SL.html#1185" class="Function">five′</a> <a id="1201" class="Symbol">=</a> <a id="1203" href="IC3-SL.html#1128" class="InductiveConstructor">S</a> <a id="1205" class="Symbol">(</a><a id="1206" href="IC3-SL.html#1128" class="InductiveConstructor">S</a> <a id="1208" class="Symbol">(</a><a id="1209" href="IC3-SL.html#1128" class="InductiveConstructor">S</a> <a id="1211" class="Symbol">(</a><a id="1212" href="IC3-SL.html#1128" class="InductiveConstructor">S</a> <a id="1214" class="Symbol">(</a><a id="1215" href="IC3-SL.html#1128" class="InductiveConstructor">S</a> <a id="1217" href="IC3-SL.html#1120" class="InductiveConstructor">Z</a><a id="1218" class="Symbol">))))</a>
+
+<a id="lemma-1"></a><a id="1224" href="IC3-SL.html#1224" class="Function">lemma-1</a> <a id="1232" class="Symbol">:</a> <a id="1234" href="IC3-SL.html#1166" class="Function">five</a> <a id="1239" href="IC3-SL.html#126" class="Datatype Operator">≡</a> <a id="1241" href="IC3-SL.html#1185" class="Function">five′</a>
+<a id="1247" href="IC3-SL.html#1224" class="Function">lemma-1</a> <a id="1255" class="Symbol">=</a> <a id="1257" href="IC3-SL.html#166" class="InductiveConstructor">↯</a>
+</pre></body></html>

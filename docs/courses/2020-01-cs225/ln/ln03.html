@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.3.css">
+
+  <!-- Title -->
+  <meta name="title" content="!!!TITLE!!!">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+[03 - Intro to Haskell](#title)
+
+# Intro to Haskell
+
+    module Main where
+    
+    someNumber = 42
+    main = putStrLn "hello world"
+    
+    --------------------
+    -- Example 1: fib --
+    --------------------
+    
+    --  input:   0 1 2 3 4 5 6 7  ...
+    --           ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+    --  output:  0 1 1 2 3 5 8 13 ...
+    
+    
+    -- Using if statements.
+    -----------------------
+    fib :: Int -> Int
+    fib n =
+      if n == 0
+      then 0
+      else
+        if n == 1
+        then 1
+        else
+          (fib (n - 1)) + (fib (n - 2))
+    
+    
+    -- Using case and pattern matching.
+    -----------------------------------
+    fib' :: Int -> Int
+    fib' n = case n of
+      0 -> 0
+      1 -> 1
+      n' -> (fib (n - 1)) + (fib (n - 2))
+    
+    
+    -- Using pattern matching without case.
+    ---------------------------------------
+    fib'' :: Int -> Int
+    fib'' 0 = 0
+    fib'' 1 = 1
+    fib'' n = (fib (n - 1)) + (fib (n - 2))
+    
+    
+    
+    
+    
+    ------------------------------
+    -- Example 2: identityCheck --
+    ------------------------------
+    
+    -- Walter and Krystal may enter, but no one else is allowed.
+    -- Using guards. But we could have used if statements or case expressions instead.
+    ----------------------------------------------------------------------------------
+    identityCheck :: String -> Bool
+    identityCheck name
+      | name == "Walter" = True
+      | name == "Krystal" = True
+      | otherwise = False
+    
+    
+    -- Now we want to describe the input instead of returning a Bool.
+    -- Using pattern matching. But we could have used guards, if statements, or case expressions.
+    ---------------------------------------------------------------------------------------------
+    identityCheckStr :: String -> String
+    identityCheckStr "Walter" = "You are a dog"
+    identityCheckStr "David" = "You are the teacher"
+    identityCheckStr _ = "You are a student"
+    --               ↑
+    --               Underscore here means we ignore the input
+    
+    
+    
+    
+    --------------------
+    -- Notes on lists --
+    --------------------
+    
+    
+    -- List constructors (written in kind of C-style).
+    --------------------------------------------------
+    -- List = Cons(Int num, List<Int> listOfNums)
+    --      | Empty()
+    
+    
+    
+    -- List as it is defined in Haskell (almost).
+    ---------------------------------------------
+    -- data List Int = Cons Int (List Int)
+    --               | Empty
+    
+    
+    
+    -- We can use cons to destruct lists too.
+    -----------------------------------------
+    -- head    tail
+    -- 1 :     2 : 3 : []
+    -- ↓       ↓
+    -- x       xs'
+    
+    
+    
+    
+    ------------------------
+    -- Example 3: Comment --
+    ------------------------
+    
+    
+    --       input ->    output
+    --       [Int] ->    [String]
+    --        4    ->    "4 is a positive number"
+    --        -3   ->    "-3 is a negative number"
+    --        0    ->    "0 is zero"
+    
+    
+    
+    -- Comment on each Int in a list of Ints and output them as a list of Strings.
+    -- Simple version to start with. The recursive call is made clear by assigning it to rc.
+    ----------------------------------------------------------------------------------------
+    commentSimple :: [Int] -> [String]
+    commentSimple xs = case xs of
+      [] -> []
+      x:xs' -> let c = (show x) ++ " is a number"
+                   rc = comment xs'
+               in c:rc
+    
+    
+    
+    -- Using pattern matching AND guards.
+    -- Finished version. We got rid of the let expressions too.
+    -----------------------------------------------------------
+    comment :: [Int] -> [String]
+    comment xs = case xs of
+      [] -> []
+      x:xs' | x > 0 -> ((show x) ++ " is a positive number") : (comment xs')
+      x:xs' | x < 0 -> ((show x) ++ " is a negative number") : (comment xs')
+      x:xs' -> ((show x) ++ " is zero") : (comment xs')
+    
+    
+    
+    
+    
+    
+    -----------------------------------------
+    -- Extra (not required for homework 1) --
+    -----------------------------------------
+    
+    
+    -- Let's remake the comment function using map
+    -- map :: (a -> b) -> [a] -> [b]                  ← function signature of map
+    -- map :: (Int -> String) -> [Int] -> [String]    ← (in our specific case)
+    
+    
+    -- Lambda function
+    --  λx. x+" is a number"
+    --   ↑  ↑
+    -- arg  definition
+    
+    -- Using a lambda function.
+    -- map takes a function of type (Int -> String) and a list of Ints and outputs
+    --    a list of Strings with the function applied to each Int.
+    ------------------------------------------------------------------------------
+    commentSimple' :: [Int] -> [String]
+    commentSimple' xs = map (\x -> (show x) ++ " is a number") xs
+    
+    
+    
+    
+    -- Using where instead of defining our function in a lambda.
+    -- We could have defined helperFun outside of this function instead.
+    --------------------------------------------------------------------
+    comment' :: [Int] -> [String]
+    comment' xs = map helperFun xs
+      where helperFun x
+              | x > 0 = (show x) ++ " is a positive number"
+              | x < 0 = (show x) ++ " is a negative number"
+              | otherwise = (show x) ++ " is zero"
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.3.js"></script>
+
+<!-- CUSTOM -->
+<script>
+</script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

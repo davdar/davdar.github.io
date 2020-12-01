@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.1.css">
+
+  <!-- Title -->
+  <meta name="title" content="Lecture Notes: 08">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+
+# Announcements
+
+Two seminars next week:
+
+- Tuesday, 12–1, John Dewey Memorial Lounge, Old Mill
+  + 0.5% extra credit
+  + free food
+- Thursday, 12–1, Perkins 101
+  + 0.5% extra credit
+  + unsure about food situation
+
+See Piazza for details.
+
+# Review
+
+- Variables and scope
+  + draw a box around every variable binder
+  + draw an arrow from every variable sub-expression to its binder
+  + draw a circle around every free variable
+  + what are the free variables of the expression? (all the ones you circled)
+  + is the expression closed? (are there no circled variables?) 
+
+- Substitution
+  + interpret let expressions as substitution, and show each step of the
+    interpretation
+
+Examples:
+
+    e₁ = (LET x = 2 + 2 IN x + x) + 1
+    
+    e₂ = LET x = 1 IN
+         LET y = x IN
+         LET x = z IN
+         x + y + z
+    
+    e₃ = IF (LET x = true IN x) THEN x ELSE y
+
+
+# Environments
+
+Currently we have an understanding of variables and let-binding as follows:
+
+1. free variables have no meaning
+2. let expressions are given meaning via substitution (along with the variable
+   it binds)
+
+Substitution is a fine tool for understanding the *meaning* of programs, but
+leads to an inefficient implementation. Consider this expression:
+
+    LET x = 1 + 1 + 1 IN
+    x + x + x
+
+Currently, we perform substitution to get:
+
+    (1 + 1 + 1) + (1 + 1 + 1) + (1 + 1 + 1)
+
+which is undesirable for two reasons:
+
+1. Substitution requires traversing the whole program, which is inefficient.
+2. Substitution requires a syntactic representation of the computation, which
+   isn't true for some interpreters (like compilers)
+
+A better approach is a *lazy* implementation of substitution. The idea is to
+remember what variables should be replaced with from a substitution, but don't
+actually do the substitution until the *interpreter* encounters the variable.
+This “lazy substitution” object is called an environment, which we will write
+as `γ`, and maps variables directly to values.
+
+Interpreting the above example in this way gives:
+
+          ╭                                   ╮
+          │ {}           LET x = 1 + 1 + 1 IN │
+    interp│          ,   x + x + x            ╯
+          ╰              
+    =       γ^          e^               
+          ╭                                   ╮
+    interp│ {x ↦ 3}  ,   x + x + x            │
+          ╰                                   ╯
+
+    = interp({x↦3},x) + interp({x↦3},x) + interp({x↦3},x)
+
+    = 3 + 3 + 3
+
+    = 9
+
+Remember, we have only changed the implementation of the interpreter, the
+meaning of programs has not changed!
+
+# Functions
+
+Let's add functions to the language. We will add a few new syntactic
+categories:
+
+    x ∈ var
+    f ∈ fun-name
+    e ∈ expr ⩴ …
+             | x
+             | LET x = e IN e
+             -- new stuff
+             | f(e,…,e)
+    d ∈ defn ⩴ DEF f(x,…,x) = e
+    p ∈ prog ⩴ d … d DO e
+
+We now have two types of variables, and two types of scope:
+
+    free-vars ∈ expr → ℘(var)
+    free-fun-names ∈ expr → ℘(fun-name)
+
+Vars are in scope if they are introduced by a `LET` or a function binder
+(inside a definition), and function vars are in scope if they are introduced by
+a function definition.
+
+The meaning of a function is just like `LET`: via substitution. First, we need
+to track an “environment” of function definitions. In substitution style this
+would look like:
+
+    interp ∈ list(defn) × expr → answer
+    interp([d₁,…,dₙ],f(e₁,…,eₙ)) ≜ interp(([e₁/x₁]∘⋯∘[eₙ/xₙ])e)
+      where
+        `DEF f(x₁,…,xₙ) = e` ∈ [d₁,…,dₙ]
+
+Now that we are using an environment, the interpretation of functions is:
+
+    interp ∈ list(defn) × env × expr → answer
+    interp([d₁,…,dₙ],γ,f(e₁,…,eₙ)) ≜ interp(ds,γ[x₁↦v₁]⋯[xₙ↦vₙ],e)  
+      where  `DEF f(x₁,…xₙ) = e` = ds(f)
+      and    vᵢ = interp(ds,γ,eᵢ)
+
+# Lecture Code Notes [Lc8.hs](../lc/Lc8.hs):
+
+    {-# OPTIONS_GHC -fwarn-incomplete-patterns #-}
+    module Lc8 where
+    
+    import Data.Char
+    
+    import Data.Set (Set)
+    import qualified Data.Set as Set
+    
+    -- useful functions from the Data.Set module
+    --
+    -- Set a ≈ ℘(a)
+    --
+    -- Set.empty     :: Set a                       
+    -- Set.singleton :: a -> Set a                  
+    -- Set.fromList  :: [a] -> Set a                
+    --
+    -- Set.empty            ≈ ∅
+    -- Set.singleton x      ≈ {x}
+    -- Set.fromList [x,y,z] ≈ {x,y,z}
+    --
+    -- Set.union        :: Set a -> Set a -> Set a         
+    -- Set.intersection :: Set a -> Set a -> Set a
+    -- Set.difference   :: Set a -> Set a -> Set a
+    --
+    -- Set.union xs ys        ≈ xs ∪ ys
+    -- Set.intersection xs ys ≈ xs ∩ ys
+    -- Set.difference xs ys   ≈ xs ∖ ys
+    --
+    -- Set.member     :: a -> Set a -> Bool
+    -- Set.isSubsetOf :: Set a -> Set a -> Bool
+    --
+    -- Set.member x xs      ≈ x ∈ xs
+    -- Set.isSubsetOf xs ys ≈ xs ⊆ ys
+    --
+    -- full API here: 
+    --
+    --     http://hackage.haskell.org/package/containers-0.6.0.1/docs/Data-Set.html  
+    
+    import Data.Map (Map)
+    import qualified Data.Map as Map
+    
+    -- useful functions from the Data.Map module
+    --
+    -- Map k v ≈ k ⇰ v ≈ {R ∈ ℘(k × v) | R is functional}
+    --
+    -- Map.empty     :: Map k v
+    -- Map.singleton :: k -> v -> Map k v
+    -- Map.fromList  :: [(k,v)] -> Map k v
+    --
+    -- Map.empty                              ≈ ∅ 
+    -- Map.singleton k v                      ≈ {k ↦ v}
+    -- Map.fromList [(k₁,v₁),(k₂,v₂),(k₃,v₃)] ≈ {k₁ ↦ v₁,k₂ ↦ v₂,k₃ ↦ v₃}
+    --
+    -- Map.union :: Map k v -> Map k v -> Map k v
+    -- Map.intersection :: Map k v -> Map k v -> Map k v
+    -- Map.difference :: Map k v -> Map k v -> Map k v
+    --
+    -- Map.union kvs₁ kvs₂        ≈ kvs₁ ∪ kvs₂
+    -- Map.intersection kvs₁ kvs₂ ≈ kvs₁ ∩ kvs₂
+    -- Map.difference kvs₁ kvs₂   ≈ kvs₁ ∖ kvs₂
+    --
+    -- Map.member     :: k -> Map k v -> Bool
+    -- Map.lookup     :: k -> Map k v -> Maybe v
+    -- Map.isSubmapOf :: Map k v -> Map k v -> Bool
+    --
+    -- full API here:
+    -- 
+    --     http://hackage.haskell.org/package/containers-0.6.0.1/docs/Data-Map-Lazy.html
+    
+    -- Let's get to know the maybe type...
+    --
+    data Maybe' a = 
+        Nothing' 
+      | Just' a
+    
+    -- there are two types of *values* of type `Maybe a`
+    --
+    -- Nothing :: Maybe a 
+    --
+    -- if 
+    --   v :: a
+    -- then
+    --   Just v :: Maybe a
+    --
+    -- when *creating* a `Maybe a` value, you have two options:
+    -- 1. create a `Nothing`
+    -- 2. create a `Just _` with something of type `a` in the hole
+    --
+    -- when *using* a `Maybe a` value, you *must* do a case analysis, and handle
+    -- two cases:
+    -- 1. handle the case that it was a `Nothing`
+    -- 2. handle the case that it was a `Just _`
+    --
+    -- `Maybe a` is an encoding of the idea of a "nullable value". You either have
+    -- NULL (the `Nothing` case) or you have a value of type `a` which is not NULL
+    -- (the `Just` case)
+    
+    maybeToList :: Maybe Integer -> [Integer]
+    maybeToList iM = case iM of
+      Nothing -> []
+      Just i -> [i]
+    
+    maybeToList' :: Maybe Integer -> [Integer]
+    maybeToList' Nothing = []
+    maybeToList' (Just i) = [i]
+    
+    listHead :: [Integer] -> Maybe Integer
+    listHead [] = Nothing
+    listHead (x:xs) = Just x
+    
+    listTail :: [Integer] -> Maybe [Integer]
+    listTail [] = Nothing
+    listTail (x:xs) = Just xs
+    
+    listUncons :: [Integer] -> Maybe (Integer,[Integer])
+    listUncons [] = Nothing
+    listUncons (x:xs) = Just (x,xs)
+    
+    listUnsnoc :: [Integer] -> Maybe ([Integer],Integer)
+    listUnsnoc [] = Nothing
+    listUnsnoc (x:xs) = case listUnsnoc xs of
+      Nothing -> Just ([],x)
+      Just (xs',x') -> Just (x:xs',x')
+    
+    reverseUnsnoc :: [Integer] -> [Integer]
+    reverseUnsnoc xs = case listUnsnoc xs of
+      Nothing -> []
+      Just (xs',x) -> x : reverseUnsnoc xs'
+    
+    lookup2 :: Integer -> Map Integer Char -> Map Char Double -> Maybe Double
+    lookup2 x kvs1 kvs2 = case Map.lookup x kvs1 of
+      Nothing -> Nothing
+      Just y -> case Map.lookup y kvs2 of
+        Nothing -> Nothing
+        Just z -> Just z
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<script>
+</script>
+  
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.2.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

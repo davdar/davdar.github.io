@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>UVMVS.Lib.Data.Real</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Keyword">module</a> <a id="8" href="UVMVS.Lib.Data.Real.html" class="Module">UVMVS.Lib.Data.Real</a> <a id="28" class="Keyword">where</a>
+
+<a id="35" class="Keyword">open</a> <a id="40" class="Keyword">import</a> <a id="47" href="UVMVS.Core.html" class="Module">UVMVS.Core</a>
+
+<a id="59" class="Keyword">postulate</a>
+  <a id="ℝ"></a><a id="71" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a> <a id="73" class="Symbol">:</a> <a id="75" class="PrimitiveType">Set</a>
+  <a id="81" class="Keyword">instance</a>
+    <a id="has[+][ℝ]"></a><a id="94" href="UVMVS.Lib.Data.Real.html#94" class="Postulate">has[+][ℝ]</a> <a id="104" class="Symbol">:</a> <a id="106" href="UVMVS.Core.Classes.Algebra.html#2343" class="Record">has[+]</a> <a id="113" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+    <a id="cor[+][ℝ]"></a><a id="119" href="UVMVS.Lib.Data.Real.html#119" class="Postulate">cor[+][ℝ]</a> <a id="129" class="Symbol">:</a> <a id="131" href="UVMVS.Core.Classes.Algebra.html#2543" class="Record">cor[+]</a> <a id="138" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+    <a id="split[+][ℝ]"></a><a id="144" href="UVMVS.Lib.Data.Real.html#144" class="Postulate">split[+][ℝ]</a> <a id="156" class="Symbol">:</a> <a id="158" href="UVMVS.Core.Classes.Algebra.html#3053" class="Record">split[+]</a> <a id="167" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+    <a id="inj[+][ℝ]"></a><a id="173" href="UVMVS.Lib.Data.Real.html#173" class="Postulate">inj[+][ℝ]</a> <a id="183" class="Symbol">:</a> <a id="185" href="UVMVS.Core.Classes.Algebra.html#3580" class="Record">inj[+]</a> <a id="192" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+    <a id="has[×][ℝ]"></a><a id="198" href="UVMVS.Lib.Data.Real.html#198" class="Postulate">has[×][ℝ]</a> <a id="208" class="Symbol">:</a> <a id="210" href="UVMVS.Core.Classes.Algebra.html#3933" class="Record">has[×]</a> <a id="217" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+    <a id="cor[×][ℝ]"></a><a id="223" href="UVMVS.Lib.Data.Real.html#223" class="Postulate">cor[×][ℝ]</a> <a id="233" class="Symbol">:</a> <a id="235" href="UVMVS.Core.Classes.Algebra.html#4148" class="Record">cor[×]</a> <a id="242" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+    <a id="split[×][ℝ]"></a><a id="248" href="UVMVS.Lib.Data.Real.html#248" class="Postulate">split[×][ℝ]</a> <a id="260" class="Symbol">:</a> <a id="262" href="UVMVS.Core.Classes.Algebra.html#5464" class="Record">split[×]</a> <a id="271" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+    <a id="inj[×][ℝ]"></a><a id="277" href="UVMVS.Lib.Data.Real.html#277" class="Postulate">inj[×][ℝ]</a> <a id="287" class="Symbol">:</a> <a id="289" href="UVMVS.Core.Classes.Algebra.html#5725" class="Record">inj[×]</a> <a id="296" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+
+  <a id="_-ᴿ_"></a><a id="301" href="UVMVS.Lib.Data.Real.html#301" class="Postulate Operator">_-ᴿ_</a> <a id="306" class="Symbol">:</a> <a id="308" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a> <a id="310" class="Symbol">→</a> <a id="312" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a> <a id="314" class="Symbol">→</a> <a id="316" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+  <a id="_/ᴿ_"></a><a id="320" href="UVMVS.Lib.Data.Real.html#320" class="Postulate Operator">_/ᴿ_</a> <a id="325" class="Symbol">:</a> <a id="327" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a> <a id="329" class="Symbol">→</a> <a id="331" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a> <a id="333" class="Symbol">→</a> <a id="335" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+  <a id="㏒ᴿ"></a><a id="339" href="UVMVS.Lib.Data.Real.html#339" class="Postulate">㏒ᴿ</a> <a id="342" class="Symbol">:</a> <a id="344" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a> <a id="346" class="Symbol">→</a> <a id="348" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+  <a id="expᴿ"></a><a id="352" href="UVMVS.Lib.Data.Real.html#352" class="Postulate">expᴿ</a> <a id="357" class="Symbol">:</a> <a id="359" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a> <a id="361" class="Symbol">→</a> <a id="363" href="UVMVS.Lib.Data.Real.html#71" class="Postulate">ℝ</a>
+</pre></body></html>

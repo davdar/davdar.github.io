@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.1.css">
+
+  <!-- Title -->
+  <meta name="title" content="Lecture Notes: 05">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+
+*Questions on homework?*
+
+# Lists
+
+You should remember seeing linked lists in your data structure courses:
+
+    ┌───┬─┐   ┌───┬─┐   ┌───┬─┐   
+    │ 1 │•│──▷│ 2 │•│──▷│ 3 │•│──▷NULL
+    └───┴─┘   └───┴─┘   └───┴─┘   
+
+Linked lists have a recursive structure, specified as follows:
+
+    e ∈ elem        ⌄ “the head of the list”
+    l ∈ list ⩴ [] | e:l
+                      ^ “the rest of the list”
+
+The fist formation is the “NULL” list, and the second formation is called a
+“cons cell”, where “cons” means “construction”
+
+By notational convention, we write the list `[1,2,3]` as `1:2:3:[]`, where the
+latter is explicit about the list using four levels of recursion of the `e:l`
+syntax.
+
+    1:2:3:[]
+    =
+    1:(2:3:[])
+    =
+    1:(2:(3:[]))
+
+We can define operations over lists using their inductive structure:
+
+    single ∈ elem → list
+    single(e) ≜ e:[]
+
+    append ∈ list × list → list
+    append([],l) ≜ l
+    append(e:l₁,l₂) ≜ e:append(l₁,l₂)
+
+    reverse ∈ list → list
+    reverse([]) ≜ []
+    reverse(e:l) ≜ append(reverse(l),single(e))
+
+In Haskell we have fancy notation for `append(l₁,l₂)` as `l₁ ⧺ l₂`.
+
+Important operations for lists:
+
+- singleton (`[x]`)
+- append (`xs ++ ys`)
+- pattern matching (`[]` or `x:xs`)
+
+# Binary Trees
+
+Binary trees are a lot like lists except there are two recursive occurrences of
+the datatype instead of one.
+
+    e ∈ elem        ⌄ “the left child”
+    t ∈ tree ⩴ [] | t:e:t
+                        ^ “the right child”
+
+and again, we can define operations by structural recursion on the tree:
+
+    elems ∈ tree → list
+    elems([]) ≜ []
+    elems(t₁:e:t₂) ≜ append(append(elems(t₁),single(e)),elems(t₂))
+                   ≜ elems(t₁) ⧺ [e] ⧺ elems(t₂)
+
+*Haskell Demo of Lists, Trees and Sets*
+
+Lecture Code Notes [Lc5.hs](../lc/Lc5.hs):
+
+    -- Lecture Code Notes
+    module Lc5 where
+    
+    import Data.Set (Set)
+    import qualified Data.Set as Set
+    
+    -----------
+    -- Lists --
+    -----------
+    
+    data IntList = Nil
+                 | Cons Int IntList
+      deriving (Eq,Ord,Show)
+    
+    -- > singleIntList 1 == Cons 1 Nil
+    singleIntList :: Int -> IntList
+    singleIntList x = Cons x Nil
+    
+    -- > appendIntList (Cons 1 (Cons 2 Nil)) (Cons 3 (Cons 4 Nil)) == Cons 1 (Cons 2 (Cons 3 (Cons 4 Nil)))
+    appendIntList :: IntList -> IntList -> IntList
+    appendIntList Nil ys = ys
+    appendIntList (Cons x xs) ys = Cons x (appendIntList xs ys)
+    
+    -- > reverseIntList (Cons 1 (Cons 2 Nil)) == Cons 2 (Cons 1 Nil)
+    reverseIntList :: IntList -> IntList
+    reverseIntList Nil = Nil
+    reverseIntList (Cons x xs) = appendIntList (reverseIntList xs) (singleIntList x)
+    
+    -- > fromIntList e123 == (1:(2:(3:[]))) == (1:2:3:[]) == [1,2,3]
+    fromIntList :: IntList -> [Int]
+    fromIntList Nil = []
+    fromIntList (Cons x xs) = x : fromIntList xs
+    
+    -- > [1,2,3] +++ [4,5,6] == [1,2,3,4,5,6] == (1:2:3:4:5:6:[])
+    (+++) :: [a] -> [a] -> [a]
+    (+++) [] ys = ys
+    (+++) (x:xs) ys = x:(xs +++ ys)
+    
+    -- > reverseList [1,2,3] == [3,2,1]
+    reverseList :: [a] -> [a]
+    reverseList [] = []
+    reverseList (x:xs) = reverseList xs +++ [x]
+    
+    -----------
+    -- Trees --
+    -----------
+    
+    data IntTree = Leaf
+                 | Node Int IntTree IntTree
+      deriving (Eq,Ord,Show)
+    
+    -- > singleIntTree 1 == Node 1 Leaf Leaf
+    singleIntTree :: Int -> IntTree
+    singleIntTree x = Node x Leaf Leaf
+    
+    -- > treeElements (Node 1 (Node 2 Leaf Leaf) (Node 3 Leaf Leaf)) == [2,1,3]
+    treeElements :: IntTree -> [Int]
+    treeElements Leaf = []
+    treeElements (Node i t1 t2) = treeElements t1 ++ [i] ++ treeElements t2
+    
+    ----------
+    -- Sets --
+    ----------
+    
+    -- > {x,y,z}
+    setE1 :: Set String
+    setE1 = Set.fromList ["x","y","z"]
+    
+    -- > {z,y,x}
+    setE2 :: Set String
+    setE2 = Set.fromList ["z","x","y"]
+    
+    -- > {x} ∪ {y} ∪ {z}
+    setE3 :: Set String
+    setE3 = Set.union (Set.singleton "x") (Set.union (Set.singleton "y") (Set.singleton "z"))
+    
+    -- > {x} ∪ {y} ∪ {z}
+    setE4 :: Set String
+    setE4 = Set.singleton "x" `Set.union` Set.singleton "y" `Set.union` Set.singleton "z"
+    
+    -- > {x,y,z,a} ∖ {a}
+    setE5 :: Set String
+    setE5 = Set.fromList ["x","y","z","a"] `Set.difference` Set.singleton "a"
+    
+    -- > {a,x,y,z}
+    setE6 :: Set String
+    setE6 = Set.fromList ["x","y","z","a"]
+    
+    -- > x ∈ {x,y,z}
+    setT1 :: Bool
+    setT1 = Set.member "x" setE1
+    
+    -- > {x,y,z} ⊆ {x,y,z}
+    setT2 :: Bool
+    setT2 = Set.isSubsetOf setE5 setE5
+    
+    -- > {x,y,z} ⊆ {a,x,y,z}
+    setT3 :: Bool
+    setT3 = Set.isSubsetOf setE5 setE6
+    
+    -- > {a,x,y,z} ⊆ {x,y,z}
+    setT4 :: Bool
+    setT4 = Set.isSubsetOf setE6 setE5
+     
+# Variables and Scope
+
+Let's add variables to our language. In addition to variables, we are going to
+allow for the ability to give local names to intermediate computations.
+
+    e ∈ expr ⩴ i
+             | e + e
+             | e × e
+             | b
+             | IF e THEN e ELSE e
+             | x              -- new
+             | LET x = e IN e -- new
+
+The idea behind “LET” is it lets you reuse the result of a computation by name,
+and the idea behind a variable is it lets you access these stored results.
+
+## Well Formed Programs
+
+We have our first syntactic notion of well-formedness. The main ideas are that
+(1) a variable is only meaningful if it is in scope and (2) it is possible to
+determine whether or not a given variable will be in scope by looking at the
+program (i.e., you don't have to run it).
+
+Let's look at some programs:
+
+    LET x = 1 + 1 IN x
+    LET x = 1 + 1 IN y
+    LET x = y IN x
+    LET y = 1 + 1 IN LET x = y IN x
+    x
+
+Some terminology:
+
+- ☑ **binder**: the place where a variable is bound by name
+- ☑ **binder scope**: the part of the term in which a binder is “in scope”
+- ☑ **free variable**: variables which occur in a term which are not “in scope”
+- ☑ **open term**: a term with free variable
+- ☑ **closed term**: a term with no free variables
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<script>
+</script>
+  
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.2.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

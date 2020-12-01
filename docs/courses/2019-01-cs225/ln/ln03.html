@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.1.css">
+
+  <!-- Title -->
+  <meta name="title" content="Lecture Notes: 03">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+
+**All of this material is drawn from Shriram Krishnamurthi's book:** [Programming
+Languages: Application and Interpretation][PLAI].
+
+[PLAI]: http://cs.brown.edu/courses/cs173/2012/book/
+
+# Syntax
+
+There is a difference between each of these terms:
+- A string (sequence of characters)
+- ☑ “concrete syntax”
+- ☑ “abstract syntax”
+
+An example of a string is `I love my dog` or even `la6ki4faj2fsaf`---a string
+is just a collection of symbols.
+
+“Concrete syntax” is a *well-formed* string in the syntax of some language,
+e.g., `23 + 5 - 6`. Concrete syntax is what you interface with when you write
+and manipulate programs in a text editor. 
+
+Concrete syntax is often designed to be lightweight, intuitive, and easy to
+read. To do this, the way in which the string is “parsed” is often left
+implicit, e.g., `23 + 5 - 6` is parsed (based on convention) as `(23 + 5) - 6`
+and `23 + 5 × 6` is parsed as `23 + (5 × 6)`.
+
+A well-designed language will have a well-defined spec for which strings are
+valid concrete syntax, including how ambiguities are handled such as operator
+precedence.
+
+Although we manipulate syntax as strings, what a term in a programming language
+*is* is a tree of symbols.
+
+    23 + 5 × 6
+    ≈
+      +
+     / \
+    23  ×
+       / \
+      5   6
+
+“Abstract syntax” is a machine-friendly datatype representation of the
+underlying syntax tree. For example, the concrete syntax `23 + 5 × 6` is
+“parsed” into the abstract syntax `Plus 23 (Times 5 6)`. Abstract syntax makes
+the *tree*-structure of syntax explicit, resolves ambiguities, and typically
+maps directly to a datatype in some programming language.
+
+*Aside:* The syntax of Lisp was designed to unify concrete and abstract syntax.
+E.g., `(+ 23 (× 5 6))` is *both* the user-facing concrete syntax, as well as
+the representation of its self as data. This design is advantageous because it
+removes any form of syntactic ambiguity from the concrete syntax (what does `24
+/ 5 × 8` mean?) and it makes support for macro meta-programming easier. All of
+the examples in the book use Lisp syntax (called “S-expressions”). To read a
+lisp term, translate `(+ 1 2)` in your head to `1 + 2` and `(f x y)` to
+`f(x,y)`.
+
+# Interpreters
+
+An interpreter is a function `interp ∈ expr → value`. Let's start with the
+simplest programming language we can think of: simple arithmetic expressions.
+
+    (1 + 2) × 3
+    1 + (2 × 3)
+    1 + (2 × (3 + 4))
+
+As a general rule, expressions can nest arbitrarily. There are three ways to
+create expressions, like a syntax “schema”:
+
+    e ∈ expr ⩴ i     -- i ∈ ℤ
+             | e + e
+             | e × e
+
+We are going to write an interpreter `interp` for `expr` in two phases: (1)
+write tests for the interpreter, and then (2) write the interpreter.
+
+*Tests:*
+
+    interp( (1 + 2) × 3       ) = 9
+    interp( 1 + (2 × 3)       ) = 7
+    interp( 1 + (2 × (3 + 4)) ) = 15
+
+*The Interpreter:*
+
+    interp(i)       ≜ i
+    interp(e₁ + e₂) ≜ interp(e₁) + interp(e₂)
+    interp(e₁ × e₂) ≜ interp(e₁) × interp(e₂)
+
+alternatively, using “tree syntax”:
+
+    interp(i)       ≜ i
+          ╭   +   ╮
+    interp│  / \  │ ≜ interp(e₁) + interp(e₂)
+          ╰ e₁ e₂ ╯
+          ╭   ×   ╮
+    interp│  / \  │ ≜ interp(e₁) × interp(e₂)
+          ╰ e₁ e₂ ╯
+       
+
+alternatively, using “abstract syntax”:
+
+    interp(Nat(i))       ≜ i
+    interp(Plus(e₁,e₂))  ≜ interp(e₁) + interp(e₂)
+    interp(Times(e₁,e₂)) ≜ interp(e₁) × interp(e₂)
+
+in Haskell syntax:
+
+    interp (Nat i)       = i
+    interp (Plus e₁ e₂)  = interp e₁ + interp e₂
+    interp (Times e₁ e₂) = interp e₂ × interp e₂
+
+☑ Note that the `+` in the left-hand-side of each definition is syntax, and the
+`+` in right-hand-side of each definition is math.
+
+# More Haskell
+
+    Prelude> :t "hello " ++ "world"
+    "hello " ++ "world" :: [Char]
+    Prelude> :t "hello"
+    "hello" :: [Char]
+    Prelude> :t ['h','e','l','l','o']
+    ['h','e','l','l','o'] :: [Char]
+    Prelude> "hello"
+    "hello"
+    Prelude> ['h','e','l','l','o']
+    "hello"
+    Prelude> [1,"hi"]
+    
+    <interactive>:26:2: error:
+        • No instance for (Num [Char]) arising from the literal ‘1’
+        • In the expression: 1
+          In the expression: [1, "hi"]
+          In an equation for ‘it’: it = [1, "hi"]
+    Prelude> [1::Int,"hi"]
+    
+    <interactive>:27:9: error:
+        • Couldn't match expected type ‘Int’ with actual type ‘[Char]’
+        • In the expression: "hi"
+          In the expression: [1 :: Int, "hi"]
+          In an equation for ‘it’: it = [1 :: Int, "hi"]
+    Prelude> (1::Int,"hi")
+    (1,"hi")
+    Prelude> :t (1::Int,"hi")
+    (1::Int,"hi") :: (Int, [Char])
+    Prelude> let s = ["x","y","z"]
+    Prelude> ["a","b","c"] ++ s
+    ["a","b","c","x","y","z"]
+    Prelude> "a" : s
+    ["a","x","y","z"]
+    Prelude> let (c:s') = s
+    Prelude> c
+    "x"
+    Prelude> s'
+    ["y","z"]
+    Prelude> let (c::Char:s') = s
+    
+    <interactive>:36:6: error:
+        Illegal type signature: ‘Char : s'’
+          Type signatures are only allowed in patterns with ScopedTypeVariables
+    
+    <interactive>:36:13: error:
+        Illegal operator ‘:’ in type ‘Char : s'’
+          Use TypeOperators to allow operators in types
+    Prelude> let ((c::Char):s') = s
+    
+    <interactive>:37:7: error:
+        Illegal type signature: ‘Char’
+          Type signatures are only allowed in patterns with ScopedTypeVariables
+    Prelude> let (a,b) = (1::Int,"hi")
+    Prelude> a
+    1
+    Prelude> b
+    "hi"
+    Prelude> data Fruit = Apple | Orange | Banana
+    Prelude> Fruit
+    
+    <interactive>:42:1: error: Data constructor not in scope: Fruit
+    Prelude> :i Fruit
+    data Fruit = Apple | Orange | Banana
+      	-- Defined at <interactive>:41:1
+    Prelude> :t Fruit
+    
+    <interactive>:1:1: error: Data constructor not in scope: Fruit
+    Prelude> :t Apple
+    Apple :: Fruit
+    Prelude> :t Orange
+    Orange :: Fruit
+    Prelude> :t Banana
+    Banana :: Fruit
+    Prelude> [Apple,Orange,Banana]
+    
+    <interactive>:48:1: error:
+        • No instance for (Show Fruit) arising from a use of ‘print’
+        • In a stmt of an interactive GHCi command: print it
+    Prelude> data Fruit = Apple | Orange | Banana deriving (Eq,Ord,Show)
+    Prelude> [Apple,Orange,Banana]
+    [Apple,Orange,Banana]
+    Prelude> Apple == Banana
+    False
+    Prelude> let x = "hi"
+    Prelude> let y = "hi"
+    Prelude> x == y
+    True
+    Prelude> let x = Apple
+    Prelude> let y = Apple
+    Prelude> x == y
+    True
+    Prelude> Apple == Orange
+    False
+    Prelude> Apple /= Orange
+    True
+    Prelude> if Apple == Orange then "weird??" else "oh good"
+    "oh good"
+    Prelude> :t Apple == Orange
+    Apple == Orange :: Bool
+    Prelude> let loop n s =
+    
+    <interactive>:62:15: error:
+        parse error (possibly incorrect indentation or mismatched brackets)
+    Prelude> let loop n s = \
+    
+    <interactive>:63:17: error:
+        parse error (possibly incorrect indentation or mismatched brackets)
+    Prelude> let loop n s = if n <= 0 then "" else loop (n-1) (s ++ show n)
+    Prelude> loop 10 ""
+    ""
+    Prelude> let loop n s = if n <= 0 then s else loop (n-1) (s ++ show n)
+    Prelude> loop 10 ""
+    "10987654321"
+    Prelude> "hi"
+    "hi"
+    Prelude> putStrLn "hi"
+    hi
+    Prelude> putStrLn (show "hi")
+    "hi"
+    Prelude> 4
+    4
+    Prelude> putStrLn (show 4)
+    4
+    Prelude> 
+
+Lecture Code Notes [Lc3.hs](../lc/Lc3.hs):
+
+    -- Lecture Code Notes
+    module Lc3 where
+    
+    -- Our first definition of a programming language syntax in Haskell:
+    
+    --     e ∈ expr ⩴ i
+    --              | e + e
+    --              | e × e
+    --
+    data Expr = IntE Integer     -- note: *not* `Int`
+              | PlusE Expr Expr 
+              | TimesE Expr Expr
+      deriving (Eq,Ord,Read,Show)
+    
+    -- Template:
+    --
+    -- interp :: Expr -> …
+    -- interp e0 = case e0 of
+    --   IntE i -> _
+    --   PlusE e1 e2 -> … interp e1 … interp e2 …
+    --   TimesE e1 e2 -> … interp e1 … interp e2 …
+    
+    -- Let's count the number of nodes in an expression
+    --
+    -- E.g.,
+    --
+    --     count-nodes (1 + 2 × 3 + 4) = 7
+    --
+    countNodes :: Expr -> Integer
+    countNodes e0 = case e0 of
+      IntE i -> 1
+      PlusE e1 e2 -> 1 + countNodes e1 + countNodes e2
+      TimesE e1 e2 -> 1 + countNodes e1 + countNodes e2
+    
+    -- Let's count the maximum depth of the syntax tree:
+    --
+    -- (Remember that + associates to the left, i.e., `1 + 2 + 3` is parsed as `(1
+    -- + 2) + 3`.)
+    --
+    -- E.g.,
+    --
+    --     max-depth (1 + 2 × 3 × 4 + 5) = 4
+    --
+    maxDepth :: Expr -> Integer
+    maxDepth e0 = case e0 of
+      IntE i -> 1
+      PlusE e1 e2 -> 1 + (countNodes e1 `max` countNodes e2)
+      TimesE e1 e2 -> 1 + (countNodes e1 `max` countNodes e2)
+    
+    -- Let's swap the order of each of the operators:
+    --
+    -- E.g.,
+    --
+    --     swap-ops (1 + 2 × 3 × 4 + 5) = (5 + ((4 × (3 × 2)) + 1))
+    --
+    swapOps :: Expr -> Expr
+    swapOps e0 = case e0 of
+      IntE i -> IntE i
+      PlusE e1 e2 -> PlusE e2 e1
+      TimesE e1 e2 -> TimesE e2 e1
+    
+    -- Here is the interpreter for the language:
+    --
+    --     interp (1 + 2 × 3 + 4) = 11
+    --
+    interp :: Expr -> Integer
+    interp e0 = case e0 of
+      IntE i -> i
+      PlusE e1 e2 -> interp e1 + interp e2
+      TimesE e1 e2 -> interp e1 * interp e2
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<script>
+</script>
+  
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.2.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>

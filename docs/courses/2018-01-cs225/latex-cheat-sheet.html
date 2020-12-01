@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="favicon.ico">
+
+  <title>UVM CS 225 Spring 2018</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="/css/darais.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <style>
+    .schedule-table {
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/courses/sp2018-cs225/">UVM CS 225: Programming Languages / Spring 2018</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container"><div class="content">
+
+<h4>Common LaTeX Commands</h4>
+
+<p>
+Here is a bare-minimum set of commands that will cover roughly 90% of your
+LaTeX needs, as exemplified in the following LaTeX file:
+</p>
+
+<pre>
+\documentclass{article} % required
+
+\usepackage{mathtools} % better support for maths
+
+\title{CS225 Spring 2018---Final Project Proposal}
+\author{
+  David Darais \\ \small{\texttt{git:@davdar}}
+  \and
+  Another author \\ \small{\texttt{git:@anotherauthor}}
+}
+
+\begin{document}
+\maketitle
+
+\section*{Project: System F with Existential Types}
+
+\paragraph{Extended Language}
+
+We will extend this language with the features of System F and existential
+types. This consists of three new types:
+\begin{enumerate}
+\item A type variable, written $X$
+\item A universally quantified type, written $\forall X.\ \tau$
+\item An existentially quantified type, written $\exists X.\ \tau$
+\end{enumerate}
+The final language looks like this:
+\begin{equation*}
+  \begin{array}{rcl}
+    e &amp; \Coloneqq &amp; x \mid \lambda x . \ e \mid e \ e \\
+      &amp; \mid      &amp; \Lambda X . e \mid e [ \tau ] \\
+      &amp; \mid      &amp; \langle * e , \tau \rangle \ \texttt{as} \ \exists X . \ \tau
+                    \mid
+                    \texttt{let} \ \langle * X , x \rangle = e \ \texttt{in} \ e
+  \end{array}
+\end{equation*}
+In ocaml the typechecker will have this type:
+\begin{verbatim}
+check : tscope * tenv * exp -&gt; ty
+\end{verbatim}
+Note that the type environment \verb|tenv| is a mapping from \emph{variables}
+$x$ to types $\tau$, whereas \verb|tscope| is a set of \emph{type variables}
+$X$ which are in scope.
+
+\noindent
+If we have time, we will explore:
+\begin{itemize}
+\item $F_\omega$
+\item maybe even $F_{<:}^\omega$
+\end{itemize}
+
+\end{document}
+</pre>
+
+<p>
+Here is a minimal Makefile I like to use, which assumes your LaTeX file is named <code>main.tex</code>:
+</p>
+
+<pre>
+main.pdf: main.tex
+	mkdir -p out
+	pdflatex --output-directory=out main.tex
+	cp out/main.pdf ./main.pdf
+
+.PHONY: clean
+clean:
+	rm -rf out
+	rm -f main.pdf
+</pre>
+
+<p>
+The output of the above LaTeX file looks like this:
+</p>
+
+<img src="/courses/sp2018-cs225/resources/latex-cheat-sheet.jpg" alt="latex output image">
+
+<p class="text-right" style="color:#ccc">
+<em>Last updated April 19, 2018</em>
+</p>
+
+</div></div><!-- .content .container -->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="js/ie10-viewport-bug-workaround.js"></script>
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-70126522-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>
+
+
+

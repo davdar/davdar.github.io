@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="http://david.darais.com/css/darais-v0.0.0.3.css">
+
+  <!-- Title -->
+  <meta name="title" content="!!!TITLE!!!">
+
+</head>
+
+<body>
+
+<main>
+
+<pre class=markdown>
+[06 - Syntax ⅋ Interpretation](#title)
+
+**Much of this material is drawn from Shriram Krishnamurthi's book:**
+[Programming Languages: Application and Interpretation][PLAI].
+
+[PLAI]: http://cs.brown.edu/courses/cs173/2012/book/
+
+# Syntax
+
+There is a difference between each of these terms:
+- A string (sequence of characters)
+- “concrete syntax”
+- “abstract syntax”
+
+An example of a string is `I love my dog` or even `la6ki4faj2fsaf`---a string
+is just a collection of symbols.
+
+“Concrete syntax” is a *well-formed* string in the syntax of some language,
+e.g., `23 + 5 - 6`. Concrete syntax is what you interface with when you write
+and manipulate programs in a text editor. 
+
+Concrete syntax is often designed to be lightweight, intuitive, and easy to
+read. To do this, the way in which the string is “parsed” is often left
+implicit, e.g., `23 + 5 - 6` is parsed (based on convention) as `(23 + 5) - 6`
+and `23 + 5 × 6` is parsed as `23 + (5 × 6)`.
+
+A well-designed language will have a well-defined spec for which strings are
+valid concrete syntax, including how ambiguities are handled such as operator
+precedence.
+
+Although we manipulate syntax as strings, what a term in a programming language
+*is* is a tree of symbols.
+
+    23 + 5 × 6
+    ≈
+      +
+     / \
+    23  ×
+       / \
+      5   6
+
+“Abstract syntax” is a machine-friendly datatype representation of the
+underlying syntax tree. For example, the concrete syntax `23 + 5 × 6` is
+“parsed” into the abstract syntax `Plus 23 (Times 5 6)`. Abstract syntax makes
+the *tree*-structure of syntax explicit, resolves ambiguities, and typically
+maps directly to a datatype in some programming language.
+
+*Aside:* The syntax of Lisp was designed to unify concrete and abstract syntax.
+E.g., `(+ 23 (× 5 6))` is *both* the user-facing concrete syntax, as well as
+the representation of its self as data. This design is advantageous because it
+removes any form of syntactic ambiguity from the concrete syntax (what does `24
+/ 5 × 8` mean?) and it makes support for macro meta-programming easier. All of
+the examples in the book use Lisp syntax (called “S-expressions”). To read a
+lisp term, translate `(+ 1 2)` in your head to `1 + 2` and `(f x y)` to
+`f(x,y)`.
+
+# Interpreters
+
+An interpreter is a function `interp ∈ expr → value`. Let's start with the
+simplest programming language we can think of: simple arithmetic expressions.
+
+    (1 + 2) × 3
+    1 + (2 × 3)
+    1 + (2 × (3 + 4))
+
+As a general rule, expressions can nest arbitrarily. There are three ways to
+create expressions, like a syntax “schema”:
+
+    i ∈ ℤ
+    e ∈ expr ⩴ i
+             | e + e
+             | e × e
+
+We are going to write an interpreter `interp` for `expr` in two phases: (1)
+write tests for the interpreter, and then (2) write the interpreter.
+
+*Tests:*
+
+    interp( (1 + 2) × 3       ) = 9
+    interp( 1 + (2 × 3)       ) = 7
+    interp( 1 + (2 × (3 + 4)) ) = 15
+
+*The Interpreter:*
+
+    interp(i)       ≜ i
+    interp(e₁ + e₂) ≜ interp(e₁) + interp(e₂)
+    interp(e₁ × e₂) ≜ interp(e₁) × interp(e₂)
+
+alternatively, using “tree syntax”:
+
+    interp(i)       ≜ i
+          ╭   +   ╮
+    interp│  / \  │ ≜ interp(e₁) + interp(e₂)
+          ╰ e₁ e₂ ╯
+          ╭   ×   ╮
+    interp│  / \  │ ≜ interp(e₁) × interp(e₂)
+          ╰ e₁ e₂ ╯
+       
+
+alternatively, using “abstract syntax”:
+
+    interp(Nat(i))       ≜ i
+    interp(Plus(e₁,e₂))  ≜ interp(e₁) + interp(e₂)
+    interp(Times(e₁,e₂)) ≜ interp(e₁) × interp(e₂)
+
+in Haskell syntax:
+
+    interp (Nat i)       = i
+    interp (Plus e₁ e₂)  = interp e₁ + interp e₂
+    interp (Times e₁ e₂) = interp e₂ × interp e₂
+
+Note that the `+` in the left-hand-side of each definition is syntax, and the
+`+` in right-hand-side of each definition is math.
+
+# Desugaring
+
+There are two ways to add a new feature to a programming language:
+
+1. Give meaning to the feature via interpretation function
+2. Give meaning to the feature based on existing features
+
+(2) is done through a process called “desugaring”. Some features in programming
+languages do not increase the expressive power of the language. For example,
+because our language has addition and multiplication, it is possible to encode
+subtraction through a combination of addition and multiplication with `-1`.
+
+    x - y = x + (-1) × y
+
+We now have *three* objects of interest: the “source” language (the language
+which includes subtraction), the “core” language (the language with just plus
+and multiplication), and the “domain” of interpretation (integers).
+
+Formally, our source language now looks like this:
+
+    eₛ ∈ sexpr ⩴ i
+              | eₛ + eₛ
+              | eₛ × eₛ
+              | eₛ - eₛ
+
+our core language looks like this:
+
+    e ∈ cexpr ⩴ i
+              | e + e
+              | e × e
+
+and our domain of interpretation looks like this:
+
+    v ∈ value ⩴ i
+
+The desugaring of subtraction is a recursive traversal of the term:
+
+    desugar ∈ sexp → cexp
+    desugar(i) ≜ i
+    desugar(eₛ₁ + eₛ₂) ≜ desugar(eₛ₁) + desugar(eₛ₂)
+    desugar(eₛ₁ × eₛ₂) ≜ desugar(eₛ₁) × desugar(eₛ₂)
+    desugar(eₛ₁ - eₛ₂) ≜ desugar(eₛ₁) + (-1) × desugar(eₛ₂)
+
+Note that the right-hand-side is syntax, not math.
+
+The interpreter is the same as before:
+
+    interp ∈ cexp → value
+    interp(i) ≜ i
+    interp(e₁ + e₂) ≜ interp(e₁) + interp(e₂)
+    interp(e₁ × e₂) ≜ interp(e₁) × interp(e₂)
+
+Q: how would you encode unary negation?
+
+    e ∈ sexpr ⩴ i
+              | eₛ + eₛ
+              | eₛ × eₛ
+              | eₛ - eₛ
+              | neg eₛ
+
+    desugar ∈ sexp → cexp
+    𝟏 ?? desugar(neg eₛ) ≜ 0 - desugar(eₛ)
+    𝟐 ?? desugar(neg eₛ) ≜ desugar(0 - eₛ)
+    𝟑 ?? desugar(neg eₛ) ≜ (-1) × desugar(eₛ)
+
+The 3rd solution is the “preferred” one. The 2nd one works. The 1st one doesn't
+work. (why not??)
+
+# Haskell Exercises
+
+#### X1
+
+An interpreter for L1.
+
+**Tests:**
+
+    TEST
+    
+    1 + 2 + 3
+    
+    EXPECTED
+    
+    6
+    
+    TEST
+    
+    1 * 2 + 3 * 4 + 5 * 6 
+    
+    EXPECTED
+    
+    44
+
+**Code:**
+
+    interpL1 :: L1.Expr -> L1.Answer
+    interpL1 e = case e of
+      L1.IntE i -> L1.ValueA (L1.IntV i)
+      L1.PlusE e1 e2 -> case (interpL1 e1, interpL1 e2) of
+        (L1.ValueA (L1.IntV i1), L1.ValueA (L1.IntV i2)) -> L1.ValueA (L1.IntV (i1 + i2))
+      L1.TimesE e1 e2 -> case (interpL1 e1, interpL1 e2) of
+        (L1.ValueA (L1.IntV i1), L1.ValueA (L1.IntV i2)) -> L1.ValueA (L1.IntV (i1 * i2))
+    
+#### X2
+    
+A desugaring pass for minus into L1.
+
+**Tests:**
+
+    TEST
+    
+    1 + 2 - 1
+    
+    EXPECTED
+    
+    1 + 2 + -1 * 1
+    
+    TEST
+    
+    1 + 2 - 3 * 4
+    
+    EXPECTED
+    
+    1 + 2 + -1 * (3 * 4)
+
+**Code:**
+
+    desugarMinus :: L1M.Expr -> L1.Expr
+    desugarMinus e = case e of
+      L1M.IntE i -> L1.IntE i
+      L1M.PlusE e1 e2 -> L1.PlusE (desugarMinus e1) (desugarMinus e2)
+      L1M.TimesE e1 e2 -> L1.TimesE (desugarMinus e1) (desugarMinus e2)
+      L1M.MinusE e1 e2 -> L1.PlusE (desugarMinus e1) (L1.TimesE (L1.IntE (-1)) (desugarMinus e2))
+</pre>
+
+</main>
+
+<!-- Bootstrap core JavaScript -->
+<!-- ================================================== -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- ================================================== -->
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="http://david.darais.com/js/darais-v0.0.0.3.js"></script>
+
+<!-- CUSTOM -->
+<script>
+</script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>
