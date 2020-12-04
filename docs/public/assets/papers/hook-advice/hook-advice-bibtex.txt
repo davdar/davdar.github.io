@@ -1,9 +1,0 @@
-@INPROCEEDINGS{skalka-csf20,
-  author={C. {Skalka} and D. {Darais} and T. {Jaeger} and F. {Capobianco}},
-  booktitle={2020 IEEE 33rd Computer Security Foundations Symposium (CSF)}, 
-  title={Types and Abstract Interpretation for Authorization Hook Advice}, 
-  year={2020},
-  volume={},
-  number={},
-  pages={139-152},}
-
