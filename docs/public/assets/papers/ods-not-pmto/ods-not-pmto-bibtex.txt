@@ -1,0 +1,13 @@
+@inbook{sweet-plas20,
+author = {Sweet, Ian and Darais, David and Hicks, Michael},
+title = {Short Paper: Probabilistically Almost-Oblivious Computation},
+year = {2020},
+isbn = {9781450380928},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3411506.3417598},
+abstract = {Memory-trace Obliviousness (MTO) is a noninterference property: programs that enjoy it have neither explicit nor implicit information leaks, even when the adversary can observe the program counter and the address trace of memory accesses. Probabilistic MTO relaxes MTO to accept probabilistic programs. In prior work, we developed λobliv, whose type system aims to enforce PMTO [2]. We showed that λobliv could typecheck (recursive) Tree ORAM [6], a sophisticated algorithm that implements a probabilistically oblivious key-value store. We conjectured that λobliv ought to be able to typecheck more optimized oblivious data structures (ODSs)[8], but that its type system was as yet too weak.In this short paper we show we were wrong: ODSs cannot be implemented in λobliv because they are not actually PMTO, due to the possibility of overflow, which occurs when a oram_write silently fails due to a local lack of space. This was surprising to us because Tree ORAM can also overflow but is still PMTO. The paper explains what is going on and sketches the task of adapting the PMTO property, and λobliv's type system, to characterize ODS security.},
+booktitle = {Proceedings of the 15th Workshop on Programming Languages and Analysis for Security},
+pages = {9–12},
+numpages = {4}
+}

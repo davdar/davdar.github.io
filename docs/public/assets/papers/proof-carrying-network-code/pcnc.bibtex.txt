@@ -15,4 +15,3 @@
  address = {New York, NY, USA},
  keywords = {formal verification, netkat, nexus authorization logic, software-defined networks, trust management},
 } 
-[download]

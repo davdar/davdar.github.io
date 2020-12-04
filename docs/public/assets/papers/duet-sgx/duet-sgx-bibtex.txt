@@ -1,0 +1,7 @@
+@inproceedings{nguyen-tpdp20,
+ author = {Nguyen, Phillip and Silence, Alex and Darais, David and Near, Joseph {P.}},
+ title = {DuetSGX: Differential Privacy with Secure Hardware},
+ booktitle = {Workshop on Theory and Practice of Differential Privacy},
+ series = {TPDP '20},
+ year = {2029},
+} 
