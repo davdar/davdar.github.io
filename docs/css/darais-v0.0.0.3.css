@@ -13,73 +13,73 @@
   font-family: 'DejaVu Sans Mono';
   src: 
     local('DejaVu Sans Mono'), 
-    url('http://david.darais.com/fonts/dejavu/woff/DejaVuSansMono.woff') format("woff"),
-    url('http://david.darais.com/fonts/dejavu/ttf/DejaVuSansMono.ttf') format("truetype");
+    url('https://david.darais.com/fonts/dejavu/woff/DejaVuSansMono.woff') format("woff"),
+    url('https://david.darais.com/fonts/dejavu/ttf/DejaVuSansMono.ttf') format("truetype");
 }
 
 @font-face {
   font-family: 'DejaVu Sans';
   src: 
     local('DejaVu Sans'),_
-    url('http://david.darais.com/fonts/dejavu/woff/DejaVuSans.woff') format("woff"),
-    url('http://david.darais.com/fonts/dejavu/ttf/DejaVuSans.ttf') format("truetype");
+    url('https://david.darais.com/fonts/dejavu/woff/DejaVuSans.woff') format("woff"),
+    url('https://david.darais.com/fonts/dejavu/ttf/DejaVuSans.ttf') format("truetype");
 }
 
 @font-face {
   font-family: 'FreeMono';
   src: local('FreeMono'), local('FreeMono Medium'),
-    url("http://david.darais.com/fonts/freefont-woff/FreeMono.woff") format("woff"),
-    url("http://david.darais.com/fonts/freefont-otf/FreeMono.otf") format("opentype");
+    url("https://david.darais.com/fonts/freefont-woff/FreeMono.woff") format("woff"),
+    url("https://david.darais.com/fonts/freefont-otf/FreeMono.otf") format("opentype");
 }
 
 @font-face {
   font-family: 'FreeSerif';
   src: local('FreeSerif'), local('FreeSerif Regular'),
-    url("http://david.darais.com/fonts/freefont-woff/FreeSerif.woff") format("woff"),
-    url("http://david.darais.com/fonts/freefont-otf/FreeSerif.otf") format("opentype");
+    url("https://david.darais.com/fonts/freefont-woff/FreeSerif.woff") format("woff"),
+    url("https://david.darais.com/fonts/freefont-otf/FreeSerif.otf") format("opentype");
 }
 
 @font-face {
   font-family: 'Everson Mono';
   src: local('Everson Mono'), local('Everson Mono Regular'),
-    url("http://david.darais.com/fonts/eversonmono/woff/Everson-Mono.woff") format("woff"),
-    url("http://david.darais.com/fonts/eversonmono/ttf/Everson Mono.ttf") format("truetype");
+    url("https://david.darais.com/fonts/eversonmono/woff/Everson-Mono.woff") format("woff"),
+    url("https://david.darais.com/fonts/eversonmono/ttf/Everson Mono.ttf") format("truetype");
 }
 
 @font-face {
   font-family: 'XDejaVu Sans Mono';
   src:
     local('XDejaVu Sans Mono'),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Bookpatched.ttf') format("ttf"),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Bookpatched.woff2') format("woff2"),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Bookpatched.woff') format("woff");
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Bookpatched.ttf') format("ttf"),
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Bookpatched.woff2') format("woff2"),
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Bookpatched.woff') format("woff");
 }
 
 @font-face {
   font-family: 'XDejaVu Sans Mono Bold';
   src:
     local('XDejaVu Sans Mono'),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Boldpatched.ttf') format("ttf"),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Boldpatched.woff2') format("woff2"),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Boldpatched.woff') format("woff");
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Boldpatched.ttf') format("ttf"),
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Boldpatched.woff2') format("woff2"),
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Boldpatched.woff') format("woff");
 }
 
 @font-face {
   font-family: 'XDejaVu Sans Mono Oblique';
   src:
     local('XDejaVu Sans Mono'),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Obliquepatched.ttf') format("ttf"),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Obliquepatched.woff2') format("woff2"),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Obliquepatched.woff') format("woff");
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Obliquepatched.ttf') format("ttf"),
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Obliquepatched.woff2') format("woff2"),
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-Obliquepatched.woff') format("woff");
 }
 
 @font-face {
   font-family: 'XDejaVu Sans Mono Bold Oblique';
   src:
     local('XDejaVu Sans Mono'),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-BoldObliquepatched.ttf') format("ttf"),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-BoldObliquepatched.woff2') format("woff2"),
-    url('http://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-BoldObliquepatched.woff') format("woff");
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-BoldObliquepatched.ttf') format("ttf"),
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-BoldObliquepatched.woff2') format("woff2"),
+    url('https://david.darais.com/fonts/XDejaVuSansMono/XDejaVuSansMono-BoldObliquepatched.woff') format("woff");
 }
 
 /* no-bullet list styling */
