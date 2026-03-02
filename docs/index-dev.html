@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+  <!-- Font Awesome CSS -->
+  <!-- link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"-->
+
+  <!-- Bootstrap Social CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.min.css" integrity="sha512-f8mUMCRNrJxPBDzPJx3n+Y5TC5xp6SmStstEfgsDXZJTcxBakoB5hvPLhAfJKa9rCvH+n3xpJ2vQByxLk4WP2g==" crossorigin="anonymous" />
+
+  <!-- Darais CSS -->
+  <link rel="stylesheet" href="css/darais-v0.0.0.3.css">
+
+  <!-- Title -->
+  <meta name="title" content="David Darais @ Stealth">
+
+<style type=text/css>
+#bio-info-table {
+  display: inline;
+}
+#bio-info-table td {
+  padding: 0 0.2em;
+}
+#bio-info-table td.a {
+  text-align: right;
+}
+#bio-info-table td.b {
+  text-align: left;
+}
+</style>
+
+</head>
+
+<body>
+
+<main>
+
+<div class="float-left" 
+     style="
+      background-image:url('https://david.darais.com/images/me/darais-new-1920+240.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      width:14em;
+      height:14em;
+      margin-right:1em;
+      margin-bottom:1em;
+      "
+></div>
+<address class="text-right">
+    David Darais<br>
+    <em>Principal Scientist</em><br>
+    Galois, Inc.
+    <br>
+    <table class="raw" id="bio-info-table">
+      <tbody>
+      <tr>
+        <td class="a"><a href="mailto:david@stealthsoftwareinc.com">david@stealthsoftwareinc.com</a></td>
+        <td class="b"><i class="bi bi-envelope"></i></td>
+      </tr>
+      <tr>
+        <td class="a"><a href="https://bsky.app/profile/daviddarais.bsky.social">@daviddarais.bsky.social</a></td>
+        <td class="b"><i class="bi bi-bluesky"></i></td>
+      </tr>
+      <tr>
+        <td class="a"><a href="https://twitter.com/daviddarais">@daviddarais</a></td>
+        <td class="b"><i class="bi bi-twitter-x"></i></td>
+      </tr>
+      <tr>
+        <td class="a"><a href="https://github.com/davdar">@davdar</a></td>
+        <td class="b"><i class="bi bi-github"></i></td>
+      </tr>
+      <tr>
+        <td class="a"><a href="assets/darais-cv.pdf">CV</a></td>
+        <td class="b"><i class="bi bi-file-text"></i></td>
+      </tr>
+      <tr>
+        <td class="a"><a href="calendar.html">when I'm free</a></td>
+        <td class="b"><i class="bi bi-calendar3"></i></td>
+      </tr>
+      </tbody>
+    </table>
+</address>
+
+
+<div class="clearfix"></div>
+  
+<p>
+I'm currently a Principal Scientist at 
+<a href="http://galois.com">Galois, Inc.</a>.
+My research addresses problems in software reliability through advances in 
+<a href="assets/papers/abstracting-definitional-interpreters/adi.pdf">program analysis</a>, 
+computer-checkable proofs, and their 
+<a href="assets/papers/constructive-galois-connections-extended/cgcx.pdf">combination</a>.
+Recently I have been working on new programming languages for 
+<a href="assets/papers/duet/duet.pdf">data privacy</a> 
+and 
+<a href="assets/papers/lang-for-prob-obliv/lpo.pdf">secure computation</a>, 
+and new verification techniques for 
+<a href="assets/papers/proof-carrying-network-code/pcnc.pdf">software defined networking</a>.
+I used to help run and still actively collaborate with the 
+<a href="https://plaid.w3.uvm.edu">UVM PLAID Lab</a>.
+</p>
+
+<h3>Publications</h3>
+
+<ul class="padded">
+
+  <li class="my-2">
+  <b>Zero Knowledge Static Program Analysis.</b>
+  <br>
+  Zhiyong Fang, David Darais, Joe Near, Yupeng Zhang.
+  <br>
+  <em>To appear in Computer and Communications Security (CCS). ACM, 2021.</em>
+  <br>
+  [<a href="assets/papers/zk-sa/zk-sa.pdf">pdf</a>]
+  [<a href="assets/papers/zk-sa/zk-sa-abstract.txt">abstract</a>]
+  </li>
+
+  <li class="my-2">
+  <b>Solo: Enforcing Differential Privacy Without Fancy Types.</b>
+  <br>
+  Chike Abuah, David Darais, Joe Near.
+  <br>
+  <em>Foundations of Computer Security (FCS). 2021.</em>
+  <br>
+  </li>
+
+  <li class="my-2">
+  <b>Symphony: A Concise Language Model for MPC.</b>
+  <br>
+  Ian Sweet, Ryan Estes, David Darais, David Heath, William Harris, Michael Hicks.
+  <br>
+  <em>Foundations of Computer Security (FCS). 2021.</em>
+  <br>
+  </li>
+
+  <li class="my-2">
+  <b>Verified Computation via Compilation to Abstract Machines.</b>
+  <br>
+   Ryan Estes, David Darais, Joseph Near.
+  <br>
+  <em>Foundations of Computer Security (FCS). 2021.</em>
+  <br>
+  [<a href="assets/papers/zk-ams/zk-ams.pdf">pdf</a>]
+  [<a href="assets/papers/zk-ams/zk-ams-abstract.txt">abstract</a>]
+  </li>
+
+  <li class="my-2">
+  <b>DDUO: General-Purpose Dynamic Analysis for Differential Privacy.</b>
+  <br>
+  Chike Abuah, Alex Silence, David Darais, Joseph P. Near.
+  <br>
+  <em>Computer Security Foundations (CSF). IEEE, 2021.</em>
+  <br>
+  [<a href="assets/papers/dduo/dduo.pdf">pdf</a>]
+  </li>
+
+  <li class="my-2">
+  <b>Improving Privacy-Preserving Deep Learning With Immediate Sensitivity.</b>
+  <br>
+  Timothy Stevens, David Darais, Ben U Gelman, David Slater, Joseph Near.
+  <br>
+  <em>Theory and Practice of Differential Privacy (TPDP). 2021.</em>
+  <br>
+  </li>
+
+  <li class="my-2">
+  <b>Solo: Enforcing Differential Privacy Without Fancy Types.</b>
+  <br>
+  Chike Abuah, David Darais, Joe Near.
+  <br>
+  <em>Theory and Practice of Differential Privacy (TPDP). 2021.</em>
+  <br>
+  </li>
+
+  <li class="my-2">
+  <b>DuetSGX: Differential Privacy with Secure Hardware.</b>
+  <br>
+  Phillip Nguyen, Alex Silence, David Darais, Joseph P. Near.
+  <br>
+  <em>Theory and Practice of Differential Privacy (TPDP). 2020.</em>
+  <br>
+  [<a href="assets/papers/duet-sgx/duet-sgx.pdf">pdf</a>]
+  [<a href="assets/papers/duet-sgx/duet-sgx-abstract.txt">abstract</a>]
+  [<a href="assets/papers/duet-sgx/duet-sgx-bibtex.txt">bibtex</a>]
+  [<a href="https://arxiv.org/abs/2010.10664">arXiv</a>]
+  </li>
+
+  <li class="my-2">
+  <b>Short Paper: Probabilistically Almost-Oblivious Computation.</b>
+  <br>
+  Ian Sweet, David Darais, Michael Hicks.
+  <br>
+  <em>Programming Languages and Analysis for Security (PLAS). ACM, 2020.</em>
+  <br>
+  [<a href="assets/papers/ods-not-pmto/ods-not-pmto.pdf">pdf</a>]
+  [<a href="assets/papers/ods-not-pmto/ods-not-pmto-abstract.txt">abstract</a>]
+  [<a href="assets/papers/ods-not-pmto/ods-not-pmto-bibtex.txt">bibtex</a>]
+  [<a href="https://dl.acm.org/doi/10.1145/3411506.3417598">ACM</a>]
+  </li>
+
+  <li class="my-2">
+  <b>Types and Abstract Interpretation for Authorization Hook Advice.</b>
+  <br>
+  Christian Skalka, David Darais, Trent Jaeger, Frank Capobianco.
+  <br>
+  <em>Computer Security Foundations (CSF). IEEE, 2020.</em>
+  <br>
+  [<a href="assets/papers/hook-advice/hook-advice.pdf">pdf</a>]
+  [<a href="assets/papers/hook-advice/hook-advice-abstract.txt">abstract</a>]
+  [<a href="assets/papers/hook-advice/hook-advice-bibtex.txt">bibtex</a>]
+  [<a href="https://ieeexplore.ieee.org/document/9155216">IEEE</a>]
+  </li>
+
+  <li class="my-2">
+  <b>Abstracting Faceted Execution.</b>
+  <br>
+  Kristopher Micinski, David Darais, Thomas Gilray.
+  <br>
+  <em>Computer Security Foundations (CSF). IEEE, 2020.</em>
+  <br>
+  [<a href="assets/papers/abstracting-faceted-execution/abstracting-faceted-execution.pdf">pdf</a>]
+  [<a href="assets/papers/abstracting-faceted-execution/abstracting-faceted-execution-abstract.txt">abstract</a>]
+  [<a href="assets/papers/abstracting-faceted-execution/abstracting-faceted-execution-bibtex.txt">bibtex</a>]
+  [<a href="https://ieeexplore.ieee.org/document/9155136">IEEE</a>]
+  </li>
+
+  <li class="my-2">
+  <b>A Language for Probabilistically Oblivious Computation.</b>
+  <br>
+  David Darais, Ian Sweet, Chang Liu, Michael Hicks.
+  <br>
+  <em>Principles of Programming Languages (POPL). ACM, 2020.</em>
+  <br>
+  [<a href="assets/papers/lang-for-prob-obliv/lpo.pdf">pdf</a>]
+  [<a href="assets/papers/lang-for-prob-obliv/lpo-abstract.txt">abstract</a>]
+  [<a href="assets/papers/lang-for-prob-obliv/lpo-bibtex.txt">bibtex</a>]
+  [<a href="https://dl.acm.org/doi/10.1145/3371118">ACM</a>]
+  [<a href="https://arxiv.org/abs/1711.09305">arXiv</a>]
+  [<a href="assets/papers/lang-for-prob-obliv/lpo-slides.key">slides.key</a>]
+  [<a href="assets/papers/lang-for-prob-obliv/lpo-slides.pdf">slides.pdf</a>]
+  </li>
+
+  <li class="my-2">
+  <b>Proof Carrying Network Code.</b>
+  <br>
+  Christian Skalka, John Ring, David Darais, Minseok Kwon, Sahil Gupta, Kyle
+  Diller, Steffan Smolka, Nate Foster.
+  <br>
+  <em>Computer and Communications Security (CCS). ACM, 2019.</em>
+  <br>
+  [<a href="assets/papers/proof-carrying-network-code/pcnc.pdf">pdf</a>]
+  [<a href="assets/papers/proof-carrying-network-code/pcnc-abstract.txt">abstract</a>]
+  [<a href="assets/papers/proof-carrying-network-code/pcnc.bibtex.txt">bibtex</a>]
+  [<a href="https://dl.acm.org/doi/10.1145/3319535.3363214">ACM</a>]
+  </li>
+
+  <li class="my-2">
+    <b>Duet: An Expressive Higher-order Language and Linear Type System for Statically Enforcing Differential Privacy.</b>
+    <br>
+    Joseph P. Near, David Darais, Chike Abuah, Tim Stevens, Pranav Gaddamadugu,
+    Lun Wang, Neel Somani, Mu Zhang, Nikhil Sharma, Alex Shan, Dawn Song.
+    <br>
+    <em>Object-oriented Programming, Systems, Languages, and Applications (OOPSLA). ACM, 2019.</em>
+    <br>
+    <b><em>«ACM SIGPLAN Distinguished Paper Award»</em></b>
+    <br>
+    [<a href="assets/papers/duet/duet.pdf">pdf</a>]
+    [<a href="assets/papers/duet/duet-abstract.txt">abstract</a>]
+    [<a href="assets/papers/duet/duet.bibtex.txt">bibtex</a>]
+    [<a href="https://dl.acm.org/doi/10.1145/3360598">ACM</a>]
+    [<a href="https://arxiv.org/abs/1909.02481">arXiv</a>]
+    [<a href="https://www.youtube.com/watch?v=LDeXNS8DsX4&list=PLyrlk8Xaylp6enzqOraP0sSd5HzVq3DZ5&index=33&t=0s">video</a>]
+  </li>
+
+  <li class="my-2">
+    <b>Constructive Galois Connections.</b>
+    <br>
+    David Darais, David Van Horn.
+    <br>
+    <em>Journal of Functional Programming (JFP). Cambridge University Press, 2019.</em>
+    <br>
+    [<a href="assets/papers/constructive-galois-connections-extended/cgcx.pdf">pdf</a>]
+    [<a href="assets/papers/constructive-galois-connections-extended/cgcx-abstract.txt">abstract</a>]
+    [<a href="assets/papers/constructive-galois-connections-extended/cgcx.bibtex.txt">bibtex</a>]
+    [<a href="https://www.cambridge.org/core/journals/journal-of-functional-programming/article/constructive-galois-connections/216F5350F896AB024486361287C08489">JFP</a>]
+    [<a href="https://arxiv.org/abs/1807.08711">arXiv</a>]
+  </li>
+
+  <li class="my-2">
+    <b>Abstracting Definitional Interpreters.</b>
+    <br>
+    David Darais, Nicholas Labich, Phúc C. Nguyễn, David Van Horn.
+    <br>
+    <em>International Conference on Functional Programming (ICFP). ACM, 2017.</em>
+    <br>
+    [<a href="assets/papers/abstracting-definitional-interpreters/adi.pdf">pdf</a>]
+    [<a href="assets/papers/abstracting-definitional-interpreters/adi-abstract.txt">abstract</a>]
+    [<a href="assets/papers/abstracting-definitional-interpreters/adi.bibtex.txt">bibtex</a>]
+    [<a href="https://dl.acm.org/doi/10.1145/3110256">ACM</a>]
+    [<a href="https://arxiv.org/abs/1707.04755">arXiv</a>]
+    [<a href="assets/papers/abstracting-definitional-interpreters/adi.slides.pdf">slides.pdf</a>]
+    [<a href="assets/papers/abstracting-definitional-interpreters/adi.slides.key">slides.key</a>]
+    [<a href="http://podcasts.ox.ac.uk/abstracting-definitional-interpreters">video</a>]
+  </li>
+
+  <li class="my-2">
+    <b>Constructive Galois Connections: Taming the Galois Connection Framework for Mechanized Metatheory.</b>
+    <br>
+    David Darais, David Van Horn.
+    <br>
+    <em>International Conference on Functional Programming (ICFP). ACM, 2016.</em>
+    <br>
+    [<a href="assets/papers/constructive-galois-connections/cgc.pdf">pdf</a>]
+    [<a href="assets/papers/constructive-galois-connections/cgc-abstract.txt">abstract</a>]
+    [<a href="assets/papers/constructive-galois-connections/cgc.bibtex.txt">bibtex</a>]
+    [<a href="https://dl.acm.org/doi/10.1145/2951913.2951934">ACM</a>]
+    [<a href="http://arxiv.org/abs/1511.06965">arXiv</a>]
+    [<a href="assets/papers/constructive-galois-connections/cgc.slides.pdf">slides.pdf</a>]
+    [<a href="assets/papers/constructive-galois-connections/cgc.slides.key">slides.key</a>]
+    [<a href="https://www.youtube.com/watch?v=UpHkvcFMkBM">video</a>]
+  </li>
+
+  <li class="my-2">
+    <b>Compositional and Mechanically Verified Program Analyzers.</b>
+    <br>
+    David Darais.
+    <br>
+    <em>ECOOP Doctoral Symposium (ECOOP-DS). 2016.</em>
+    <br>
+    [<a href="assets/papers/cmvpa-ds/cmvpa-ds.pdf">pdf</a>] 
+    [<a href="assets/papers/cmvpa-ds/cmvpa-ds-abstract.txt">abstract</a>]
+    [<a href="assets/papers/cmvpa-ds/cmvpa-ds.slides.pdf">slides.pdf</a>]
+    [<a href="assets/papers/cmvpa-ds/cmvpa-ds.slides.key">slides.key</a>]
+  </li>
+
+  <li class="my-2">
+    <b>Galois Transformers and Modular Abstract Interpreters: Reusable Metatheory for Program Analysis.</b>
+    <br>
+    David Darais, Matthew Might, David Van Horn. 
+    <br>
+    <em>Object-Oriented Programming, Systems, Languages &amp; Applications (OOPSLA). ACM, 2015.</em>
+    <br>
+    [<a href="assets/papers/galois-transformers/gt.pdf">pdf</a>] 
+    [<a href="assets/papers/galois-transformers/gt-abstract.txt">abstract</a>]
+    [<a href="assets/papers/galois-transformers/gt.bibtex.txt">bibtex</a>]
+    [<a href="https://dl.acm.org/doi/10.1145/2814270.2814308">ACM</a>]
+    [<a href="http://arxiv.org/abs/1411.3962">arXiv</a>]
+    [<a href="assets/papers/galois-transformers/gt.slides.pdf">slides.pdf</a>]
+    [<a href="assets/papers/galois-transformers/gt.slides.key">slides.key</a>]
+    [<a href="https://www.youtube.com/watch?v=JpK9e__q5Ts">video</a>]
+  </li>
+
+  <li class="my-2">
+    <b>Monadic Abstract Interpreters.</b>
+    <br> 
+    Ilya Sergey, Dominique Divriese, Matthew Might, Jan Midtgaard, David Darais, Dave Clarke, Frank Piessens. 
+    <br> 
+    <em>Programming Language Design and Implementation (PLDI). ACM, 2013.</em>
+    <br> 
+    [<a href="assets/papers/monadic-abstract-interpreters/mai.pdf">pdf</a>] 
+    [<a href="assets/papers/monadic-abstract-interpreters/mai-abstract.txt">abstract</a>]
+    [<a href="assets/papers/monadic-abstract-interpreters/mai.bibtex.txt">bibtex</a>] 
+    [<a href="https://dl.acm.org/doi/10.1145/2499370.2491979">ACM</a>] 
+  </li>
+
+  <li class="my-2">
+    <b>Macros that Work Together: Compile-time Bindings, Partial Expansion, and Definition Contexts.</b>
+    <br> 
+    Matthew Flatt, Ryan Culpepper, David Darais, Robert Bruce Findler. 
+    <br> 
+    <em>Journal of Functional Programming (JFP). Cambridge University Press, 2012.</em>
+    <br> 
+    [<a href="assets/papers/macros-that-work-together/mtwt.pdf">pdf</a>] 
+    [<a href="assets/papers/macros-that-work-together/mtwt-abstract.txt">abstract</a>]
+    [<a href="assets/papers/macros-that-work-together/mtwt.bibtex.txt">bibtex</a>] 
+    [<a href="https://dl.acm.org/doi/10.1017/S0956796812000093">ACM</a>]
+  </li>
+
+  <li class="my-2">
+    <b>Functional Pearl: Parsing with Derivatives.</b>
+    <br> 
+    Matthew Might, David Darais, Daniel Spiewak.
+    <br> 
+    <em>International Conference on Functional Programming (ICFP). ACM, 2011.</em>
+    <br> 
+    [<a href="assets/papers/parsing-with-derivatives/pwd.pdf">pdf</a>] 
+    [<a href="assets/papers/parsing-with-derivatives/pwd-abstract.txt">abstract</a>]
+    [<a href="assets/papers/parsing-with-derivatives/pwd.bibtex.txt">bibtex</a>] 
+    [<a href="https://dl.acm.org/doi/10.1145/2034773.2034801">ACM</a>]
+  </li>
+
+</ul>
+
+<h3>Theses</h3>
+<ul class="padded">
+  <li class="my-2">
+    <b>Mechanizing Abstract Interpretation.</b>
+    <br>
+    David Darais.
+    <br>
+    <em>PHD Thesis. University of Maryland. 2017.</em>
+    <br>
+    [<a href="assets/papers/phd-thesis/darais-phd-thesis.pdf">pdf</a>] 
+    [<a href="assets/papers/phd-thesis/darais-phd-thesis-abstract.txt">abstract</a>]
+    [<a href="assets/papers/phd-thesis/darais-phd-thesis.slides.pdf">slides.pdf</a>]
+    [<a href="assets/papers/phd-thesis/darais-phd-thesis.slides.key">slides.key</a>]
+    <br>
+</ul>
+
+<h3>Drafts</h3>
+
+<ul class="padded">
+
+  <li class="my-2">
+    <b>The Final Pretty Printer.</b>
+    <br>
+    David Christiansen, David Darais, Weixi Ma.
+    <br>
+    <em>Draft. May 2017.</em>
+    <br>
+    [<a href="assets/papers/final-pretty-printer/fpp.pdf">pdf</a>]
+    [<a href="assets/papers/final-pretty-printer/fpp-abstract.txt">abstract</a>]
+  </li>
+</ul>
+
+<h3>Talks</h3>
+
+<ul class="padded">
+  <li class="my-2">
+    Data-oblivious Computation.
+    <br>
+    <em>
+      Hot Topics in the Science of Security (HotSoS) Symposium - Hard Problems Special Session.
+      Virtual. April, 2021.
+    </em>
+    <br>
+    [<a href="https://cps-vo.org/node/75159">HotSoS</a>]
+    [<a href="assets/talks/2021-04-hotsos/do-comp-abstract.txt">abstract</a>]
+    [<a href="assets/talks/2021-04-hotsos/do-comp-slides.pdf">slides.pdf</a>]
+    [<a href="assets/talks/2021-04-hotsos/do-comp-slides.key">slides.key</a>]
+  </li>
+
+  <li class="my-2">
+    Data Privacy by Programming Language Design.
+    <br>
+    <em>Tech Talk - Millennium Institute - Foundational Research on Data. University of Chile,
+      Santiago, Chile. May, 2019.</em>
+    <br>
+    [<a href="https://www.dcc.uchile.cl/charla-david-darais-15-mayo-2019">UChile</a>]
+    [<a href="https://imfd.cl/en/agenda_evento/david-darais-data-privacy-by-programming-language-design/">IMFD</a>]
+    [<a href="assets/talks/2019-05-Chile/dp-pl-abstract.txt">abstract</a>]
+    [<a href="assets/talks/2019-05-Chile/dp-pl-slides.pdf">slides.pdf</a>]
+    [<a href="assets/talks/2019-05-Chile/dp-pl-slides.key">slides.key</a>]
+  </li>
+
+  <li class="my-2">
+    A Simple and Extensible Approach to Program Analysis.
+    <br>
+    <em>International Federation for Information Processing Working Group 2.4 on
+      Software Implementation Technology (IFIP WG2.4). Essex, Vermont,
+      USA. Oct, 2017.</em>
+    <br>
+    [<a href="assets/talks/2017-10-IFIP-WG24/ifip-wg24-abstract.txt">abstract</a>]
+    [<a href="assets/talks/2017-10-IFIP-WG24/ifip-wg24.slides.pdf">slides.pdf</a>]
+    [<a href="assets/talks/2017-10-IFIP-WG24/ifip-wg24.slides.key">slides.key</a>]
+  </li>
+
+  <li class="my-2">
+    Abstracting Definitional Interpreters.
+    <br>
+    <em>International Conference on Functional Programming (ICFP). Oxford, England. September, 2017.</em>
+    <br>
+    [<a href="assets/papers/abstracting-definitional-interpreters/adi.pdf">pdf</a>]
+    [<a href="assets/papers/abstracting-definitional-interpreters/adi-abstract.txt">abstract</a>]
+    [<a href="assets/papers/abstracting-definitional-interpreters/adi.bibtex.txt">bibtex</a>]
+    [<a href="http://dl.acm.org/citation.cfm?id=3110256&CFID=981825431&CFTOKEN=58798778">ACM</a>]
+    [<a href="https://arxiv.org/abs/1707.04755">arXiv</a>]
+    [<a href="assets/papers/abstracting-definitional-interpreters/adi.slides.pdf">slides.pdf</a>]
+    [<a href="assets/papers/abstracting-definitional-interpreters/adi.slides.key">slides.key</a>]
+    [<a href="http://podcasts.ox.ac.uk/abstracting-definitional-interpreters">video</a>]
+  </li>
+
+  <li class="my-2">
+    Constructive Galois Connections: Taming the Galois Connection Framework for Mechanized Metatheory.
+    <br>
+    <em>International Conference on Functional Programming (ICFP). Nara, Japan. September, 2016.</em>
+    <br>
+    [<a href="assets/papers/constructive-galois-connections/cgc.pdf">pdf</a>]
+    [<a href="assets/papers/constructive-galois-connections/cgc-abstract.txt">abstract</a>]
+    [<a href="assets/papers/constructive-galois-connections/cgc.bibtex.txt">bibtex</a>]
+    [<a href="http://dl.acm.org/citation.cfm?id=2951934">ACM</a>]
+    [<a href="http://arxiv.org/abs/1511.06965">arXiv</a>]
+    [<a href="assets/papers/constructive-galois-connections/cgc.slides.pdf">slides.pdf</a>]
+    [<a href="assets/papers/constructive-galois-connections/cgc.slides.key">slides.key</a>]
+    [<a href="https://www.youtube.com/watch?v=UpHkvcFMkBM">video</a>]
+  </li>
+
+  <li class="my-2">
+    Compositional and Mechanically Verified Program Analyzers.
+    <br>
+    <em>ECOOP Doctoral Symposium (ECOOP-DS). Rome, Italy. July, 2016.</em>
+    <br>
+    [<a href="assets/papers/cmvpa-ds/cmvpa-ds.pdf">pdf</a>] 
+    [<a href="assets/papers/cmvpa-ds/cmvpa-ds-abstract.txt">abstract</a>]
+    [<a href="assets/papers/cmvpa-ds/cmvpa-ds.slides.pdf">slides.pdf</a>]
+    [<a href="assets/papers/cmvpa-ds/cmvpa-ds.slides.key">slides.key</a>]
+  </li>
+
+  <li class="my-2">
+    Constructive Galois Connections.
+    <br>
+    <em>New Jersey Programming Languages and Systems Seminar (NJPLS). Philadelphia, Pennsylvania, USA. May, 2016.</em>
+    <br>
+    [<a href="assets/talks/2016-05-NJPLS/cgcs.slides.pdf">slides.pdf</a>]
+    [<a href="assets/talks/2016-05-NJPLS/cgcs.slides.key">slides.key</a>]
+  </li>
+
+  <li class="my-2">
+    Adventures in Abstract Interpretation.
+    <br>
+    <em>Research Seminar. University of Utah. February, 2016.</em>
+    <br>
+    [<a href="assets/talks/2016-02-Utah/aipa.slides.pdf">slides.pdf</a>]
+    [<a href="assets/talks/2016-02-Utah/aipa.slides.key">slides.key</a>]
+    [<a href="https://youtu.be/7TQj6I7yqB8">video</a>]
+  </li>
+
+  <li class="my-2">
+    Constructive Galois Connections: With Applications to Abstracting Gradual Typing.
+    <br>
+    <em>Research Seminar. University of Chile. January, 2016.</em>
+    <br>
+    [<a href="assets/talks/2016-01-Chile/CGCs+AGT.pdf">slides.pdf</a>]
+    [<a href="assets/talks/2016-01-Chile/CGCs+AGT.key">slides.key</a>]
+    [<a href="assets/talks/2016-01-Chile/Demo.agda">demo.agda</a>]
+  </li>
+
+  <li class="my-2">
+    Formally Verifying and Deriving Gradual Type Systems.
+    <br>
+    <em>Class Presentation. University of Maryland CMSC 631. December, 2015.</em>
+    <br>
+    [<a href="assets/talks/2015-12-Maryland/AGT+CGs.pdf">slides.pdf</a>]
+    [<a href="assets/talks/2015-12-Maryland/AGT+CGs.key">slides.key</a>]
+  </li>
+
+  <li class="my-2">
+    Galois Transformers and Modular Abstract Interpreters: Reusable Metatheory for Program Analysis.
+    <br>
+    <em>Object-Oriented Programming, Systems, Languages &amp; Applications (OOPSLA). Pittsburgh, Pennsylvania, USA. October, 2015.</em>
+    <br>
+    [<a href="assets/papers/galois-transformers/gt.pdf">pdf</a>] 
+    [<a href="assets/papers/galois-transformers/gt-abstract.txt">abstract</a>]
+    [<a href="assets/papers/galois-transformers/gt.bibtex.txt">bibtex</a>]
+    [<a href="http://dl.acm.org/citation.cfm?id=2814308">ACM</a>]
+    [<a href="http://arxiv.org/abs/1411.3962">arXiv</a>]
+    [<a href="assets/papers/galois-transformers/gt.slides.pdf">slides.pdf</a>]
+    [<a href="assets/papers/galois-transformers/gt.slides.key">slides.key</a>]
+    [<a href="https://www.youtube.com/watch?v=JpK9e__q5Ts">video</a>]
+  </li>
+</ul>
+
+<h3>Professional Activities</h3>
+<ul>
+  <li>NSF Panels: 2 SHF; (dates confidential)</li>
+  <li>Steering Committee: TyDe 2020, 2021 (chair), 2022</li>
+  <li>Organizing Chair: TyDe 2019 (co); OOPSLA SRC 2019 (co); ECOOP DS 2017 (co)</li>
+  <li>Program Committee (PC): PLDI 2021; TrustNLP 2021; ICFP 2020; TyDe 2018; IFL 2018</li>
+  <li>External/Extended Review Committee (ERC): PLDI 2020; ICFP 2018</li>
+  <li>Posters Committee: ICFP SRC 2019 (+ judge); ECOOP 2019 Posters</li>
+  <li>Mentoring Workshops: PLMS 2018 (panel)</li>
+  <li>Video (co-)Chair: OOPSLA 2017; POPL 2017; PLDI 2017, 2016; ECOOP 2017, 2016; ICFP 2013</li>
+  <li>Artifact Evaluation Committee (AEC): POPL 2016</li>
+  <li>Student Volunteer: POPL 2016, ICFP 2013 (chair)</li>
+  <li>Logo Designer: ICFP 2013</li>
+  <br>
+  <img 
+  alt="icfp 2013 logo" src="images/icfp-2013-logo.jpg"
+  class="img-responsive" style="height:5em">
+  </li>
+</ul>
+
+<h3>Teaching</h3>
+<ul>
+  <li><a href="courses/2020-01-cs225/">UVM CS 225: Programming Languages / Spring 2020</a></li>
+  <li><a href="courses/2019-08-cs295A/">UVM CS 295A: Software Verification / Fall 2019</a></li>
+  <li><a href="courses/2019-01-cs225/">UVM CS 225: Programming Languages / Spring 2019</a></li>
+  <li><a href="courses/2018-08-cs295A/">UVM CS 295A: Software Verification / Fall 2018</a></li>
+  <li><a href="courses/2018-01-cs225/">UVM CS 225: Programming Languages / Spring 2018</a></li>
+</ul>
+
+<h3>Current Students</h3>
+<ul> 
+  <li><a href="https://chikeabuah.github.io">Chike Abuah</a> (PhD co-advised)</li>
+  <li>Ryan Estes (PhD co-advised)</li>
+</ul>
+
+<h3>Past Students</h3>
+<ul>
+  <li>Kristin Mills (MS co-advised)</li>
+  <li>Tim Stevens (MS co-advised)</li>
+</ul>
+<ul>
+  <li>Adam Barson (BS)</li>
+  <li>Jacob Wunder (BS co-advised)</li>
+  <li>Lindsey Stuntz (BS co-advised)</li>
+  <li>Phillip Nguyen (BS co-advised)</li>
+  <li>Ramy Koudsi (BS)</li>
+</ul>
+
+<h3>Funded Projects</h3>
+
+<ul>
+  <li>
+    <b>
+      DARPA: SocialCyber: LAGOON: Leveraging AI to Guard Online Open Source
+      Networks.
+    </b>
+    Funded by DARPA. Galois, Inc. award $499,718 Phase 1. Galois, Inc. PI: David
+    Darais; Co-PI Walt Woods. 9 months, starting TBD 2021. Scientific peer
+    reviewed.
+    <em>
+    The LAGOON project develops AI techniques for securing online open source
+    software from social threats to development and maintenance workflows. The
+    project develops new data modeling and fusion techniques, NLP algorithms,
+    predictive models for social behavior, and threat analysis for code
+    dependencies.
+    </em>
+  </li>
+  <li>
+    <b>
+      ONR: SBIR: Phase 1: 5STARS: 5G SDN Tools for Automated and Reliable Security.
+    </b>
+    Funded by ONR. Galois, Inc. award $139,905 Phase 1. Galois, Inc. PI: David
+    Darais. 6 months, starting TBD 2021. Scientific peer reviewed.
+    <em>
+    The 5STARS project develops verification tools for software defined
+    networking applications applied within 5G infrastructure. The project
+    develops new verification techniques for data plane and control plane
+    functionalities, and new case studies for SDN verification within 5G.
+    </em>
+  </li>
+  <li>
+    <b>
+      DARPA: CSL: CLAMPED: Collaborative Learning Architecture with
+      Mathematical Privacy over Embedded Data.
+    </b>
+    Funded by DARPA. University of Vermont (UVM) award $323,717. UVM PI: Joe
+    Near; Co-PI David Darais. 1.5 years, starting 08/28/2020. Scientific peer
+    reviewed. Sub-award transfered to Galois, Inc.. Galois PI: David Darais.
+    <em>
+    In this project we develop data privacy techniques
+    suitable for collaborative secure learning. Our
+    techniques enable collaborative machine learning
+    scenarios involving sensitive data, including
+    differentially private training of deep neural
+    networks.
+    </em>
+  </li>
+  <li>
+    <b>
+      DARPA: SIEVE: Wizkit: Wide-scale Zero-Knowledge Interpreter Toolkit.
+      Analyzers for Critical Software.
+    </b>
+    Funded by DARPA. University of Vermont (UVM) award $405,858. UVM PI: Joe
+    Near. Key Personnel: David Darais. 4 years, starting 05/01/2020. Scientific
+    peer reviewed.
+    <em>
+      In this project we develop a system, called Wizkit, that efficiently
+      compiles and executes zero-knowledge proofs for a wide range of
+      applications. Wizkit will enable the adoption of zero-knowledge proofs in
+      new domains with high societal benefit, such as secure auctions, auditing
+      and voting.
+    </em>
+  </li>
+  <li>
+    <b>
+      Amazon: ARA: Provable Fairness for Deep Learning via Automatic
+      Differentiation.
+    </b>
+    Funded by Amazon Research Awards (ARA). University of Vermont (UVM) award
+    $91,749. UVM PI: Joe Near; Co-PI: David Darais. 1 year, starting 04/15/2020.
+    Amazon internal review.
+    <em>
+      In this project we propose a new approach for enforcing fairness in the
+      context of deep neural networks that provides a provable guarantee by
+      analyzing the network’s architecture directly.
+    </em>
+  </li>
+  <li>
+    <b>
+    DoD: AVATAR: Army Visual and Tactical Arctic Reconnaissance.
+    </b>
+      Funded by DoD. University of Vermont (UVM) award $3,700,000. UVM PI: Jeff
+      Marshall; Investigator: David Darais. 3 years, starting 04/01/2020. DoD
+      internal review.
+    <em>
+      In this project we develop defense techniques to secure machine learning
+      models from physical corruption, data poising and adversarial examples.
+    </em>
+  </li>
+  <li>
+    <b>
+      NSF: SHF: Medium: Collaborative Research: Synthesizing Verified Analyzers
+      for Critical Software.
+    </b>
+    Funded by NSF. University of Vermont (UVM) award $598,434. UVM PI: David
+    Darais. 4 years, starting 06/03/2019. Scientific peer reviewed. Award
+    transferrd to Univerity of Utah (UU). UU PI: David Darais.
+    <em>
+      In this project we investigate both formal verification and automated
+      synthesis of program analyzers using interactive proof assistants. Our
+      results will both accelerate existing approaches for designing high
+      assurance analyzers, as well as enable developers without expertise in
+      formal verification to prototype them.
+    </em>
+  </li>
+  <li>
+    <b>
+      IARPA: HECTOR: PANTHEON: Programming Architecture iNtegrated Toolchain for
+      compiling Homomorphic Encryption and ONline Secure Computation.
+    </b>
+    Funded by IARPA. University of Vermont (UVM) award $527,262. UVM PI: David
+    Darais. 5 years, starting 10/01/2019. Subcontract with Stealth Software,
+    Inc.. Scientific peer reviewed.
+    <em>
+      In this project we develop a system, called PANTHEON, that transforms the
+      description of a computation involving sensitive data into a
+      cryptographically secure, “end-to-end” solution that satisfies specified
+      security goals. PANTHEON will greatly expand the number of programmers
+      capable of developing secure-computation protocols, and the number of
+      users who will benefit from their deployment.
+    </em>
+  </li>
+  <li>
+    <b>
+      UVM: REACH: Data Privacy for Deep Learning via Language Design.
+    </b>
+    Funded by University of Vermont (UVM). UVM award $29,409. UVM PIs: David
+    Darais and Joe Near. 1.25 years, starting 05/01/2019. UVM internal review.
+    <em>
+      We propose to discover new techniques for applying differential privacy to
+      deep learning. In contrast to previous efforts, we plan to leverage our
+      experience in programming languages to develop novel techniques that
+      address this challenge.
+    </em>
+  </li>
+</ul>
+
+<h4>Short Bio</h4>
+<em>
+David is a Principal Scientist at Galois, Inc., where he builds programming
+languages and analysis tools that help programmers build reliable software.
+These tools are designed specifically for security-sensitive and
+privacy-sensitive settings, and result in systems that are immune to large
+classes of security and privacy defects. David received his BS from the
+University of Utah, MS from Harvard University, PhD from the University of
+Maryland, and was previously an Assistant Professor at the University of Vermont
+before joining Galois, Inc..
+</em>
+
+<h4>Medium Bio</h4>
+<em>
+David is a Principal Scientist at Galois, Inc., where he builds programming
+languages and analysis tools that help programmers build reliable software.
+These tools are designed specifically for security-sensitive and
+privacy-sensitive settings, and result in systems that are immune to large
+classes of security and privacy defects. David approaches building better
+systems through a number of methods, including static and dynamic program
+analysis, type systems, mechanized verification, differential privacy and secure
+multiparty computation.
+
+David builds tools that secure systems against a wide range of adversaries,
+ranging from directly malicious actors, to the well-intended software developer
+who accidentally misused security-or-privacy-relevant technology, such as
+cryptography or differential privacy. To combat these adversaries, David
+co-designs programming languages in concert with verification tools  while also
+maintaining a usable, high-level, and general-purpose programming environment
+for application developers.
+
+David received his BS from the University of Utah, MS from Harvard University,
+PhD from the University of Maryland, and was previously an Assistant Professor
+at the University of Vermont before joining Galois, Inc..
+</em>
+
+<h4>Links</h4>
+<ul>
+  <li>
+    <a href="https://ranjitjhala.github.io/static/PLMW-talk-opinionated.pdf">On
+       Preparing Talks</a> (by Ranjit Jhala at UCSD, ICFP PLMW 2018)
+  </li>
+  <li>
+    <a href="howivim.html">How I Vim</a>
+  </li>
+</ul>
+<div id="timestamp"></div>
+
+</main>
+
+<!-- JQuery JS -->
+<script src="https://code.jquery.com/jquery-4.0.0.slim.min.js" integrity="sha256-8DGpv13HIm+5iDNWw1XqxgFB4mj+yOKFNb+tHBZOowc=" crossorigin="anonymous"></script>
+  
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+<!-- Showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+
+<!-- Darais JS -->
+<script src="https://david.darais.com/js/darais-v0.0.0.3.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70126522-1');
+</script>
+
+</body>
+</html>
+
