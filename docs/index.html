@@ -3,107 +3,114 @@
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-  <!-- Font Awesome CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
-  <!-- Bootstrap Social CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.min.css" integrity="sha512-f8mUMCRNrJxPBDzPJx3n+Y5TC5xp6SmStstEfgsDXZJTcxBakoB5hvPLhAfJKa9rCvH+n3xpJ2vQByxLk4WP2g==" crossorigin="anonymous" />
-
-  <!-- Darais CSS -->
-  <link rel="stylesheet" href="css/darais-v0.0.0.3.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
   <!-- Title -->
-  <meta name="title" content="David Darais @ Galois">
+  <meta name="title" content="David Darais @ Stealth">
 
 <style type=text/css>
-#bio-info-table {
-  display: inline;
+
+#bio-pic {
+    background-image:url("https://david.darais.com/images/me/darais-new-1920+240.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width:14em;
+    height:14em;
 }
-#bio-info-table td {
-  padding: 0 0.2em;
-}
-#bio-info-table td.a {
-  text-align: right;
-}
-#bio-info-table td.b {
-  text-align: left;
-}
+
 </style>
 
 </head>
 
+<title>David Darais @ Stealth</title>
+
 <body>
 
-<main>
+<nav class="navbar navbar-dark bg-dark mb-4">
+  <div class="container">
+    <a id="nav-title" class="navbar-brand" href="#">
+      David Darais @ Stealth
+    </a>
+  </div>
+</nav>
 
-<div class="float-left" 
-     style="
-      background-image:url('https://david.darais.com/images/me/darais-new-1920+240.jpg');
-      background-size: contain;
-      background-repeat: no-repeat;
-      width:14em;
-      height:14em;
-      margin-right:1em;
-      margin-bottom:1em;
-      "
-></div>
-<address class="text-right">
-    David Darais<br>
-    <em>Principal Scientist</em><br>
-    Galois, Inc.
+<main class="container">
+
+<div class="row g-0 mb-4 align-items-start">
+  <div class="col-auto">
+    <div id="bio-pic"></div>
+  </div>
+  <div class="col text-end">
+    David Darais
     <br>
-    <table class="raw" id="bio-info-table">
-      <tbody>
-      <tr>
-        <td class="a"><a href="mailto:darais@galois.com">darais@galois.com</a></td>
-        <td class="b"><i class="fa fa-envelope"></i></td>
-      </tr>
-      <tr>
-        <td class="a"><a href="https://twitter.com/daviddarais">@daviddarais</a></td>
-        <td class="b"><i class="fa fa-twitter"></i></td>
-      </tr>
-      <tr>
-        <td class="a"><a href="https://github.com/davdar">@davdar</a></td>
-        <td class="b"><i class="fa fa-github"></i></td>
-      </tr>
-      <tr>
-        <td class="a"><a href="assets/darais-cv.pdf">CV</a></td>
-        <td class="b"><i class="fa fa-file"></i></td>
-      </tr>
-      <tr>
-        <td class="a"><a href="calendar.html">when I'm free</a></td>
-        <td class="b"><i class="fa fa-calendar"></i></td>
-      </tr>
-      </tbody>
-    </table>
-</address>
+    Principal Scientist
+    <br>
+    Stealth Software Technologies, Inc.
+    <br>
+    <a href="mailto:david@stealthsoftwareinc.com">david@stealthsoftwareinc.com</a>
+    <i class="bi bi-envelope"></i>
+    <br>
+    <a href="https://twitter.com/daviddarais">@daviddarais</a>
+    <i class="bi bi-twitter-x"></i>
+    <br>
+    <a href="https://github.com/davdar">@davdar</a>
+    <i class="bi bi-github"></i></td>
+    <br>
+    <a href="assets/darais-cv.pdf">CV</a>
+    <i class="bi bi-file-text"></i>
+    <br>
+    <!--
+    <a href="calendar.html">When I'm free</a>
+    <i class="bi bi-calendar3"></i>
+    -->
+  </div>
+</div>
 
-
-<div class="clearfix"></div>
-  
 <p>
-I'm currently a Principal Scientist at 
-<a href="http://galois.com">Galois, Inc.</a>.
-My research addresses problems in software reliability through advances in 
-<a href="assets/papers/abstracting-definitional-interpreters/adi.pdf">program analysis</a>, 
-computer-checkable proofs, and their 
-<a href="assets/papers/constructive-galois-connections-extended/cgcx.pdf">combination</a>.
-Recently I have been working on new programming languages for 
-<a href="assets/papers/duet/duet.pdf">data privacy</a> 
+I'm a Principal Scientist at 
+<a href="https://www.stealthsoftwareinc.com">Stealth Software Technologies</a>.
+I was previously a Principal Scientist at 
+<a href="https://www.galois.com">Galois</a>.
+</p>
+
+<p>
+I lead business development and engineering teams that perform on science and
+engineering programs funded by the US Government. 
+</p>
+
+<p>
+My research focuses on 
+<strong>software reliability</strong> 
 and 
-<a href="assets/papers/lang-for-prob-obliv/lpo.pdf">secure computation</a>, 
-and new verification techniques for 
-<a href="assets/papers/proof-carrying-network-code/pcnc.pdf">software defined networking</a>.
+<strong>data privacy</strong>
+through advances in 
+<a href="assets/papers/abstracting-definitional-interpreters/adi.pdf">program analysis</a>, 
+<a href="assets/papers/katch.pdf">symbolic model checking</a>,
+<a href="assets/papers/constructive-galois-connections-extended/cgcx.pdf">computer-checkable proofs</a>,
+<a href="assets/papers/symphony.pdf">secure multiparty computation</a>,
+<a href="assets/papers/zk-sa/zk-sa.pdf">zero knowledge proofs</a>,
+<a href="assets/papers/lang-for-prob-obliv/lpo.pdf">oblivious data structures</a>,
+<a href="assets/papers/duet/duet.pdf">differential privacy verification</a> and 
+<a href="https://csrc.nist.gov/pubs/sp/800/226/final">differential privacy standards</a>.
+</p>
+
+<p>
+</p>
+
+<p>
 I used to help run and still actively collaborate with the 
 <a href="https://plaid.w3.uvm.edu">UVM PLAID Lab</a>.
 </p>
 
 <h3>Publications</h3>
+
+<em>(This list is out of date... see my <a href="https://dblp.org/pid/10/8656.html">dblp</a>)</em>
 
 <ul class="padded">
 
@@ -592,14 +599,10 @@ I used to help run and still actively collaborate with the
   <li><a href="courses/2018-01-cs225/">UVM CS 225: Programming Languages / Spring 2018</a></li>
 </ul>
 
-<h3>Current Students</h3>
-<ul> 
-  <li><a href="https://chikeabuah.github.io">Chike Abuah</a> (PhD co-advised)</li>
-  <li>Ryan Estes (PhD co-advised)</li>
-</ul>
-
 <h3>Past Students</h3>
 <ul>
+  <li><a href="https://chikeabuah.github.io">Chike Abuah</a> (PhD co-advised)</li>
+  <li>Ryan Estes (PhD co-advised)</li>
   <li>Kristin Mills (MS co-advised)</li>
   <li>Tim Stevens (MS co-advised)</li>
 </ul>
@@ -611,7 +614,7 @@ I used to help run and still actively collaborate with the
   <li>Ramy Koudsi (BS)</li>
 </ul>
 
-<h3>Funded Projects</h3>
+<!--h3>Funded Projects</h3>
 
 <ul>
   <li>
@@ -748,30 +751,33 @@ I used to help run and still actively collaborate with the
       address this challenge.
     </em>
   </li>
-</ul>
+</ul-->
 
 <h4>Short Bio</h4>
+<p>
 <em>
-David is a Principal Scientist at Galois, Inc., where he builds programming
-languages and analysis tools that help programmers build reliable software.
-These tools are designed specifically for security-sensitive and
+David is a Principal Scientist at Stealth Software Technologies where he builds
+programming languages and analysis tools that help programmers build reliable
+software. These tools are designed specifically for security-sensitive and
 privacy-sensitive settings, and result in systems that are immune to large
 classes of security and privacy defects. David received his BS from the
 University of Utah, MS from Harvard University, PhD from the University of
-Maryland, and was previously an Assistant Professor at the University of Vermont
-before joining Galois, Inc..
+Maryland, and was previously an Assistant Professor at the University of
+Vermont before joining Stealth Software Technologies.
 </em>
+</p>
 
 <h4>Medium Bio</h4>
+<p>
 <em>
-David is a Principal Scientist at Galois, Inc., where he builds programming
-languages and analysis tools that help programmers build reliable software.
-These tools are designed specifically for security-sensitive and
+David is a Principal Scientist at Stealth Software Technologies where he builds
+programming languages and analysis tools that help programmers build reliable
+software. These tools are designed specifically for security-sensitive and
 privacy-sensitive settings, and result in systems that are immune to large
 classes of security and privacy defects. David approaches building better
 systems through a number of methods, including static and dynamic program
-analysis, type systems, mechanized verification, differential privacy and secure
-multiparty computation.
+analysis, type systems, mechanized verification, differential privacy and
+secure multiparty computation.
 
 David builds tools that secure systems against a wide range of adversaries,
 ranging from directly malicious actors, to the well-intended software developer
@@ -783,10 +789,11 @@ for application developers.
 
 David received his BS from the University of Utah, MS from Harvard University,
 PhD from the University of Maryland, and was previously an Assistant Professor
-at the University of Vermont before joining Galois, Inc..
+at the University of Vermont before joining Stealth Software Technologies
 </em>
+</p>
 
-<h4>Links</h4>
+<!--h4>Links</h4>
 <ul>
   <li>
     <a href="https://ranjitjhala.github.io/static/PLMW-talk-opinionated.pdf">On
@@ -796,31 +803,24 @@ at the University of Vermont before joining Galois, Inc..
     <a href="howivim.html">How I Vim</a>
   </li>
 </ul>
-<div id="timestamp"></div>
+<div id="timestamp"></div-->
 
 </main>
 
-<!-- Bootstrap core JavaScript -->
-<!-- ================================================== -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<!-- ================================================== -->
+<!-- JQuery JS -->
+<script src="https://code.jquery.com/jquery-4.0.0.slim.min.js" integrity="sha256-8DGpv13HIm+5iDNWw1XqxgFB4mj+yOKFNb+tHBZOowc=" crossorigin="anonymous"></script>
   
-<!-- Showdown -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
-
-<!-- Darais JS -->
-<script src="https://david.darais.com/js/darais-v0.0.0.3.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  gtag("js", new Date());
 
-  gtag('config', 'UA-70126522-1');
+  gtag("config", "UA-70126522-1");
 </script>
 
 </body>

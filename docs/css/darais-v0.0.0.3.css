@@ -136,34 +136,3 @@ div.markdown blockquote {
   margin-left: 1em;
   margin-right: 1em;
 }
-
-/* OLD STUFF
-body {
-  padding-top: 50px;
-}
-p {
-  text-align: justify;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-ul.padded li {
-  margin: 0.5em 0;
-}
-ul ul {
-  padding-left: 1em;
-}
-
-.content {
-  padding: 40px 15px;
-}
-.no-select{
-  -khtml-user-select: none;
-  -o-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-}
-/*
-

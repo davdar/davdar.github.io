@@ -3,7 +3,7 @@
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -11,19 +11,18 @@
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
-  <!-- Font Awesome CSS -->
-  <!-- link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"-->
-
-  <!-- Bootstrap Social CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.min.css" integrity="sha512-f8mUMCRNrJxPBDzPJx3n+Y5TC5xp6SmStstEfgsDXZJTcxBakoB5hvPLhAfJKa9rCvH+n3xpJ2vQByxLk4WP2g==" crossorigin="anonymous" />
-
-  <!-- Darais CSS -->
-  <link rel="stylesheet" href="css/darais-v0.0.0.3.css">
-
   <!-- Title -->
   <meta name="title" content="David Darais @ Stealth">
 
 <style type=text/css>
+
+#bio-pic {
+    background-image:url("https://david.darais.com/images/me/darais-new-1920+240.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width:14em;
+    height:14em;
+}
 #bio-info-table {
   display: inline;
 }
@@ -40,63 +39,70 @@
 
 </head>
 
+<title>David Darais @ Stealth</title>
+
 <body>
 
-<main>
+<nav class="navbar navbar-dark bg-dark mb-4">
+  <div class="container">
+    <a id="nav-title" class="navbar-brand" href="#">
+      David Darais @ Stealth
+    </a>
+  </div>
+</nav>
 
-<div class="float-left" 
-     style="
-      background-image:url('https://david.darais.com/images/me/darais-new-1920+240.jpg');
-      background-size: contain;
-      background-repeat: no-repeat;
-      width:14em;
-      height:14em;
-      margin-right:1em;
-      margin-bottom:1em;
-      "
-></div>
-<address class="text-right">
-    David Darais<br>
-    <em>Principal Scientist</em><br>
-    Galois, Inc.
+<main class="container">
+
+<div class="row g-0 align-items-start mb-4">
+  <div class="col-auto">
+    <div id="bio-pic"></div>
+  </div>
+  <div class="col text-end">
+    David Darais
     <br>
-    <table class="raw" id="bio-info-table">
-      <tbody>
-      <tr>
-        <td class="a"><a href="mailto:david@stealthsoftwareinc.com">david@stealthsoftwareinc.com</a></td>
-        <td class="b"><i class="bi bi-envelope"></i></td>
-      </tr>
-      <tr>
-        <td class="a"><a href="https://bsky.app/profile/daviddarais.bsky.social">@daviddarais.bsky.social</a></td>
-        <td class="b"><i class="bi bi-bluesky"></i></td>
-      </tr>
-      <tr>
-        <td class="a"><a href="https://twitter.com/daviddarais">@daviddarais</a></td>
-        <td class="b"><i class="bi bi-twitter-x"></i></td>
-      </tr>
-      <tr>
-        <td class="a"><a href="https://github.com/davdar">@davdar</a></td>
-        <td class="b"><i class="bi bi-github"></i></td>
-      </tr>
-      <tr>
-        <td class="a"><a href="assets/darais-cv.pdf">CV</a></td>
-        <td class="b"><i class="bi bi-file-text"></i></td>
-      </tr>
-      <tr>
-        <td class="a"><a href="calendar.html">when I'm free</a></td>
-        <td class="b"><i class="bi bi-calendar3"></i></td>
-      </tr>
-      </tbody>
-    </table>
-</address>
+    Principal Scientist
+    <br>
+    Stealth Software Technologies, Inc.
+    <br>
+    <a href="mailto:david@stealthsoftwareinc.com">david@stealthsoftwareinc.com</a>
+    <i class="bi bi-envelope"></i>
+    <br>
+    <a href="https://twitter.com/daviddarais">@daviddarais</a>
+    <i class="bi bi-twitter-x"></i>
+    <br>
+    <a href="https://github.com/davdar">@davdar</a>
+    <i class="bi bi-github"></i></td>
+    <br>
+    <a href="assets/darais-cv.pdf">CV</a>
+    <i class="bi bi-file-text"></i>
+    <br>
+    <!--
+    <a href="calendar.html">When I'm free</a>
+    <i class="bi bi-calendar3"></i>
+    -->
+  </div>
+</div>
 
-
-<div class="clearfix"></div>
-  
 <p>
 I'm currently a Principal Scientist at 
-<a href="http://galois.com">Galois, Inc.</a>.
-My research addresses problems in software reliability through advances in 
+<a href="https://www.stealthsoftwareinc.com">Stealth Software Technologies</a>.
+</p>
+
+<p>
+I lead engineering teams that build research prototypes to advance the security
+and reliability of high assurance systems.
+</p>
+
+<p>
+Previously I've been Principal Scientist at <a
+  href="https://www.galois.com">Galois</a>, and Assistant Professor in Computer Science at the
+<a href="https://www.uvm.edu/cems/cs">University of Vermont</a>.
+I used to help run and still actively collaborate with the <a
+  href="https://plaid.w3.uvm.edu">UVM PLAID Lab</a>.
+</p>
+
+<p>
+My academic research addresses problems in software reliability through advances in 
 <a href="assets/papers/abstracting-definitional-interpreters/adi.pdf">program analysis</a>, 
 computer-checkable proofs, and their 
 <a href="assets/papers/constructive-galois-connections-extended/cgcx.pdf">combination</a>.
@@ -106,8 +112,12 @@ and
 <a href="assets/papers/lang-for-prob-obliv/lpo.pdf">secure computation</a>, 
 and new verification techniques for 
 <a href="assets/papers/proof-carrying-network-code/pcnc.pdf">software defined networking</a>.
-I used to help run and still actively collaborate with the 
-<a href="https://plaid.w3.uvm.edu">UVM PLAID Lab</a>.
+</p>
+
+<p>
+My work in industry has focusd on machine-checkable evidence for software
+security, research and system auditing for data privacy (via differential
+privacy), high assurance networking, 
 </p>
 
 <h3>Publications</h3>
@@ -813,20 +823,14 @@ at the University of Vermont before joining Galois, Inc..
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
-<!-- Showdown -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
-
-<!-- Darais JS -->
-<script src="https://david.darais.com/js/darais-v0.0.0.3.js"></script>
-
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-70126522-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  gtag("js", new Date());
 
-  gtag('config', 'UA-70126522-1');
+  gtag("config", "UA-70126522-1");
 </script>
 
 </body>
